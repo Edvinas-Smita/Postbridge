@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button/Button'
 import TextField from '@material-ui/core/TextField/TextField'
 import Grid from '@material-ui/core/Grid/Grid'
 import  BackgroundImage from './background.png'
+import { Typography } from '@material-ui/core'
+import "./LoginForm.css"
 
 const gridStyles = {
     minHeight: '100vh',
@@ -25,6 +25,16 @@ class LoginForm extends Component {
                 justify="center"
                 style={gridStyles}
             >
+                <Typography 
+                    variant="h5"
+                    style={{color:"white"}}>
+                    Sign in to your account
+                </Typography>
+                <Grid>
+                    <a href="javascript:void(0)" className="active">Sign In</a>
+                    <a href="javascript:void(0)">Sign Up</a>
+                    <a href="javascript:void(0)">Forgot password?</a>
+                </Grid>
                 <Grid item xs="auto" style={{ padding: 8}}>
                     <TextField
                         placeholder="Email"
@@ -49,6 +59,7 @@ class LoginForm extends Component {
                     <Button 
                         variant = "contained" 
                         color="primary"
+                        style={{textTransform: "none"}}
                     >
                         Sign In
                     </Button>

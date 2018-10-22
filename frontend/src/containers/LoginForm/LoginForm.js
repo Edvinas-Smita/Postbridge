@@ -2,9 +2,18 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button/Button'
 import OutlinedInput from '@material-ui/core/OutlinedInput/OutlinedInput'
 import Grid from '@material-ui/core/Grid/Grid'
-import { Link } from 'react-router-dom'
 
 class LoginForm extends Component {
+    constructor(props){
+        super(props);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(){
+        this.props.history.push('/parcels');
+    }
+
     render() {
         return (
 
@@ -35,14 +44,13 @@ class LoginForm extends Component {
                     />
                 </Grid>
                 <Grid item xs="auto" style={{ padding: 8}}>
-                    <Link to="/parcels">
-                        <Button 
-                            variant = "contained" 
-                            color="primary"
-                        >
-                            Sign In
-                        </Button>
-                    </Link>
+                    <Button 
+                        variant = "contained" 
+                        color="primary"
+                        onClick={this.handleSubmit}
+                    >
+                        Sign In
+                    </Button>
                 </Grid>
             </Grid> 
         );

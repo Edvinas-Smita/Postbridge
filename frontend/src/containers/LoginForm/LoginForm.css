@@ -1,8 +1,13 @@
 a {
-   color:white;
+   color:#a0a0a0;
    text-decoration: none; 
 }
 
 a.active{
+    color:white;
     font-weight: bold;
+}
+
+a.left{
+    text-align: left;
 }

@@ -1,27 +1,18 @@
 import React, { Component } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import blue from '@material-ui/core/colors/blue';
 
 import LoginForm from '../../containers/LoginForm/LoginForm';
-
-const theme = createMuiTheme({
-  palette: {
-      primary: blue,
-  },
-  typography: {
-      useNextVariants: true,
-  },
-});
+import ParcelsList from '../../containers/ParcelsList/ParcelsList';
 
 class App extends Component {
   render() {
     return (
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <LoginForm/>
-      </MuiThemeProvider>
+        <Switch>
+          <Route exact path="/" component={LoginForm} />
+          <Route exact path="/parcels" component={ParcelsList} />
+          <Redirect to="/" />
+        </Switch>
     );
   }
 }

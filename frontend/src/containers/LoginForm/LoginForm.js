@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button/Button'
 import OutlinedInput from '@material-ui/core/OutlinedInput/OutlinedInput'
 import Grid from '@material-ui/core/Grid/Grid'
+import { Link } from 'react-router-dom'
 
 class LoginForm extends Component {
     render() {
@@ -34,12 +35,14 @@ class LoginForm extends Component {
                     />
                 </Grid>
                 <Grid item xs="auto" style={{ padding: 8}}>
-                    <Button 
-                        variant = "contained" 
-                        color="primary"
-                    >
-                        Sign In
-                    </Button>
+                    <Link to="/parcels">
+                        <Button 
+                            variant = "contained" 
+                            color="primary"
+                        >
+                            Sign In
+                        </Button>
+                    </Link>
                 </Grid>
             </Grid> 
         );

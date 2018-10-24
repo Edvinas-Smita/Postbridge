@@ -1,0 +1,28 @@
+.Parcel {
+    width: 90%;
+    border-top: 1.5px solid #c7c2cc;
+    border-left: 1.5px solid #c7c2cc;
+    border-right: 1.5px solid #c7c2cc;
+    padding: 10px;
+    margin-left: 5%;
+    margin-right: 5%; 
+    display: grid ;
+    grid-template-columns: 8% 8% 8% 8% 6% 8% 8% 12% 12% 10%;
+    column-gap: 12px;
+    grid-template-rows: 35px;
+    align-items: center;
+    background: white;
+}
+
+.Parcel div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+    align-items: center;
+    font-size: 13px;
+}
+
+.Parcel:last-child { 
+    border-bottom: 1.5px solid #c7c2cc;
+}

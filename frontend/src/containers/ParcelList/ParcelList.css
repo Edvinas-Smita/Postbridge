@@ -1,0 +1,11 @@
+.Parcels {
+    margin-top: 70px;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+}
+
+.ParcelListPage {
+    background-color: #f9f9f9;
+}

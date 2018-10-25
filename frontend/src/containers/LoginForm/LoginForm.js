@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid/Grid'
 import  BackgroundImage from './background.png'
 import { Typography } from '@material-ui/core'
 import { withStyles } from "@material-ui/core/styles";
-import "./LoginForm.css"
+// import "./LoginForm.css"
 
 const gridStyles = {
     minHeight: '100vh',

@@ -27,18 +27,29 @@ const styles = {
     },
   };
 
-function LoginFormGrid(props){
-    const { classes } = props;
+class LoginForm extends Component {
+    constructor(props){
+        super(props);
 
-    return (
-        <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={gridStyles}
-        >
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(){
+        this.props.history.push('/parcels');
+    }
+
+    render() {
+        const { classes } = this.props;
+
+        return (
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justify="center"
+                style={gridStyles}
+            >
             <Typography 
                 variant="h5"
                 className={classes.typografy}
@@ -75,30 +86,15 @@ function LoginFormGrid(props){
                     variant = "contained" 
                     color="primary"
                     style={{textTransform: "none", width:"400px"}}
+                    onClick={this.handleSubmit}
                 >
                     Sign In
                 </Button>
             </Grid>
         </Grid> 
-    );
-}
-
-const LoginFormGridStyled = withStyles(styles)(LoginFormGrid);
-
-class LoginForm extends Component {
-    constructor(props){
-        super(props);
-
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleSubmit(){
-        this.props.history.push('/parcels');
-    }
-
-    render() {
-        return (<LoginFormGridStyled/>);
+        );
     }
 }
 
-export default LoginForm;
+export default withStyles(styles)(LoginForm)
+

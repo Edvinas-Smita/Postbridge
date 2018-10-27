@@ -5,30 +5,42 @@ import './App.css';
 import LoginForm from '../../containers/LoginForm/LoginForm';
 import ParcelList from '../../containers/ParcelList/ParcelList';
 
-const Auth = {
-  isAuthenticated: true,
-  authenticate() {
-    this.isAuthenticated = true
-  },
-  signout() {
-    this.isAuthenticated = false
-  }
-}
-
-const PrivatRoute = ({ component: Component, ...rest}) => (
+const PrivatRoute = ({ component: Component, authed, ...rest}) => (
     <Route {...rest} render={(props) => (
-      Auth.isAuthenticated === true
+      authed === true
         ? <Component  {...props}/>
-        : <Redirect to="/"/>
+        : <Redirect to='/'/>
     )}/>
 )
 
 class App extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      authed: false
+    }
+  }
+
+  authenticate() {
+    this.setState({
+      authed: false
+    });
+  }
+
   render() {
     return (
         <Switch>
-          <Route exact path="/" component={LoginForm} />
-          <PrivatRoute exact path="/parcels" component={ParcelList} />
+          <Route 
+            exact 
+            path="/" 
+            render={(props) => <LoginForm {...props} authenticate={this.authenticate.bind(this)}/>}/>
+          <PrivatRoute 
+            exact 
+            path="/parcels"
+            component={ParcelList} 
+            authed={this.state.authed}/>
           <Redirect to="/" />
         </Switch>
     );

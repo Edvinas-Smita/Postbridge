@@ -28,16 +28,18 @@ const styles = {
   };
 
 class LoginForm extends Component {
+    
     constructor(props){
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(){
+    handleSubmit() {
+        this.props.authenticate();
         this.props.history.push('/parcels');
     }
-
+    
     render() {
         const { classes } = this.props;
 

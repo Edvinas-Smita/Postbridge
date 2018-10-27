@@ -32,12 +32,34 @@ class LoginForm extends Component {
     constructor(props){
         super(props);
 
+        this.state = {
+            email: "",
+            password: "",
+        }
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    handleChange = name => event => {
+        this.setState({
+          [name]: event.target.value,
+        });
+      };
+
     handleSubmit() {
-        this.props.authenticate();
-        this.props.history.push('/parcels');
+        this.props.authenticate(this.state.email, this.state.password);
+        console.log(this.props.location);
+        console.log(this.props.authed);
+        if (this.props.authed === true) {
+            this.props.history.push('/parcels');
+        }
+        else{
+            this.setState({
+                email: this.state.email,
+                password: this.state.password
+            })
+        }
+        console.log("2");
     }
     
     render() {
@@ -71,6 +93,8 @@ class LoginForm extends Component {
                     variant="outlined"
                     className={classes.textField}
                     inputProps={{className: classes.input}}
+                    value={this.state.email}
+                    onChange={this.handleChange("email")}
                 />
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>
@@ -81,6 +105,8 @@ class LoginForm extends Component {
                     variant="outlined"
                     className={classes.textField}
                     inputProps={{className: classes.input}}
+                    value={this.state.password}
+                    onChange={this.handleChange("password")}
                 />
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>

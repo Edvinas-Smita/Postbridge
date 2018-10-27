@@ -5,7 +5,7 @@ import './App.css';
 import LoginForm from '../../containers/LoginForm/LoginForm';
 import ParcelList from '../../containers/ParcelList/ParcelList';
 
-const PrivatRoute = ({ component: Component, authed, ...rest}) => (
+const PrivateRoute = ({ component: Component, authed, ...rest}) => (
     <Route {...rest} render={(props) => (
       authed === true
         ? <Component  {...props}/>
@@ -23,10 +23,12 @@ class App extends Component {
     }
   }
 
-  authenticate() {
-    this.setState({
-      authed: false
-    });
+  authenticate(email, password) {
+    if (email === "test" && password === "test"){
+      this.setState({
+        authed: true
+      });
+    }
   }
 
   render() {
@@ -35,8 +37,8 @@ class App extends Component {
           <Route 
             exact 
             path="/" 
-            render={(props) => <LoginForm {...props} authenticate={this.authenticate.bind(this)}/>}/>
-          <PrivatRoute 
+            render={(props) => <LoginForm {...props} authed={this.state.authed} authenticate={this.authenticate.bind(this)}/>}/>
+          <PrivateRoute 
             exact 
             path="/parcels"
             component={ParcelList} 

@@ -9,7 +9,10 @@ const PrivateRoute = ({ component: Component, authed, ...rest}) => (
     <Route {...rest} render={(props) => (
       authed === true
         ? <Component  {...props}/>
-        : <Redirect to='/'/>
+        : <Redirect to={{
+          pathname: '/',
+          state: { from: props.location }
+        }} />
     )}/>
 )
 
@@ -23,11 +26,12 @@ class App extends Component {
     }
   }
 
-  authenticate(email, password) {
+  authenticate(cb, email, password) {
     if (email === "test" && password === "test"){
       this.setState({
         authed: true
       });
+      setTimeout(cb, 0);
     }
   }
 
@@ -37,13 +41,12 @@ class App extends Component {
           <Route 
             exact 
             path="/" 
-            render={(props) => <LoginForm {...props} authed={this.state.authed} authenticate={this.authenticate.bind(this)}/>}/>
+            render={(props) => <LoginForm {...props} authenticate={this.authenticate.bind(this)}/>}/>
           <PrivateRoute 
             exact 
             path="/parcels"
             component={ParcelList} 
             authed={this.state.authed}/>
-          <Redirect to="/" />
         </Switch>
     );
   }

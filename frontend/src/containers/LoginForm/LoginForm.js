@@ -36,6 +36,7 @@ class LoginForm extends Component {
         this.state = {
             email: "",
             password: "",
+            redirectToReferrer: false
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -48,18 +49,21 @@ class LoginForm extends Component {
       };
 
     handleSubmit() {
-        this.props.authenticate(
+        this.props.authenticate(() => {
+            this.setState(() => ({redirectToReferrer: true}))
+            }, 
             this.state.email, 
-            this.state.password);
+            this.state.password
+        )
     }
     
     render() {
         const { classes } = this.props;
+        const { from } = this.props.location.state || { from: { pathname: '/parcels' } }
+        const { redirectToReferrer } = this.state
 
-        if (this.props.authed === true) {
-            let path = "/parcels"
-            ///this.props.history.push(path);
-            return <Redirect to={path} />
+        if (redirectToReferrer === true) {
+            return <Redirect to={from} />
         }
 
         return (

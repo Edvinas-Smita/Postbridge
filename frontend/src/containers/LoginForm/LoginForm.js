@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button/Button'
 import TextField from '@material-ui/core/TextField/TextField'
 import Grid from '@material-ui/core/Grid/Grid'
@@ -47,23 +48,19 @@ class LoginForm extends Component {
       };
 
     handleSubmit() {
-        this.props.authenticate(this.state.email, this.state.password);
-        console.log(this.props.location);
-        console.log(this.props.authed);
-        if (this.props.authed === true) {
-            this.props.history.push('/parcels');
-        }
-        else{
-            this.setState({
-                email: this.state.email,
-                password: this.state.password
-            })
-        }
-        console.log("2");
+        this.props.authenticate(
+            this.state.email, 
+            this.state.password);
     }
     
     render() {
         const { classes } = this.props;
+
+        if (this.props.authed === true) {
+            let path = "/parcels"
+            ///this.props.history.push(path);
+            return <Redirect to={path} />
+        }
 
         return (
             <Grid

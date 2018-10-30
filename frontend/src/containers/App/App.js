@@ -29,9 +29,8 @@ class App extends Component {
   authenticate(cb, email, password) {
     if (email === "test" && password === "test"){
       this.setState({
-        authed: true
-      });
-      cb();
+        authed: true},
+        cb());
     }
   }
 

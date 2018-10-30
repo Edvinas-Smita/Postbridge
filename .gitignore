@@ -28,6 +28,3 @@ node_modules/
 node/
 build/
 dist/
-
-frontend/package-lock.json
-frontend/yarn.lock

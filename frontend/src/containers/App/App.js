@@ -31,7 +31,7 @@ class App extends Component {
       this.setState({
         authed: true
       });
-      setTimeout(cb, 0);
+      cb();
     }
   }
 

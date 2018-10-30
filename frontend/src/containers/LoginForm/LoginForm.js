@@ -6,6 +6,8 @@ import Grid from '@material-ui/core/Grid/Grid'
 import  BackgroundImage from './background.png'
 import { Typography } from '@material-ui/core'
 import { withStyles } from "@material-ui/core/styles";
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import "./LoginForm.css"
 
 const gridStyles = {
@@ -36,7 +38,7 @@ class LoginForm extends Component {
         this.state = {
             email: "",
             password: "",
-            redirectToReferrer: false
+            redirectToReferrer: false,
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,8 +52,9 @@ class LoginForm extends Component {
 
     handleSubmit() {
         this.props.authenticate(() => {
-            this.setState(() => ({redirectToReferrer: true}))
-            }, 
+            if (this.props.error === false){
+                this.setState(() => ({redirectToReferrer: true}))
+            }}, 
             this.state.email, 
             this.state.password
         )
@@ -96,19 +99,30 @@ class LoginForm extends Component {
                     inputProps={{className: classes.input}}
                     value={this.state.email}
                     onChange={this.handleChange("email")}
+                    error={this.props.error}
                 />
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>
-                <TextField
-                    placeholder="Password"
-                    margin="dense"
-                    type="password"
-                    variant="outlined"
-                    className={classes.textField}
-                    inputProps={{className: classes.input}}
-                    value={this.state.password}
-                    onChange={this.handleChange("password")}
-                />
+                <FormControl aria-describedby="auth-error-text" error={this.props.error}>
+                    <TextField
+                        placeholder="Password"
+                        margin="dense"
+                        type="password"
+                        variant="outlined"
+                        className={classes.textField}
+                        inputProps={{className: classes.input}}
+                        value={this.state.password}
+                        onChange={this.handleChange("password")}
+                        error={this.props.error}
+                    />
+                    {this.props.error === true &&
+                        <FormHelperText 
+                            id="auth-error-text"
+                        >
+                            Wrong username or password
+                        </FormHelperText>
+                    }
+                </FormControl>
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>
                 <Button 

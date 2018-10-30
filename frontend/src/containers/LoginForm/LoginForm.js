@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button/Button'
 import TextField from '@material-ui/core/TextField/TextField'
 import Grid from '@material-ui/core/Grid/Grid'
@@ -28,18 +29,42 @@ const styles = {
   };
 
 class LoginForm extends Component {
+    
     constructor(props){
         super(props);
+
+        this.state = {
+            email: "",
+            password: "",
+            redirectToReferrer: false
+        }
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(){
-        this.props.history.push('/parcels');
-    }
+    handleChange = name => event => {
+        this.setState({
+          [name]: event.target.value,
+        });
+      };
 
+    handleSubmit() {
+        this.props.authenticate(() => {
+            this.setState(() => ({redirectToReferrer: true}))
+            }, 
+            this.state.email, 
+            this.state.password
+        )
+    }
+    
     render() {
         const { classes } = this.props;
+        const { from } = this.props.location.state || { from: { pathname: '/parcels' } }
+        const { redirectToReferrer } = this.state
+
+        if (redirectToReferrer === true) {
+            return <Redirect to={from} />
+        }
 
         return (
             <Grid
@@ -69,6 +94,8 @@ class LoginForm extends Component {
                     variant="outlined"
                     className={classes.textField}
                     inputProps={{className: classes.input}}
+                    value={this.state.email}
+                    onChange={this.handleChange("email")}
                 />
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>
@@ -79,6 +106,8 @@ class LoginForm extends Component {
                     variant="outlined"
                     className={classes.textField}
                     inputProps={{className: classes.input}}
+                    value={this.state.password}
+                    onChange={this.handleChange("password")}
                 />
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>

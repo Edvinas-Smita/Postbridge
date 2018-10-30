@@ -30,7 +30,7 @@ class App extends Component {
     if (email === "test" && password === "test"){
       this.setState({
         authed: true},
-        cb());
+        cb);
     }
   }
 

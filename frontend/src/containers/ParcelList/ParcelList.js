@@ -6,22 +6,96 @@ import Parcel from '../../components/Parcel/Parcel';
 import ColumnTitles from '../../components/ColumnTitles/ColumnTitles';
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
+import { STATUS } from '../../helpers';
 
 class ParcelList extends React.Component {
     state = {
         parcels: [
-            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 'Open', description: 'Books', weight: '1.5kg', created: '21.09.2018', delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
-            { fromPoint: 'Vilnius', toPoint: 'London', status: 'Picked up', description: 'Electronic goods', weight: '3kg', created: '21.09.2018', delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
-            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 'Delivered', description: 'Home appliances', weight: '2.85kg', created: '21.09.2018', delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
-            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 'On the way', description: 'Electronic goods', weight: '0.5kg', created: '21.09.2018', delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'},
-            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 'Open', description: 'Books', weight: '1.25kg', created: '21.09.2018', delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
-            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 'Open', description: 'Books', weight: '1.5kg', created: '21.09.2018', delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
-            { fromPoint: 'Vilnius', toPoint: 'London', status: 'Picked up', description: 'Electronic goods', weight: '3kg', created: '21.09.2018', delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
-            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 'Delivered', description: 'Home appliances', weight: '2.85kg', created: '21.09.2018', delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
-            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 'On the way', description: 'Electronic goods', weight: '0.5kg', created: '21.09.2018', delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'}
+            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, description: 'Books', weight: 150, created: "2018-05-19T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
+            { fromPoint: 'Vilnius', toPoint: 'London', status: 2, description: 'Electronic goods', weight: 3000, created: "2018-08-05T23:15:30.000Z", delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
+            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 4, description: 'Home appliances', weight: 2850, created: "2018-03-28T23:15:30.000Z", delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
+            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 3, description: 'Electronic goods', weight: 500, created: "2018-01-19T23:15:30.000Z", delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'},
+            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, description: 'Books', weight: 1250, created: "2018-08-19T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
+            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, description: 'Books', weight: 1500, created: "2018-08-11T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
+            { fromPoint: 'Vilnius', toPoint: 'London', status: 2, description: 'Electronic goods', weight: 3000, created: "2018-10-19T23:15:30.000Z", delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
+            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 4, description: 'Home appliances', weight: 2850, created: "2018-08-18T23:15:30.000Z", delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
+            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 3, description: 'Electronic goods', weight: 500, created: "2018-01-15T23:15:30.000Z", delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'}
            
-        ]
+        ],
+        filteredParcels: [],
+        dateFilter: false,
+        statusFilter: true,
+        weightFilter: true
     }
+
+    componentWillMount() {
+        this.setState({
+            parcels: this.state.parcels,
+            filteredParcels: this.state.parcels
+        })
+        this.sortByTime();
+    }
+    
+    sortByTime = () => {
+        let dateFilter = !this.state.dateFilter
+        let filteredParcels = this.state.parcels
+
+        if (dateFilter){
+            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
+                return  new Date(parcelTwo.created).getTime() - new Date(parcelOne.created).getTime()
+              })
+        } else {
+            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
+                return  new Date(parcelOne.created).getTime() - new Date(parcelTwo.created).getTime()
+              })
+        }
+
+        this.setState({
+            filteredParcels,
+            dateFilter
+        })
+    }
+
+    sortByStatus = () => {
+        let statusFilter = !this.state.statusFilter
+        let filteredParcels = this.state.parcels
+
+        if (statusFilter) {
+            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
+                return parcelTwo.status - parcelOne.status
+            })
+        } else {
+            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
+                return parcelOne.status - parcelTwo.status
+            })
+        }
+
+        this.setState({
+            filteredParcels,
+            statusFilter
+        })
+    }
+
+    sortByWeight = () => {
+        let weightFilter = !this.state.weightFilter
+        let filteredParcels = this.state.parcels
+
+        if (weightFilter) {
+            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
+                return parcelOne.weight - parcelTwo.weight
+            })
+        } else {
+            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
+                return parcelTwo.weight - parcelOne.weight
+            })
+        }
+
+        this.setState({
+            filteredParcels,
+            weightFilter
+        })
+    }
+
     render() {
 
         return (       
@@ -36,8 +110,8 @@ class ParcelList extends React.Component {
                  <Header/>
                  <Decoration/>
                 <section className="Parcels">
-                <ColumnTitles/>     
-                {this.state.parcels.map((parcel, index) => {
+                <ColumnTitles timeFilter={this.sortByTime} statusFilter={this.sortByStatus} weightFilter={this.sortByWeight}/>     
+                {this.state.filteredParcels.map((parcel, index) => {
                     let buttonText = "View details";
                     if (parcel.recipient === 'me') {
                         buttonText = "I'll deliver"

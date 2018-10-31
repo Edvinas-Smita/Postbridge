@@ -6,6 +6,7 @@ import Parcel from '../../components/Parcel/Parcel';
 import ColumnTitles from '../../components/ColumnTitles/ColumnTitles';
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
+import { STATUS } from '../../helpers';
 
 class ParcelList extends React.Component {
     state = {
@@ -61,11 +62,11 @@ class ParcelList extends React.Component {
 
         if (statusFilter) {
             filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
-                return parcelTwo.status.localeCompare(parcelOne.status)
+                return parcelTwo.status - parcelOne.status
             })
         } else {
             filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
-                return parcelOne.status.localeCompare(parcelTwo.status)
+                return parcelOne.status - parcelTwo.status
             })
         }
 

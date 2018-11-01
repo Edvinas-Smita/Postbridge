@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import classNames from 'classnames';
 import Button from '@material-ui/core/Button/Button'
 import TextField from '@material-ui/core/TextField/TextField'
 import Grid from '@material-ui/core/Grid/Grid'
@@ -23,11 +24,32 @@ const styles = {
         width:"400px"
     },
     input: {
-        backgroundColor: "white"
+        backgroundColor: "white",
+        borderRadius: "4px"
     },
     typografy: {
-        color: "white"
+        color: "white",
+        fontWeight: "bold"
     },
+    button:{
+        color:"white",
+        textTransform: "none",
+        "&:hover": {
+            backgroundColor: "transparent"
+          },
+        paddingLeft: "0",
+        paddingBottom: "0",
+        opacity: "0.5"
+    },
+    buttonActive:{
+        fontWeight: "bold",
+        opacity: "1.0"
+    },
+    buttonForgotPassword:{
+        textDecoration: "underline",
+        float: "right",
+        paddingRight: "0"
+    }
   };
 
 class LoginForm extends Component {
@@ -85,9 +107,9 @@ class LoginForm extends Component {
                 Sign in to your account
             </Typography>
             <Grid item xs={12} style={{ width:"400px", marginTop:"30px"}}>
-                <a href="javascript:void(0)" className="active">Sign In</a>
-                <a href="javascript:void(0)" style={{"padding":"10px"}}>Sign Up</a>
-                <a href="javascript:void(0)" style={{"float":"right", textDecoration:"underline"}}>Forgot password?</a>
+                <Button className={classNames(classes.button, classes.buttonActive)} disableRipple >Sign In</Button>
+                <Button className={classes.button} disableRipple>Sign Up</Button>
+                <Button className={classNames(classes.button, classes.buttonForgotPassword)} disableRipple>Forgot password?</Button>
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>
                 <TextField

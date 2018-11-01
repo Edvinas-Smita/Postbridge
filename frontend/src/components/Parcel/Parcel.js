@@ -13,7 +13,7 @@ const parcel = (props) => (
             <div>{props.description}</div> 
             <div>{formatWeight(props.weight)}</div> 
             <div>{props.created.slice(0, 10)}</div>
-            <div>{props.delivered}</div>
+            <div>{props.delivered.slice(0, 10)}</div>
             <div>{props.recipient}</div>
             <div>{props.courier}</div>
             <button className="Button">{props.buttonText}</button>

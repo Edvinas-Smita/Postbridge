@@ -9,6 +9,7 @@ import Decoration from '../../components/Decoration/Decoration';
 import data from '../../Database/db.json';
 
 class ParcelList extends React.Component {
+
     state = {
         parcels: [],
         filteredParcels: [],
@@ -103,7 +104,7 @@ class ParcelList extends React.Component {
                 <ColumnTitles timeFilter={this.sortByTime} statusFilter={this.sortByStatus} weightFilter={this.sortByWeight}/>     
                 {this.state.filteredParcels.map((parcel, index) => {
                     let buttonText = "View details";
-                    if (parcel.recipient === 'me') {
+                    if (parcel.recipient.id === this.props.userId) {
                         buttonText = "I'll deliver"
                     }
                     return <Parcel 
@@ -115,8 +116,16 @@ class ParcelList extends React.Component {
                         weight={parcel.weight} 
                         created={parcel.createdDate}
                         delivered={parcel.delivered}
-                        recipient={parcel.recipient.firstName + " " + parcel.recipient.lastName}
-                        courier={parcel.courier.firstName + " " + parcel.courier.lastName}
+                        recipient={
+                            (parcel.recipient.id === this.props.userId)
+                            ? "Me"
+                            : parcel.recipient.firstName + " " + parcel.recipient.lastName
+                        }
+                        courier={
+                            (parcel.courier.id === this.props.userId)
+                            ? "Me"
+                            : parcel.courier.firstName + " " + parcel.courier.lastName
+                        }
                         buttonText={buttonText} />
                 })}
                 </section>

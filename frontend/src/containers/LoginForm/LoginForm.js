@@ -9,7 +9,6 @@ import { Typography } from '@material-ui/core'
 import { withStyles } from "@material-ui/core/styles";
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import "./LoginForm.css"
 
 const gridStyles = {
     minHeight: '100vh',

@@ -22,16 +22,17 @@ class App extends Component {
     super(props);
 
     this.state = {
-      authed: false
+      authed: false,
+      error: false
     }
   }
 
   authenticate(cb, email, password) {
-    if (email === "test" && password === "test"){
-      this.setState({
-        authed: true},
-        cb);
-    }
+    let auth = (email === "test" && password === "test");
+    this.setState({
+        authed: auth,
+        error: !auth},
+      cb);
   }
 
   render() {
@@ -40,7 +41,7 @@ class App extends Component {
           <Route 
             exact 
             path="/" 
-            render={(props) => <LoginForm {...props} authenticate={this.authenticate.bind(this)}/>}/>
+            render={(props) => <LoginForm {...props} error={this.state.error} authenticate={this.authenticate.bind(this)}/>}/>
           <PrivateRoute 
             exact 
             path="/parcels"

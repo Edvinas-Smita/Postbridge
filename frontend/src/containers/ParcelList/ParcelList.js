@@ -2,11 +2,11 @@ import React from 'react';
 
 import './ParcelList.css';
 
-import Parcel from '../../components/Parcel/Parcel';
-import ColumnTitles from '../../components/ColumnTitles/ColumnTitles';
+
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
-import { STATUS } from '../../helpers';
+import ParcelTable from '../../components/ParcelTable/ParcelTable';
+import Grid from '@material-ui/core/Grid/Grid';
 
 class ParcelList extends React.Component {
     state = {
@@ -100,36 +100,20 @@ class ParcelList extends React.Component {
 
         return (       
             <div className="ParcelListPage">
-                {/* <div>
-                    <input type="checkbox"/> 
-                    <div>Show mine</div>
-                    <input type="checkbox"/>
-                    <div>Show assigned to me</div>
-                </div>
-                 */}
-                 <Header/>
-                 <Decoration/>
-                <section className="Parcels">
-                <ColumnTitles timeFilter={this.sortByTime} statusFilter={this.sortByStatus} weightFilter={this.sortByWeight}/>     
-                {this.state.filteredParcels.map((parcel, index) => {
-                    let buttonText = "View details";
-                    if (parcel.recipient === 'me') {
-                        buttonText = "I'll deliver"
-                    }
-                    return <Parcel 
-                        key={index}
-                        fromPoint={parcel.fromPoint}
-                        toPoint={parcel.toPoint}
-                        status={parcel.status}
-                        description={parcel.description} 
-                        weight={parcel.weight} 
-                        created={parcel.created}
-                        delivered={parcel.delivered}
-                        recipient={parcel.recipient}
-                        courier={parcel.courier}
-                        buttonText={buttonText} />
-                })}
-                </section>
+                <Header/>
+                 <Decoration/> 
+                <Grid               
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                    className="ParcelTable"
+                >
+                    <ParcelTable  timeFilter={this.sortByTime} statusFilter={this.sortByStatus} weightFilter={this.sortByWeight} parcels={this.state.filteredParcels}/>
+                </Grid>
+  
+                    
+           
             </div>
         )
     }

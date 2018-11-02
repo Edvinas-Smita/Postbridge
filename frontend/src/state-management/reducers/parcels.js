@@ -1,7 +1,7 @@
 import {
-    INIT_PARCELS,
-    INIT_PARCELS_SUCCESS,
-    INIT_PARCELS_ERROR, 
+    GET_PARCELS,
+    GET_PARCELS_SUCCESS,
+    GET_PARCELS_ERROR, 
 } from '../constants/parcels';
 
 const initialState = {
@@ -12,16 +12,16 @@ const initialState = {
 
 export default function parcelsReducer(state = initialState, action = {}){
     switch(action.type){
-        case INIT_PARCELS: return {
+        case GET_PARCELS: return {
             ...state,
             isLoading: true,
         };
-        case INIT_PARCELS_SUCCESS: return {
+        case GET_PARCELS_SUCCESS: return {
             ...state,
             isLoading: false,
             parcels: action.parcels,
         };
-        case INIT_PARCELS_ERROR: return {
+        case GET_PARCELS_ERROR: return {
             ...state,
             isLoading: false,
             error: action.error,

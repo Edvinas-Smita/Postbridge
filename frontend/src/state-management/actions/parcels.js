@@ -1,19 +1,19 @@
 import {
-    INIT_PARCELS,
-    INIT_PARCELS_SUCCESS,
-    INIT_PARCELS_ERROR, 
+    GET_PARCELS,
+    GET_PARCELS_SUCCESS,
+    GET_PARCELS_ERROR, 
 } from '../constants/parcels';
 
-export const initParcels = () => ({
-    type: INIT_PARCELS,
+export const getParcels = () => ({
+    type: GET_PARCELS,
 });
 
-export const initParcelsSuccess = parcels => ({
-    type: INIT_PARCELS_SUCCESS,
+export const getParcelsSuccess = parcels => ({
+    type: GET_PARCELS_SUCCESS,
     parcels,
 });
 
-export const initParcelsError = error => ({
-    type: INIT_PARCELS_ERROR,
+export const getParcelsError = error => ({
+    type: GET_PARCELS_ERROR,
     error,
 });

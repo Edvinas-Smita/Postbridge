@@ -1,9 +1,9 @@
 import { put, all, takeLatest } from 'redux-saga/effects';
-import { INIT_PARCELS } from '../constants/parcels';
-import { initParcelsError, initParcelsSuccess } from '../actions/parcels';
+import { GET_PARCELS } from '../constants/parcels';
+import { getParcelsError, getParcelsSuccess } from '../actions/parcels';
 
 
-function* initParcels() {
+function* getParcels() {
     try {
         let parcels = [];
         yield fetch("http://localhost:5000/Parcels").then(response => {
@@ -12,15 +12,15 @@ function* initParcels() {
             parcels = Object.values(data);
         });
 
-        yield put(initParcelsSuccess(parcels));
+        yield put(getParcelsSuccess(parcels));
     } catch (e){
-        yield put(initParcelsError(e));
+        yield put(getParcelsError(e));
     }
 }
 
 function* parcelsSaga() {
     yield all([
-        takeLatest(INIT_PARCELS, initParcels),
+        takeLatest(GET_PARCELS, getParcels),
     ]);
 }
 

@@ -5,10 +5,10 @@ import './App.css';
 import LoginForm from '../../containers/LoginForm/LoginForm';
 import ParcelList from '../../containers/ParcelList/ParcelList';
 
-const PrivateRoute = ({ component: Component, authed, ...rest}) => (
+const PrivateRoute = ({ component: Component, authed, user, ...rest}) => (
     <Route {...rest} render={(props) => (
       authed === true
-        ? <Component  {...props}/>
+        ? <Component  {...props} userId={user.id}/>
         : <Redirect to={{
           pathname: '/',
           state: { from: props.location }
@@ -23,16 +23,22 @@ class App extends Component {
 
     this.state = {
       authed: false,
-      error: false
+      user: {
+        id: "",
+        name: ""
+      } 
     }
   }
 
   authenticate(cb, email, password) {
-    let auth = (email === "test" && password === "test");
-    this.setState({
-        authed: auth,
-        error: !auth},
-      cb);
+    if (email === "test" && password === "test"){
+      this.setState({
+        authed: true,
+        user: {
+          id: 1, 
+          name: "Test User"}},
+        cb);
+    }
   }
 
   render() {
@@ -41,12 +47,13 @@ class App extends Component {
           <Route 
             exact 
             path="/" 
-            render={(props) => <LoginForm {...props} error={this.state.error} authenticate={this.authenticate.bind(this)}/>}/>
+            render={(props) => <LoginForm {...props} authenticate={this.authenticate.bind(this)}/>}/>
           <PrivateRoute 
             exact 
             path="/parcels"
             component={ParcelList} 
-            authed={this.state.authed}/>
+            authed={this.state.authed}
+            user={this.state.user}/>
         </Switch>
     );
   }

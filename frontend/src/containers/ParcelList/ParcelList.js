@@ -6,22 +6,12 @@ import Parcel from '../../components/Parcel/Parcel';
 import ColumnTitles from '../../components/ColumnTitles/ColumnTitles';
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
-import { STATUS } from '../../helpers';
+import data from '../../Database/db.json';
 
 class ParcelList extends React.Component {
+
     state = {
-        parcels: [
-            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, description: 'Books', weight: 150, created: "2018-05-19T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
-            { fromPoint: 'Vilnius', toPoint: 'London', status: 2, description: 'Electronic goods', weight: 3000, created: "2018-08-05T23:15:30.000Z", delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
-            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 4, description: 'Home appliances', weight: 2850, created: "2018-03-28T23:15:30.000Z", delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
-            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 3, description: 'Electronic goods', weight: 500, created: "2018-01-19T23:15:30.000Z", delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'},
-            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, description: 'Books', weight: 1250, created: "2018-08-19T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
-            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, description: 'Books', weight: 1500, created: "2018-08-11T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
-            { fromPoint: 'Vilnius', toPoint: 'London', status: 2, description: 'Electronic goods', weight: 3000, created: "2018-10-19T23:15:30.000Z", delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
-            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 4, description: 'Home appliances', weight: 2850, created: "2018-08-18T23:15:30.000Z", delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
-            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 3, description: 'Electronic goods', weight: 500, created: "2018-01-15T23:15:30.000Z", delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'}
-           
-        ],
+        parcels: [],
         filteredParcels: [],
         dateFilter: false,
         statusFilter: true,
@@ -30,10 +20,11 @@ class ParcelList extends React.Component {
 
     componentWillMount() {
         this.setState({
-            parcels: this.state.parcels,
-            filteredParcels: this.state.parcels
-        })
-        this.sortByTime();
+            parcels: data.Parcels,
+            filteredParcels: data.Parcels,
+            }, 
+            function() {this.sortByTime();}
+        );
     }
     
     sortByTime = () => {
@@ -113,20 +104,28 @@ class ParcelList extends React.Component {
                 <ColumnTitles timeFilter={this.sortByTime} statusFilter={this.sortByStatus} weightFilter={this.sortByWeight}/>     
                 {this.state.filteredParcels.map((parcel, index) => {
                     let buttonText = "View details";
-                    if (parcel.recipient === 'me') {
+                    if (parcel.recipient.id === this.props.userId) {
                         buttonText = "I'll deliver"
                     }
                     return <Parcel 
                         key={index}
-                        fromPoint={parcel.fromPoint}
-                        toPoint={parcel.toPoint}
+                        fromPoint={parcel.startLocation}
+                        toPoint={parcel.endLocation}
                         status={parcel.status}
                         description={parcel.description} 
                         weight={parcel.weight} 
-                        created={parcel.created}
+                        created={parcel.createdDate}
                         delivered={parcel.delivered}
-                        recipient={parcel.recipient}
-                        courier={parcel.courier}
+                        recipient={
+                            (parcel.recipient.id === this.props.userId)
+                            ? "Me"
+                            : parcel.recipient.firstName + " " + parcel.recipient.lastName
+                        }
+                        courier={
+                            (parcel.courier.id === this.props.userId)
+                            ? "Me"
+                            : parcel.courier.firstName + " " + parcel.courier.lastName
+                        }
                         buttonText={buttonText} />
                 })}
                 </section>

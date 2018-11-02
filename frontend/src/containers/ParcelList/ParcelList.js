@@ -11,15 +11,15 @@ import Grid from '@material-ui/core/Grid/Grid';
 class ParcelList extends React.Component {
     state = {
         parcels: [
-            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, description: 'Books', weight: 150, created: "2018-05-19T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
-            { fromPoint: 'Vilnius', toPoint: 'London', status: 2, description: 'Electronic goods', weight: 3000, created: "2018-08-05T23:15:30.000Z", delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
-            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 4, description: 'Home appliances', weight: 2850, created: "2018-03-28T23:15:30.000Z", delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
-            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 3, description: 'Electronic goods', weight: 500, created: "2018-01-19T23:15:30.000Z", delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'},
-            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, description: 'Books', weight: 1250, created: "2018-08-19T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
-            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, description: 'Books', weight: 1500, created: "2018-08-11T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
-            { fromPoint: 'Vilnius', toPoint: 'London', status: 2, description: 'Electronic goods', weight: 3000, created: "2018-10-19T23:15:30.000Z", delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
-            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 4, description: 'Home appliances', weight: 2850, created: "2018-08-18T23:15:30.000Z", delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
-            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 3, description: 'Electronic goods', weight: 500, created: "2018-01-15T23:15:30.000Z", delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'}
+            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, delivery: 'plane',description: 'Books', weight: 150, created: "2018-05-19T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
+            { fromPoint: 'Vilnius', toPoint: 'London', status: 2, delivery: 'plane',description: 'Electronic goods', weight: 3000, created: "2018-08-05T23:15:30.000Z", delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
+            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 4, delivery: 'plane',description: 'Home appliances', weight: 2850, created: "2018-03-28T23:15:30.000Z", delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
+            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 3, delivery: 'plane',description: 'Electronic goods', weight: 500, created: "2018-01-19T23:15:30.000Z", delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'},
+            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, delivery: 'plane',description: 'Books', weight: 1250, created: "2018-08-19T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
+            { fromPoint: 'Toronto', toPoint: 'Kaunas', status: 1, delivery: 'plane',description: 'Books', weight: 1500, created: "2018-08-11T23:15:30.000Z", delivered: '', recipient: 'me', courier: 'Arthur Jameson'},
+            { fromPoint: 'Vilnius', toPoint: 'London', status: 2, delivery: 'plane',description: 'Electronic goods', weight: 3000, created: "2018-10-19T23:15:30.000Z", delivered: '', recipient: 'Patrick Strongwell', courier: 'Monica Wilde'},
+            { fromPoint: 'Chicago', toPoint: 'Kaunas', status: 4, delivery: 'plane',description: 'Home appliances', weight: 2850, created: "2018-08-18T23:15:30.000Z", delivered: '21.09.2018', recipient: 'Vytautas Stankevicius', courier: 'Matt Cox'},
+            { fromPoint: 'Kaunas', toPoint: 'Vilnius', status: 3, delivery: 'car',description: 'Electronic goods', weight: 500, created: "2018-01-15T23:15:30.000Z", delivered: '', recipient: 'Lindsay Smith', courier: 'Carolyne James'}
            
         ],
         filteredParcels: [],

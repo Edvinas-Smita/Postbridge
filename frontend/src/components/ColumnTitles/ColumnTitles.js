@@ -6,10 +6,10 @@ const parcelListHeader = (props) => (
     <div className="ColumnTitles">
         <div>DESTINATION</div>
         <div></div>
-        <div>STATUS</div>
+        <div onClick={props.statusFilter}>STATUS</div>
         <div>DESCRIPTION</div>
-        <div>WEIGHT</div>
-        <div>CREATED</div>
+        <div onClick={props.weightFilter}>WEIGHT</div>
+        <div onClick={props.timeFilter}>CREATED</div>
         <div>DELIVERED</div>
         <div>RECIPIENT</div>
         <div>COURIER</div>

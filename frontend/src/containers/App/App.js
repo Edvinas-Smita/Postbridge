@@ -23,6 +23,7 @@ class App extends Component {
 
     this.state = {
       authed: false,
+      error: false,
       user: {
         id: "",
         name: ""
@@ -31,14 +32,14 @@ class App extends Component {
   }
 
   authenticate(cb, email, password) {
-    if (email === "test" && password === "test"){
-      this.setState({
-        authed: true,
-        user: {
-          id: 1, 
-          name: "Test User"}},
-        cb);
-    }
+    let auth = (email === "test" && password === "test");
+    this.setState({
+      authed: true,
+      error: !auth,
+      user: {
+        id: 1, 
+        name: "Test User"}},
+      cb);
   }
 
   render() {
@@ -47,7 +48,7 @@ class App extends Component {
           <Route 
             exact 
             path="/" 
-            render={(props) => <LoginForm {...props} authenticate={this.authenticate.bind(this)}/>}/>
+            render={(props) => <LoginForm {...props} error={this.state.error} authenticate={this.authenticate.bind(this)}/>}/>
           <PrivateRoute 
             exact 
             path="/parcels"

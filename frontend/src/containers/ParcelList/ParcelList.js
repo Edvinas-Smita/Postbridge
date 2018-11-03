@@ -7,88 +7,16 @@ import Parcel from '../../components/Parcel/Parcel';
 import ColumnTitles from '../../components/ColumnTitles/ColumnTitles';
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
-import { getParcels as getParcelsAction } from '../../state-management/actions/parcels';
+import { getParcels as getParcelsAction, sortParcels } from '../../state-management/actions/parcels';
+import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors'
 
 class ParcelList extends React.Component {
-
-    constructor(props){
-        super(props);
-        this.state = {
-            filteredParcels: [],
-            dateFilter: false,
-            statusFilter: true,
-            weightFilter: true
-        };
-    }
-
     componentWillMount() {
         this.props.getParcels();
     }
 
-    componentWillReceiveProps(nextProps){
-        if(this.state.filteredParcels.length === 0) this.setState({
-            filteredParcels: nextProps.parcels,
-        })
-    }
-    
-    sortByTime = () => {
-        let dateFilter = !this.state.dateFilter
-        let filteredParcels = this.state.filteredParcels
-
-        if (dateFilter){
-            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
-                return  new Date(parcelTwo.createdDate).getTime() - new Date(parcelOne.createdDate).getTime()
-              })
-        } else {
-            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
-                return  new Date(parcelOne.createdDate).getTime() - new Date(parcelTwo.createdDate).getTime()
-              })
-        }
-
-        this.setState({
-            filteredParcels,
-            dateFilter
-        })
-    }
-
-    sortByStatus = () => {
-        let statusFilter = !this.state.statusFilter
-        let filteredParcels = this.state.filteredParcels
-
-        if (statusFilter) {
-            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
-                return parcelTwo.status - parcelOne.status
-            })
-        } else {
-            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
-                return parcelOne.status - parcelTwo.status
-            })
-        }
-
-        this.setState({
-            filteredParcels,
-            statusFilter
-        })
-    }
-
-    sortByWeight = () => {
-        let weightFilter = !this.state.weightFilter
-        let filteredParcels = this.state.filteredParcels
-
-        if (weightFilter) {
-            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
-                return parcelOne.weight - parcelTwo.weight
-            })
-        } else {
-            filteredParcels = filteredParcels.sort((parcelOne, parcelTwo) => {
-                return parcelTwo.weight - parcelOne.weight
-            })
-        }
-
-        this.setState({
-            filteredParcels,
-            weightFilter
-        })
+    sortingFactory(sortBy) {
+        return () => this.props.sortParcels(sortBy);
     }
 
     render() {
@@ -105,7 +33,11 @@ class ParcelList extends React.Component {
                  <Header/>
                  <Decoration/>
                 <section className="Parcels">
-                <ColumnTitles timeFilter={this.sortByTime} statusFilter={this.sortByStatus} weightFilter={this.sortByWeight}/>     
+                <ColumnTitles
+                    timeFilter={this.sortingFactory('createdDate')}
+                    statusFilter={this.sortingFactory('status')}
+                    weightFilter={this.sortingFactory('weight')}
+                />     
                 {this.props.parcels.map((parcel, index) => {
                     let buttonText = "View details";
                     if (parcel.recipient.id === this.props.userId) {
@@ -140,11 +72,14 @@ class ParcelList extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     getParcels: () => dispatch(getParcelsAction()),
+    sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
 });
 
 const mapStateToProps = state => ({
     isLoading: state.parcels.isLoading,
-    parcels: state.parcels.parcels,
+    sortBy: state.parcels.sortBy,
+    sortOrder: state.parcels.sortOrder,
+    parcels: getSortedParcels(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelList);

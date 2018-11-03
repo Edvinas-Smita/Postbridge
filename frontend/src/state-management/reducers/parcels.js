@@ -2,12 +2,15 @@ import {
     GET_PARCELS,
     GET_PARCELS_SUCCESS,
     GET_PARCELS_ERROR, 
+    SORT_PARCELS,
 } from '../constants/parcels';
 
 const initialState = {
     isLoading: false,
     error: '',
     parcels: [],
+    sortBy: 'createdDate',
+    sortOrder: 'desc',
 };
 
 export default function parcelsReducer(state = initialState, action = {}){
@@ -26,6 +29,16 @@ export default function parcelsReducer(state = initialState, action = {}){
             isLoading: false,
             error: action.error,
         };
+        case SORT_PARCELS: 
+            let newOrder = 'asc';
+            if(action.sortBy === state.sortBy) newOrder = state.sortOrder === 'asc' ? 'desc' : 'asc';
+            else if(action.sortBy === 'createdDate' || action.sortBy === 'delivered') newOrder = 'desc';
+
+            return {
+                ...state,
+                sortBy: action.sortBy,
+                sortOrder: newOrder,
+            }
         default: return state;
     }
 }

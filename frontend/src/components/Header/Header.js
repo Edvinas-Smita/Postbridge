@@ -17,7 +17,7 @@ const styles = theme => ({
         width: '100%',
       },
     appbar: {
-        backgroundColor: "white"
+        backgroundColor: theme.palette.common.white
     },
     grow: {
         flexGrow: 1,
@@ -26,7 +26,8 @@ const styles = theme => ({
         margin: 0
     },
     gridRigth: {
-        borderLeft: "1px solid #e6e6e6",
+        borderLeft: "1px solid",
+        borderLeftColor: theme.palette.grey[200],
         padding: "16px"
     },
     userName: {
@@ -90,7 +91,7 @@ class Header extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <div className={classes.root}>
+            <React.Fragment>
             <AppBar className={classes.appbar} position="fixed" >
             <Toolbar>
               <Logo/>
@@ -131,7 +132,8 @@ class Header extends Component {
                 </div>
             </Toolbar>
           </AppBar>
-          </div>
+          </React.Fragment>
+          
         );
     }
 };

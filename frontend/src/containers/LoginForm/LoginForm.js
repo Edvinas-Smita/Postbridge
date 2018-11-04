@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import classNames from 'classnames';
 import Button from '@material-ui/core/Button/Button'
 import TextField from '@material-ui/core/TextField/TextField'
 import Grid from '@material-ui/core/Grid/Grid'
 import  BackgroundImage from './background.png'
 import { Typography } from '@material-ui/core'
 import { withStyles } from "@material-ui/core/styles";
-import "./LoginForm.css"
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const gridStyles = {
     minHeight: '100vh',
@@ -21,11 +23,32 @@ const styles = {
         width:"400px"
     },
     input: {
-        backgroundColor: "white"
+        backgroundColor: "white",
+        borderRadius: "4px"
     },
     typografy: {
-        color: "white"
+        color: "white",
+        fontWeight: "bold"
     },
+    button:{
+        color:"white",
+        textTransform: "none",
+        "&:hover": {
+            backgroundColor: "transparent"
+          },
+        paddingLeft: "0",
+        paddingBottom: "0",
+        opacity: "0.5"
+    },
+    buttonActive:{
+        fontWeight: "bold",
+        opacity: "1.0"
+    },
+    buttonForgotPassword:{
+        textDecoration: "underline",
+        float: "right",
+        paddingRight: "0"
+    }
   };
 
 class LoginForm extends Component {
@@ -36,7 +59,7 @@ class LoginForm extends Component {
         this.state = {
             email: "",
             password: "",
-            redirectToReferrer: false
+            redirectToReferrer: false,
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,8 +73,9 @@ class LoginForm extends Component {
 
     handleSubmit() {
         this.props.authenticate(() => {
-            this.setState(() => ({redirectToReferrer: true}))
-            }, 
+            if (this.props.error === false){
+                this.setState(() => ({redirectToReferrer: true}))
+            }}, 
             this.state.email, 
             this.state.password
         )
@@ -82,9 +106,9 @@ class LoginForm extends Component {
                 Sign in to your account
             </Typography>
             <Grid item xs={12} style={{ width:"400px", marginTop:"30px"}}>
-                <a href="javascript:void(0)" className="active">Sign In</a>
-                <a href="javascript:void(0)" style={{"padding":"10px"}}>Sign Up</a>
-                <a href="javascript:void(0)" style={{"float":"right", textDecoration:"underline"}}>Forgot password?</a>
+                <Button className={classNames(classes.button, classes.buttonActive)} disableRipple >Sign In</Button>
+                <Button className={classes.button} disableRipple>Sign Up</Button>
+                <Button className={classNames(classes.button, classes.buttonForgotPassword)} disableRipple>Forgot password?</Button>
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>
                 <TextField
@@ -96,19 +120,30 @@ class LoginForm extends Component {
                     inputProps={{className: classes.input}}
                     value={this.state.email}
                     onChange={this.handleChange("email")}
+                    error={this.props.error}
                 />
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>
-                <TextField
-                    placeholder="Password"
-                    margin="dense"
-                    type="password"
-                    variant="outlined"
-                    className={classes.textField}
-                    inputProps={{className: classes.input}}
-                    value={this.state.password}
-                    onChange={this.handleChange("password")}
-                />
+                <FormControl aria-describedby="auth-error-text" error={this.props.error}>
+                    <TextField
+                        placeholder="Password"
+                        margin="dense"
+                        type="password"
+                        variant="outlined"
+                        className={classes.textField}
+                        inputProps={{className: classes.input}}
+                        value={this.state.password}
+                        onChange={this.handleChange("password")}
+                        error={this.props.error}
+                    />
+                    {this.props.error === true &&
+                        <FormHelperText 
+                            id="auth-error-text"
+                        >
+                            Wrong username or password
+                        </FormHelperText>
+                    }
+                </FormControl>
             </Grid>
             <Grid item xs={12} style={{ padding: 8}}>
                 <Button 

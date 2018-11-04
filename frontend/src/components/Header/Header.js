@@ -50,7 +50,7 @@ const styles = theme => ({
         color: theme.palette.grey[600],
       },
     searchIcon: {
-        width: theme.spacing.unit * 9,
+        width: theme.spacing.unit * 5,
         height: '100%',
         position: 'absolute',
         pointerEvents: 'none',
@@ -60,7 +60,6 @@ const styles = theme => ({
         backgroundColor: theme.palette.primary.main,
         borderTopRightRadius: theme.shape.borderRadius,
         borderBottomRightRadius: theme.shape.borderRadius,
-        width: "42px",
         right: "0"
       },
       searchButton: {

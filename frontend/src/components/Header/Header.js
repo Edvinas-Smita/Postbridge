@@ -53,7 +53,6 @@ const styles = theme => ({
         width: theme.spacing.unit * 5,
         height: '100%',
         position: 'absolute',
-        pointerEvents: 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -64,7 +63,10 @@ const styles = theme => ({
       },
       searchButton: {
           color: theme.palette.common.white,
-          cursor: "pointer"
+          cursor: "pointer",
+          '&:hover': {
+            backgroundColor: "transparent",
+          },
       },
       inputRoot: {
         color: 'inherit',
@@ -104,7 +106,7 @@ class Header extends Component {
                   }}
                 />
                 <div className={classes.searchIcon}>
-                  <IconButton aria-label="SearchIcon" className={classes.searchButton}>
+                  <IconButton aria-label="SearchIcon" className={classes.searchButton} disableRipple>
                     <SearchIcon />
                   </IconButton>
                 </div>

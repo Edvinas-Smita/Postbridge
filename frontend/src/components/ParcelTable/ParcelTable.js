@@ -8,22 +8,22 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button/Button'
-import Grid from '@material-ui/core/Grid/Grid'
+import Grid from '@material-ui/core/Grid/Grid';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 
 import PlaneIcon from '@material-ui/icons/AirplanemodeActive';
 import PointIcon from '@material-ui/icons/Lens';
 import CarIcon from '@material-ui/icons/DirectionsCar';
-import EllipsisIcon from '@material-ui/icons/MoreHoriz';
 import ArrowIcon from '@material-ui/icons/ArrowDropDown';
-import IconButton from '@material-ui/core/IconButton';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
+import CloseIcon from '@material-ui/icons/Close';
+import EditIcon from '@material-ui/icons/Edit';
 
 import {formatWeight} from '../../helpers';
 import { STATUS } from '../../helpers';
 
 const styles = theme => ({
       table: {
-        width: '90%',
+        width: '85%',
         marginLeft: '4%',
         marginRight: '4%',
         tableLayout: 'fixed',
@@ -37,7 +37,7 @@ const styles = theme => ({
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
-        padding: '3px',
+        padding: '12px',
         backgroundColor: 'white',
         verticalAlign: 'middle'
       },
@@ -62,28 +62,28 @@ const styles = theme => ({
         borderRadius: '20px',
         width: '90px',
         fontSize: '12px',
-        textTransform: 'none'
+        textTransform: 'none',
+        marginRight: '10px'
       },
       pointIcon: {
         width: '10px',
         height: '10px',
-        marginRight: '10px'
+        marginRight: '14px'
       },
       planeIcon: {
         transform: 'rotate(90deg)',
       },
       endLocationIcon: {
         color: '#959199',
-        marginRight: '10px'
+        marginRight: '14px'
       },
-      ellipsisIcon: {
+      closeEditIcon: {
         width: '20px',
         height: '20px',
         color: '#959199',
         justifyContent: 'center',
         marginRight: '5px',
-        verticalAlign: 'middle',
-        marginLeft: '10px'
+        verticalAlign: 'middle'
       },
       greyColor: {
         color: '#959199'
@@ -106,56 +106,44 @@ const parcelTable = (props) => {
 
             <Table className={classes.table}>
                 <TableHead >
-                <TableRow >
-                    <TableCell style={{width: '8%', padding: '0px'}}>
+                <TableRow style={{marginBottom: '10px'}}>
+                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '0px'}}>
                         <Grid container alignItems="center">
                             DESTINATION 
                             <ArrowIcon/>
                         </Grid> 
                     </TableCell>
-                    <TableCell style={{width: '7%', padding: '3px'}}></TableCell>
-                    <TableCell style={{width: '7%', padding: '3px'}} >
+                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}}></TableCell>
+                    <TableCell style={{width: '8%', fontWeight:'bold', padding: '12px'}} >
                         <TableSortLabel onClick={props.statusFilter} >
                             STATUS
                             <ArrowIcon/>
                         </TableSortLabel>
                     </TableCell>
-                    <TableCell style={{width: '7%', padding: '3px'}}>
+                    <TableCell style={{width: '8%', fontWeight:'bold', padding: '12px'}}>
                         <Grid container alignItems="center">
                             DESCRIPTION
                         </Grid>
                    </TableCell>
-                    <TableCell style={{width: '6%', padding: '3px'}} >
+                    <TableCell style={{width: '6%', fontWeight:'bold', padding: '12px'}} >
                         <TableSortLabel onClick={props.weightFilter} >
                             WEIGHT
                             <ArrowIcon/>
                         </TableSortLabel>
                     </TableCell>
-                    <TableCell style={{width: '7%', padding: '3px'}} >
+                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}} >
                         <TableSortLabel onClick={props.timeFilter} >
                             CREATED
                             <ArrowIcon/>
                         </TableSortLabel>   
                     </TableCell>
-                    <TableCell style={{width: '7%', padding: '3px'}}>
-                        <Grid container alignItems="center">
-                            DELIVERED
-                            <ArrowIcon/>
-                        </Grid>
-                    </TableCell>
-                    <TableCell style={{width: '10%', padding: '3px'}}>
-                        <Grid container alignItems="center">
-                            RECIPIENT
-                            <ArrowIcon/>
-                        </Grid>
-                    </TableCell>
-                    <TableCell style={{width: '10%', padding: '3px'}}>
+                    <TableCell style={{width: '9%', fontWeight:'bold', padding: '12px'}}>
                         <Grid container alignItems="center">
                         COURIER
                             <ArrowIcon/>
                         </Grid>
                     </TableCell>
-                    <TableCell style={{width: '10%', padding: '3px'}}></TableCell>
+                    <TableCell style={{width: '10%', fontWeight:'bold', padding: '12px'}}></TableCell>
                 </TableRow>
                 </TableHead>
                 <TableBody >
@@ -163,37 +151,29 @@ const parcelTable = (props) => {
                     let buttonText = "View details";
                     let buttonVariant = "outlined";
                     let buttonColor = "default";
-                    let statusColor;
+                    let statusColumn;
                     let pointIcon;
                     let icon = <PlaneIcon className={[classes.planeIcon, classes.endLocationIcon].join(' ')}/>;
-                    if (parcel.recipient === 'me') {
+                    if (parcel.recipient.id === props.userId) {
                         buttonText = "I'll deliver";
                         buttonVariant = "contained";
                         buttonColor = "primary";
                     }
                     
                     if (STATUS[parcel.status] === 'Open') {
-                        statusColor = '#0F10A6';
-                    }
-                    else if (STATUS[parcel.status] === 'On the way') {
-                        statusColor = '#22E52C';
-                    }
-                    else {
-                        statusColor = '#959199';
-                    }
-
-                    if (index.toString().split('').pop() === '0' || index.toString().split('').pop() === '4' || index.toString().split('').pop() === '5') {
+                        statusColumn = [classes.statusColumnBorder, classes.blueColor].join(' ');
                         pointIcon = [classes.pointIcon, classes.blueColor].join(' ');
                     }
-                    else if(index.toString().split('').pop() === '1' || index.toString().split('').pop() === '6' ) {
-                        pointIcon = [classes.pointIcon, classes.greyColor].join(' ');
-                    }
-                    else {
+                    else if (STATUS[parcel.status] === 'On the way') {
+                        statusColumn = [classes.statusColumnBorder, classes.greenColor].join(' ');
                         pointIcon = [classes.pointIcon, classes.greenColor].join(' ');
                     }
+                    else {
+                        statusColumn = [classes.statusColumnBorder, classes.greyColor].join(' ');
+                        pointIcon = [classes.pointIcon, classes.greyColor].join(' ');
+                    }
 
-
-                    if (parcel.delivery === 'car') {
+                    if ((parcel.startLocation === 'Vilnius' && parcel.endLocation === 'Kaunas') || (parcel.startLocation === 'Kaunas' && parcel.endLocation === 'Vilnius')) {
                         icon = <CarIcon  className={classes.endLocationIcon}/>
                     }
 
@@ -201,26 +181,35 @@ const parcelTable = (props) => {
                     <TableRow className={classes.tableRow} key={index}>
                         <TableCell className={destinationColumnStyle} >
                             <PointIcon className={pointIcon}/>
-                            {parcel.fromPoint}
+                            {parcel.startLocation}
                         </TableCell>
                         <TableCell className={destinationColumnStyle} >
                             <Grid container alignItems="center">
                                 {icon}
-                                {parcel.toPoint}
+                                {parcel.endLocation}
                             </Grid> 
                         </TableCell>
-                        <TableCell className={classes.column} ><div className={classes.statusColumnBorder} style={{borderColor: statusColor, color: statusColor}}>{STATUS[parcel.status]}</div></TableCell>
+                        <TableCell className={classes.column} ><div className={statusColumn}>{STATUS[parcel.status]}</div></TableCell>
                         <TableCell className={otherColumnStyle} >{parcel.description}</TableCell>
                         <TableCell className={otherColumnStyle} >{formatWeight(parcel.weight)}</TableCell>
-                        <TableCell className={otherColumnStyle} >{parcel.created.slice(0, 10)}</TableCell>
-                        <TableCell className={otherColumnStyle} >{parcel.delivered}</TableCell>
-                        <TableCell className={otherColumnStyle} >{parcel.recipient}</TableCell>
-                        <TableCell className={otherColumnStyle} >{parcel.courier} </TableCell>
+                        <TableCell className={otherColumnStyle} >{parcel.createdDate.slice(0, 10)}</TableCell>
+                        <TableCell className={otherColumnStyle} >
+                        { (parcel.courier.id === props.userId)
+                            ? "Me"
+                            : parcel.courier.firstName + " " + parcel.courier.lastName }
+                        </TableCell>
                         <TableCell className={classes.column} > 
-                            <Button variant={buttonVariant} color={buttonColor}  size="small" mini="true" className={classes.button}>
+                            <Button variant={buttonVariant} color={buttonColor}  size="small" className={classes.button}>
                                 {buttonText}
                             </Button>
-                            <EllipsisIcon className={classes.ellipsisIcon}/>
+                            { (STATUS[parcel.status] === 'Open' || STATUS[parcel.status] === 'Picked up')
+                            ? <EditIcon className={classes.closeEditIcon}/>
+                            : null }
+                            { (STATUS[parcel.status] === 'Open')
+                            ? <CloseIcon className={classes.closeEditIcon}/>
+                            : null }
+                             
+                            
                         </TableCell>
                     </TableRow>
                     );

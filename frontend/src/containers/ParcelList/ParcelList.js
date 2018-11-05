@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 
 import './ParcelList.css';
 
-
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
+import ParcelTable from '../../components/ParcelTable/ParcelTable';
+import Grid from '@material-ui/core/Grid/Grid';
 import { getParcels as getParcelsAction, sortParcels } from '../../state-management/actions/parcels';
-import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors'
+import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
+
 
 class ParcelList extends React.Component {
     componentWillMount() {
@@ -31,7 +33,12 @@ class ParcelList extends React.Component {
                     justify="center"
                     className="ParcelTable"
                 >
-                    <ParcelTable  timeFilter={this.sortByTime} statusFilter={this.sortByStatus} weightFilter={this.sortByWeight} parcels={this.state.filteredParcels}/>
+                                        <ParcelTable  
+                        timeFilter={this.sortingFactory('createdDate')}
+                        statusFilter={this.sortingFactory('status')}
+                        weightFilter={this.sortingFactory('weight')}
+                        parcels={this.props.parcels}
+                        userId={this.props.userId} />
                 </Grid>
   
                     

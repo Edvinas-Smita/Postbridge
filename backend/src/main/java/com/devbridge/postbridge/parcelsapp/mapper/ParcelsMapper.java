@@ -18,7 +18,7 @@ public interface ParcelsMapper {
           "  start_loc.name as start_location, " +
           "  end_loc.name as end_location, " +
           "  ref_user_courier, " +
-          "  ref_user_reciever " +
+          "  ref_user_receiver " +
           "from " +
           "  parcels p, " +
           "  locations start_loc, " +

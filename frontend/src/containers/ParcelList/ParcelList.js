@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 
 import './ParcelList.css';
 
-import Parcel from '../../components/Parcel/Parcel';
-import ColumnTitles from '../../components/ColumnTitles/ColumnTitles';
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
+import ParcelTable from '../../components/ParcelTable/ParcelTable';
+import Grid from '@material-ui/core/Grid/Grid';
 import { getParcels as getParcelsAction, sortParcels } from '../../state-management/actions/parcels';
-import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors'
+import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
+
 
 class ParcelList extends React.Component {
     componentWillMount() {
@@ -23,48 +24,25 @@ class ParcelList extends React.Component {
 
         return (       
             <div className="ParcelListPage">
-                {/* <div>
-                    <input type="checkbox"/> 
-                    <div>Show mine</div>
-                    <input type="checkbox"/>
-                    <div>Show assigned to me</div>
-                </div>
-                 */}
-                 <Header/>
-                 <Decoration/>
-                <section className="Parcels">
-                <ColumnTitles
-                    timeFilter={this.sortingFactory('createdDate')}
-                    statusFilter={this.sortingFactory('status')}
-                    weightFilter={this.sortingFactory('weight')}
-                />     
-                {this.props.parcels.map((parcel, index) => {
-                    let buttonText = "View details";
-                    if (parcel.recipient.id === this.props.userId) {
-                        buttonText = "I'll deliver"
-                    }
-                    return <Parcel 
-                        key={index}
-                        fromPoint={parcel.startLocation}
-                        toPoint={parcel.endLocation}
-                        status={parcel.status}
-                        description={parcel.description} 
-                        weight={parcel.weight} 
-                        created={parcel.createdDate}
-                        delivered={parcel.delivered}
-                        recipient={
-                            (parcel.recipient.id === this.props.userId)
-                            ? "Me"
-                            : parcel.recipient.firstName + " " + parcel.recipient.lastName
-                        }
-                        courier={
-                            (parcel.courier.id === this.props.userId)
-                            ? "Me"
-                            : parcel.courier.firstName + " " + parcel.courier.lastName
-                        }
-                        buttonText={buttonText} />
-                })}
-                </section>
+                <Header/>
+                 <Decoration/> 
+                <Grid               
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                    className="ParcelTable"
+                >
+                                        <ParcelTable  
+                        timeFilter={this.sortingFactory('createdDate')}
+                        statusFilter={this.sortingFactory('status')}
+                        weightFilter={this.sortingFactory('weight')}
+                        parcels={this.props.parcels}
+                        userId={this.props.userId} />
+                </Grid>
+  
+                    
+           
             </div>
         )
     }

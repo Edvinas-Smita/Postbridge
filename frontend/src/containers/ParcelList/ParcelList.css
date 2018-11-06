@@ -1,8 +1,6 @@
-.Parcels {
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
+.ParcelTable {
+    margin-top: 15px;
+    width: 100%
 }
 
 .ParcelListPage {

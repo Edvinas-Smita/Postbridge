@@ -1,6 +1,6 @@
 package com.devbridge.postbridge.parcelsapp.api;
 
-import com.devbridge.postbridge.parcelsapp.model.Parcels;
+import com.devbridge.postbridge.parcelsapp.model.Parcel;
 import com.devbridge.postbridge.parcelsapp.service.ParcelsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/parcels")
 public class ParcelsController {
@@ -20,10 +22,12 @@ public class ParcelsController {
   @Autowired
   private ParcelsService parcelsService;
 
-  @GetMapping("")
-  public ResponseEntity<Parcels> getParcels() {
+  @GetMapping
+  public ResponseEntity<List<Parcel>> getParcels() {
 
-    Parcels parcels = parcelsService.getParcels();
+    logger.debug("getParcels started...");
+    List<Parcel> parcels = parcelsService.getParcels();
+    logger.debug("getParcels finished.", parcels);
 
     if (parcels != null) {
       return new ResponseEntity<>(parcels, HttpStatus.OK);

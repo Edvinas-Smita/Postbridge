@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Parcel {
+
   private Integer id;
   private String description;
   private String startLocation;
   private String endLocation;
   private User courier;
-  private User reciever;
+  private User receiver;
+
 }

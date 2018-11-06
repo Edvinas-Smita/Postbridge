@@ -25,14 +25,11 @@ public class ParcelsController {
 
     Parcels parcels = parcelsService.getParcels();
 
-    /*
     if (parcels != null) {
       return new ResponseEntity<>(parcels, HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    */
-    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
   }
 
 }

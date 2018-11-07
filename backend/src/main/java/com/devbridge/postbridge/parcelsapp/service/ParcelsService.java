@@ -13,8 +13,12 @@ public class ParcelsService {
   private ParcelsMapper parcelsMapper;
 
   @Autowired
-  public ParcelsService(ParcelsMapper parcelsMapper) { this.parcelsMapper =  parcelsMapper; }
+  public ParcelsService(ParcelsMapper parcelsMapper) {
+    this.parcelsMapper =  parcelsMapper;
+  }
 
-  public List<Parcel> getParcels() { return parcelsMapper.getParcels(); }
+  public List<Parcel> getParcels() {
+    return parcelsMapper.getParcels();
+  }
 
 }

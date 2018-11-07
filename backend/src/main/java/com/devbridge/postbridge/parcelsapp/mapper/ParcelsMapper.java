@@ -3,7 +3,11 @@ package com.devbridge.postbridge.parcelsapp.mapper;
 
 import com.devbridge.postbridge.parcelsapp.model.Parcel;
 import com.devbridge.postbridge.parcelsapp.model.User;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.One;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,10 +35,10 @@ public interface ParcelsMapper {
           @Result(property = "description", column = "DESCRIPTION"),
           @Result(property = "startLocation", column = "START_LOCATION"),
           @Result(property = "endLocation", column = "END_LOCATION"),
-          @Result(property = "courier", javaType=User.class, column = "REF_USER_COURIER",
+          @Result(property = "courier", javaType = User.class, column = "REF_USER_COURIER",
                   one=@One(select="getUser")),
-          @Result(property = "receiver", javaType=User.class, column = "REF_USER_RECIEVER",
-                  one=@One(select="getUser"))
+          @Result(property = "receiver", javaType = User.class, column = "REF_USER_RECIEVER",
+                  one=@One(select = "getUser"))
   })
   List<Parcel> getParcels();
 

@@ -7,17 +7,26 @@ import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
 import ParcelTable from '../../components/ParcelTable/ParcelTable';
 import Grid from '@material-ui/core/Grid/Grid';
-import { getParcels as getParcelsAction, sortParcels } from '../../state-management/actions/parcels';
+import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels } from '../../state-management/actions/parcels';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
 
 
 class ParcelList extends React.Component {
+    constructor(props){
+        super(props);
+        this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
+    }
+
     componentWillMount() {
         this.props.getParcels();
     }
 
     sortingFactory(sortBy) {
         return () => this.props.sortParcels(sortBy);
+    }
+
+    deleteParcelFactory(id) {
+        return () => this.props.deleteParcel(id);
     }
 
     render() {
@@ -37,6 +46,7 @@ class ParcelList extends React.Component {
                         timeFilter={this.sortingFactory('createdDate')}
                         statusFilter={this.sortingFactory('status')}
                         weightFilter={this.sortingFactory('weight')}
+                        deleteParcelFactory={this.deleteParcelFactory}
                         parcels={this.props.parcels}
                         userId={this.props.userId} />
                 </Grid>
@@ -50,6 +60,7 @@ class ParcelList extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     getParcels: () => dispatch(getParcelsAction()),
+    deleteParcel: (id) => dispatch(deleteParcelAction(id)),
     sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
 });
 

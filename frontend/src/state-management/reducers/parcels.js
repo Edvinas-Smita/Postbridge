@@ -37,7 +37,8 @@ export default function parcelsReducer(state = initialState, action = {}){
             isLoading: true,
         };
         case DELETE_PARCEL_SUCCESS: 
-            let index = state.parcels.findIndex(x => x.id === action.id);
+            let index = state.parcels.length;
+            if(action.id !== undefined) index = state.parcels.findIndex(x => x.id === action.id);
             return {
                 ...state,
                 isLoading: false,

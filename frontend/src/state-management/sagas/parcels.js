@@ -23,7 +23,11 @@ function* deleteParcel(action) {
         const { id } = action;
         yield fetch("http://localhost:5000/Parcels/" + id, {
             method: 'delete',
-        }).then(response => response.json());
+        }).then(response => {
+            if(response.status >= 400 && response.status < 600)
+                throw new Error("Bad response from server");
+            return response.json();
+        });
 
         yield put(deleteParcelSuccess(id));
     } catch(e) {

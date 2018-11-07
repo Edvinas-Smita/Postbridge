@@ -1,11 +1,10 @@
 package com.devbridge.postbridge.parcelsapp.service;
 
+import java.util.List;
 import com.devbridge.postbridge.parcelsapp.mapper.ParcelsMapper;
 import com.devbridge.postbridge.parcelsapp.model.Parcel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ParcelsService {

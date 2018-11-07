@@ -16,6 +16,6 @@ public class Parcel {
   private String startLocation;
   private String endLocation;
   private User courier;
-  private User receiver;
+  private User recipient;
 
 }

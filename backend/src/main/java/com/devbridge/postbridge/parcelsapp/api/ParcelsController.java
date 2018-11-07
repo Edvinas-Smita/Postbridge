@@ -31,7 +31,7 @@ public class ParcelsController {
 
     logger.debug("getParcels started...");
     List<Parcel> parcels = parcelsService.getParcels();
-    logger.debug("getParcels finished.", parcels);
+    logger.debug("getParcels finished." + parcels);
 
     if (parcels != null) {
       return new ResponseEntity<>(parcels, HttpStatus.OK);

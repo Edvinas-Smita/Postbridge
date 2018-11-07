@@ -29,10 +29,10 @@ public class Parcel {
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") //TODO: how to get correct format?
   private Date createdDate;
 
-  private Boolean delivered;
+  private Boolean delivered; //TODO: is it needed?
 
   private User recipient;
-  
+
   private User courier;
 
 }

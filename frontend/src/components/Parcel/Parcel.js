@@ -17,7 +17,6 @@ const parcel = (props) => (
             <div>{props.recipient}</div>
             <div>{props.courier}</div>
             <button className="Button">{props.buttonText}</button>
-            <button className="Button" onClick={props.deleteAction}>Delete</button>
     </div>
 );
 

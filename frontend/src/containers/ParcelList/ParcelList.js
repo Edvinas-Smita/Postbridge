@@ -7,9 +7,7 @@ import Parcel from '../../components/Parcel/Parcel';
 import ColumnTitles from '../../components/ColumnTitles/ColumnTitles';
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
-import { getParcels as getParcelsAction, 
-        sortParcels as sortParcelsAction,
-        deleteParcel as deleteParcelAction } from '../../state-management/actions/parcels';
+import { getParcels as getParcelsAction, sortParcels } from '../../state-management/actions/parcels';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors'
 
 class ParcelList extends React.Component {
@@ -19,10 +17,6 @@ class ParcelList extends React.Component {
 
     sortingFactory(sortBy) {
         return () => this.props.sortParcels(sortBy);
-    }
-
-    deleteParcelFactory(id) {
-        return () => this.props.deleteParcel(id);
     }
 
     render() {
@@ -44,14 +38,13 @@ class ParcelList extends React.Component {
                     statusFilter={this.sortingFactory('status')}
                     weightFilter={this.sortingFactory('weight')}
                 />     
-                {this.props.parcels.map(parcel => {
+                {this.props.parcels.map((parcel, index) => {
                     let buttonText = "View details";
                     if (parcel.recipient.id === this.props.userId) {
                         buttonText = "I'll deliver"
                     }
                     return <Parcel 
-                        key={parcel.id}
-                        deleteAction={this.deleteParcelFactory(parcel.id)}
+                        key={index}
                         fromPoint={parcel.startLocation}
                         toPoint={parcel.endLocation}
                         status={parcel.status}
@@ -79,8 +72,7 @@ class ParcelList extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     getParcels: () => dispatch(getParcelsAction()),
-    deleteParcel: (id) => dispatch(deleteParcelAction(id)),
-    sortParcels: (sortBy) => dispatch(sortParcelsAction(sortBy)),
+    sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
 });
 
 const mapStateToProps = state => ({

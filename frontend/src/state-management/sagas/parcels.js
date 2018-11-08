@@ -6,7 +6,7 @@ import { getParcelsError, getParcelsSuccess } from '../actions/parcels';
 function* getParcels() {
     try {
         let parcels = [];
-        yield fetch("/api/parcels").then(response => {
+        yield fetch("http://localhost:8080/api/parcels").then(response => {
             return response.json();
         }).then(data => {
             parcels = Object.values(data);

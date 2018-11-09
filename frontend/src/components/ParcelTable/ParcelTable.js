@@ -206,10 +206,8 @@ const parcelTable = (props) => {
                             ? <EditIcon className={classes.closeEditIcon}/>
                             : null }
                             { (STATUS[parcel.status] === 'Open')
-                            ? <CloseIcon className={classes.closeEditIcon}/>
+                            ? <CloseIcon onClick={props.deleteParcelFactory(parcel.id)} className={classes.closeEditIcon}/>
                             : null }
-                             
-                            
                         </TableCell>
                     </TableRow>
                     );

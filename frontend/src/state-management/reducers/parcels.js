@@ -2,6 +2,9 @@ import {
     GET_PARCELS,
     GET_PARCELS_SUCCESS,
     GET_PARCELS_ERROR, 
+    DELETE_PARCEL,
+    DELETE_PARCEL_SUCCESS,
+    DELETE_PARCEL_ERROR, 
     SORT_PARCELS,
 } from '../constants/parcels';
 
@@ -29,6 +32,26 @@ export default function parcelsReducer(state = initialState, action = {}){
             isLoading: false,
             error: action.error,
         };
+        case DELETE_PARCEL: return {
+            ...state,
+            isLoading: true,
+        };
+        case DELETE_PARCEL_SUCCESS: 
+            let index = state.parcels.length;
+            if(action.id !== undefined) index = state.parcels.findIndex(x => x.id === action.id);
+            return {
+                ...state,
+                isLoading: false,
+                parcels: [
+                    ...state.parcels.slice(0, index),
+                    ...state.parcels.slice(index + 1),
+                ],
+            };
+        case DELETE_PARCEL_ERROR: return {
+            ...state,
+            isLoading: false,
+            error: action.error,
+        }
         case SORT_PARCELS: 
             let newOrder = 'asc';
             if(action.sortBy === state.sortBy) newOrder = state.sortOrder === 'asc' ? 'desc' : 'asc';

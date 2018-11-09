@@ -2,6 +2,9 @@ import {
     GET_PARCELS,
     GET_PARCELS_SUCCESS,
     GET_PARCELS_ERROR, 
+    DELETE_PARCEL,
+    DELETE_PARCEL_SUCCESS,
+    DELETE_PARCEL_ERROR, 
     SORT_PARCELS,
 } from '../constants/parcels';
 
@@ -16,6 +19,21 @@ export const getParcelsSuccess = parcels => ({
 
 export const getParcelsError = error => ({
     type: GET_PARCELS_ERROR,
+    error,
+});
+
+export const deleteParcel = id => ({
+    type: DELETE_PARCEL,
+    id,
+});
+
+export const deleteParcelSuccess = id => ({
+    type: DELETE_PARCEL_SUCCESS,
+    id,
+});
+
+export const deleteParcelError = error => ({
+    type: DELETE_PARCEL_ERROR,
     error,
 });
 

@@ -8,3 +8,10 @@
 .ParcelListPage {
     background-color: #f9f9f9;
 }
+
+.ParcelAndEdit {
+    width: 90%;
+    display: grid;
+    grid-template-columns: 92% 8%;
+    column-gap: 12px;
+}

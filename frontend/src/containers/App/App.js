@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import React, {Component} from 'react';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import './App.css';
 
 import LoginForm from '../../containers/LoginForm/LoginForm';
 import ParcelList from '../../containers/ParcelList/ParcelList';
+import ParcelEdit from '../../components/ParcelEdit/ParcelEdit'
 
 const PrivateRoute = ({ component: Component, authed, user, ...rest}) => (
     <Route {...rest} render={(props) => (
@@ -42,22 +43,34 @@ class App extends Component {
       cb);
   }
 
-  render() {
-    return (
-        <Switch>
-          <Route 
-            exact 
-            path="/" 
-            render={(props) => <LoginForm {...props} error={this.state.error} authenticate={this.authenticate.bind(this)}/>}/>
-          <PrivateRoute 
-            exact 
-            path="/parcels"
-            component={ParcelList} 
-            authed={this.state.authed}
-            user={this.state.user}/>
-        </Switch>
-    );
-  }
+    render() {
+        return (
+            <Switch>
+                <Route
+                    exact
+                    path="/"
+                    render={
+                        (props) => <LoginForm {...props}
+                                              error={this.state.error}
+                                              authenticate={this.authenticate.bind(this)}/>
+                    }
+                />
+                <PrivateRoute
+                    exact
+                    path="/parcels"
+                    component={ParcelList}
+                    authed={this.state.authed}
+                    user={this.state.user}
+                />
+                <PrivateRoute
+                    path="/editParcel" //veliau is backendo pasiimt parceli pagal ID (pvz.: /editParcel?ID=5)
+                    component={ParcelEdit}
+                    authed={this.state.authed}
+                    user={this.state.user}
+                />
+            </Switch>
+        );
+    }
 }
 
 export default App;

@@ -1,5 +1,5 @@
 module.exports = function() {
-    return { "Parcels": [ 
+    return { "parcels ": [ 
         {
             "id": 1,
             "startLocation": "Vilnius",

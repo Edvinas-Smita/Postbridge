@@ -21,7 +21,7 @@ function* getParcels() {
 function* deleteParcel(action) {
     try {
         const { id } = action;
-        yield fetch("http://localhost:5000/Parcels/" + id, {
+        yield fetch("http://localhost:8080/api/parcels/" + id, {
             method: 'delete',
         }).then(response => {
             if(response.status >= 400 && response.status < 600)

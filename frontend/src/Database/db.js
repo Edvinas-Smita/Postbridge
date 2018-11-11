@@ -1,5 +1,6 @@
 module.exports = function() {
-    return { "parcels": [ 
+    return { 
+      "parcels": [ 
         {
             "id": 1,
             "startLocation": "Vilnius",
@@ -140,6 +141,38 @@ module.exports = function() {
               "lastName": "Wilde"
             }
         }
+    ],
+    "parcelStatusHistory": [
+        {
+          "parcelId": 1,
+          "changed": [
+            {
+              "user": 9,
+              "date": "2018-08-18T07:03:54.000Z",
+              "status": 1
+            },
+            {
+              "user": 18,
+              "date": "2018-08-17T13:18:21.000Z",
+              "status": 2
+            },
+          ]
+        },
+        {
+          "parcelId": 2,
+          "changed": [
+            {
+              "user": 15,
+              "date": "2018-08-27T13:30:36.000Z",
+              "status": 2
+            },
+            {
+              "user": 9,
+              "date": "2018-08-20T18:23:01.000Z",
+              "status": 3
+            },
+          ]
+        },
     ]
   }
 }

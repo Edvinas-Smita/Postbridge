@@ -1,5 +1,9 @@
 create database parcelsapp;
 
+--drop table parcels;
+--drop table users;
+--drop table locations;
+
 create table users (
   id bigserial not null,
   first_name character varying(256) not null,
@@ -9,9 +13,9 @@ create table users (
 create table locations (
   id bigserial not null,
   name character varying(256) not null,
-  primary key (id)
+  primary key (id),
+  constraint locations_uk unique (name)
 );
-create unique index locations_uk on locations;
 
 create table parcels (
   id bigserial not null,
@@ -24,7 +28,7 @@ create table parcels (
   ref_location_start bigserial not null,
   ref_location_end bigserial not null,
   primary key (id),
-  constraint parcels_users_recipient_fk foreign key (ref_user_reciever)
+  constraint parcels_users_recipient_fk foreign key (ref_user_recipient)
     references users (id) match simple
       on update restrict
       on delete restrict,

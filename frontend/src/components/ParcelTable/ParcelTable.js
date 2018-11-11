@@ -30,8 +30,8 @@ const styles = theme => ({
         tableLayout: 'fixed',
       },
       tableRow: {
-        borderColor: '#c7c2cc',
-        borderStyle: 'solid',
+        borderColor: theme.palette.grey[300],
+        border: '1.4px solid',
         height: '60px'
       },
       column: {
@@ -43,7 +43,7 @@ const styles = theme => ({
         verticalAlign: 'middle'
       },
       greyTextColor: {
-        color: '#666666'
+        color: theme.palette.grey[700],
       },
       boldText: {
         fontWeight: 'bold'
@@ -75,19 +75,19 @@ const styles = theme => ({
         transform: 'rotate(90deg)',
       },
       endLocationIcon: {
-        color: '#959199',
+        color: theme.palette.grey[500],
         marginRight: '14px'
       },
       closeEditIcon: {
         width: '20px',
         height: '20px',
-        color: '#959199',
+        color: theme.palette.grey[500],
         justifyContent: 'center',
         marginRight: '5px',
         verticalAlign: 'middle'
       },
       greyColor: {
-        color: '#959199'
+        color: theme.palette.grey[500]
       },
       blueColor: {
         color: '#0F10A6'

@@ -12,10 +12,8 @@ class ParcelStatusHistory extends React.Component {
         super(props);
     }
 
-    handleClose = () => {
-      };
-
     render(){
+        console.log(this.props);
         return (
             <Dialog open={this.props.open} onClose={() => this.props.onRequestClose()}>
                 <DialogTitle>Parcel Status History</DialogTitle>

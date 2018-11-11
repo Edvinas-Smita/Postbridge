@@ -19,6 +19,7 @@ function* getParcels() {
 }
 
 function* deleteParcel(action) {
+    console.log(action);
     try {
         const { id } = action;
         yield fetch("http://localhost:8080/api/parcels/" + id, {

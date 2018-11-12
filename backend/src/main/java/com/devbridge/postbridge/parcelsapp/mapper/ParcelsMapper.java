@@ -3,6 +3,8 @@ package com.devbridge.postbridge.parcelsapp.mapper;
 import java.util.List;
 import com.devbridge.postbridge.parcelsapp.model.Parcel;
 import com.devbridge.postbridge.parcelsapp.model.User;
+
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
@@ -53,4 +55,7 @@ public interface ParcelsMapper {
           @Result(property = "lastName", column = "LAST_NAME")
   })
   User getUser(Integer user_id);
+
+  @Delete("delete from parcels where id = #{parcel_id}")
+  void deleteParcel(long parcel_id);
 }

@@ -15,7 +15,7 @@ class ParcelList extends React.Component {
     constructor(props){
         super(props);
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
-        state = {};
+        this.state = {};
     }
 
     componentWillMount() {

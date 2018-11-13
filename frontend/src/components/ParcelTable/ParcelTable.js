@@ -221,7 +221,7 @@ const parcelTable = (props) => {
                                 {buttonText}
                             </Button>
                             { (STATUS[parcel.status] === 'Open' || STATUS[parcel.status] === 'Picked up')
-                            ? <IconButton className={classes.iconButton}> <EditIcon fontSize="small"/> </IconButton>
+                            ? <IconButton className={classes.iconButton} onClick={props.onEditParcel(parcel)}> <EditIcon fontSize="small"/> </IconButton>
                             : null }
                             { (STATUS[parcel.status] === 'Open')
                             ? <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}> <CloseIcon fontSize="small"/> </IconButton> 

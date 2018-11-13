@@ -1,23 +1,22 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import Button from '@material-ui/core/Button/Button';
+import { connect } from 'react-redux';
 
 import './ParcelList.css';
 
-import Parcel from '../../components/Parcel/Parcel';
-import ColumnTitles from '../../components/ColumnTitles/ColumnTitles';
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
-import {getParcels as getParcelsAction, sortParcels} from '../../state-management/actions/parcels';
-import {getSortedParcels} from '../../state-management/selectors/parcelsSelectors'
-import ParcelEdit from '../../components/ParcelEdit/ParcelEdit'
+import ParcelTable from '../../components/ParcelTable/ParcelTable';
+import Grid from '@material-ui/core/Grid/Grid';
+import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels } from '../../state-management/actions/parcels';
+import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
+import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
 class ParcelList extends React.Component {
-    /*constructor() {
-        super();
-    }*/
-
-    state = {};
+    constructor(props){
+        super(props);
+        this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
+        state = {};
+    }
 
     componentWillMount() {
         this.props.getParcels();
@@ -25,6 +24,10 @@ class ParcelList extends React.Component {
 
     sortingFactory(sortBy) {
         return () => this.props.sortParcels(sortBy);
+    }
+
+    deleteParcelFactory(id) {
+        return () => this.props.deleteParcel(id);
     }
 
     editParcel(parcel) {
@@ -47,54 +50,25 @@ class ParcelList extends React.Component {
     render() {
         return (
             <div className="ParcelListPage">
-                {/* <div>
-                    <input type="checkbox"/> 
-                    <div>Show mine</div>
-                    <input type="checkbox"/>
-                    <div>Show assigned to me</div>
-                </div>
-                 */}
                 <Header/>
                 <Decoration/>
-                <section className="Parcels">
-                    <ColumnTitles
+                <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    justify="center"
+                    className="ParcelTable"
+                >
+                    <ParcelTable
                         timeFilter={this.sortingFactory('createdDate')}
                         statusFilter={this.sortingFactory('status')}
                         weightFilter={this.sortingFactory('weight')}
+                        deleteParcelFactory={this.deleteParcelFactory}
+                        parcels={this.props.parcels}
+                        userId={this.props.userId}
+                        onEditParcel={this.editParcel}
                     />
-                    {this.props.parcels.map((parcel, index) => {
-                        let buttonText = "View details";
-                        if (parcel.recipient.id === this.props.userId) {
-                            buttonText = "I'll deliver"
-                        }
-                        return <div
-                            className="ParcelAndEditButton"
-                            key={index}>
-                            <Parcel
-                                fromPoint={parcel.startLocation}
-                                toPoint={parcel.endLocation}
-                                status={parcel.status}
-                                description={parcel.description}
-                                weight={parcel.weight}
-                                created={parcel.createdDate}
-                                delivered={parcel.delivered}
-                                recipient={
-                                    (parcel.recipient.id === this.props.userId)
-                                        ? "Me"
-                                        : parcel.recipient.firstName + " " + parcel.recipient.lastName
-                                }
-                                courier={
-                                    (parcel.courier.id === this.props.userId)
-                                        ? "Me"
-                                        : parcel.courier.firstName + " " + parcel.courier.lastName
-                                }
-                                buttonText={buttonText}/>
-                            <div>
-                                <Button disabled={parcel.courier.id !== this.props.userId} onClick={this.editParcel(parcel)}>EDIT</Button>
-                            </div>
-                        </div>
-                    })}
-                </section>
+                </Grid>
                 <ParcelEdit
                     parcel={this.state.parcelToEdit}
                     open={this.state.editingParcel}
@@ -107,6 +81,7 @@ class ParcelList extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     getParcels: () => dispatch(getParcelsAction()),
+    deleteParcel: (id) => dispatch(deleteParcelAction(id)),
     sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
 });
 

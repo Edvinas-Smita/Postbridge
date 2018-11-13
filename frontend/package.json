@@ -21,7 +21,7 @@
   },
   "scripts": {
     "startApp": "react-scripts start",
-    "startJson": "json-server -p 5000 ./src/Database/db.json",
+    "startJson": "json-server -p 8080 ./src/Database/db.js -r ./src/Database/routes.json",
     "start": "npm-run-all -p -r startApp startJson",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",

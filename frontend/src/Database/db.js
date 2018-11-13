@@ -1,5 +1,5 @@
-{
-    "Parcels": [ 
+module.exports = function() {
+    return { "parcels": [ 
         {
             "id": 1,
             "startLocation": "Vilnius",
@@ -142,4 +142,4 @@
         }
     ]
   }
-  
+}

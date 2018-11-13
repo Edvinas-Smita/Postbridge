@@ -59,6 +59,7 @@
         </module>
         <module name="com.puppycrawl.tools.checkstyle.checks.coding.MultipleVariableDeclarationsCheck" />
         <module name="com.puppycrawl.tools.checkstyle.checks.coding.RequireThisCheck">
+            <property name="checkFields" value="false"/>
             <property name="checkMethods" value="false" />
             <property name="validateOnlyOverlapping" value="false" />
         </module>
@@ -79,8 +80,8 @@
         </module>
         <module name="com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderCheck">
             <property name="groups" value="java,/^javax?\./,*,org.springframework" />
-            <property name="ordered" value="true" />
-            <property name="separated" value="true" />
+            <property name="ordered" value="false" />
+            <property name="separated" value="false" />
             <property name="option" value="bottom" />
             <property name="sortStaticImportsAlphabetically" value="true" />
         </module>

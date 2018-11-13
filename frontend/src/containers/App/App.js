@@ -22,7 +22,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      authed: false,
+      isAuthorised: false,
       error: false,
       user: {
         id: "",
@@ -31,38 +31,34 @@ class App extends Component {
     }
   }
 
-  authenticate(cb, email, password) {
-    let auth = (email === "test" && password === "test");
-    this.setState({
-      authed: true,
-      error: !auth,
-      user: {
-        id: 1, 
-        name: "Test User"}},
-      cb);
-  }
-
-    render() {
-        return (
-            <Switch>
-                <Route
-                    exact
-                    path="/"
-                    render={(props) => <LoginForm {...props}
-                                                  error={this.state.error}
-                                                  authenticate={this.authenticate.bind(this)}
-                    />}
-                />
-                <PrivateRoute
-                    exact
-                    path="/parcels"
-                    component={ParcelList}
-                    authed={this.state.authed}
-                    user={this.state.user}
-                />
-            </Switch>
-        );
+    authenticate(cb, email, password) {
+        let auth = (email === "test" && password === "test");
+        this.setState({
+                isAuthorised: auth,
+                error: !auth,
+                user: auth
+                    ? {id: 1, name: "Test User"}
+                    : {id: "", name: ""}
+            },
+            cb);
     }
+
+  render() {
+    return (
+        <Switch>
+          <Route 
+            exact 
+            path="/" 
+            render={(props) => <LoginForm {...props} error={this.state.error} authenticate={this.authenticate.bind(this)}/>}/>
+          <PrivateRoute 
+            exact 
+            path="/parcels"
+            component={ParcelList} 
+            authed={this.state.isAuthorised}
+            user={this.state.user}/>
+        </Switch>
+    );
+  }
 }
 
 export default App;

@@ -9,7 +9,7 @@
     background-color: #f9f9f9;
 }
 
-.ParcelAndEdit {
+.ParcelAndEditButton {
     width: 90%;
     display: grid;
     grid-template-columns: 92% 8%;

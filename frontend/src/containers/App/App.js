@@ -4,7 +4,6 @@ import './App.css';
 
 import LoginForm from '../../containers/LoginForm/LoginForm';
 import ParcelList from '../../containers/ParcelList/ParcelList';
-import ParcelEdit from '../../components/ParcelEdit/ParcelEdit'
 
 const PrivateRoute = ({ component: Component, authed, user, ...rest}) => (
     <Route {...rest} render={(props) => (
@@ -15,7 +14,7 @@ const PrivateRoute = ({ component: Component, authed, user, ...rest}) => (
           state: { from: props.location }
         }} />
     )}/>
-)
+);
 
 class App extends Component {
 
@@ -49,22 +48,15 @@ class App extends Component {
                 <Route
                     exact
                     path="/"
-                    render={
-                        (props) => <LoginForm {...props}
-                                              error={this.state.error}
-                                              authenticate={this.authenticate.bind(this)}/>
-                    }
+                    render={(props) => <LoginForm {...props}
+                                                  error={this.state.error}
+                                                  authenticate={this.authenticate.bind(this)}
+                    />}
                 />
                 <PrivateRoute
                     exact
                     path="/parcels"
                     component={ParcelList}
-                    authed={this.state.authed}
-                    user={this.state.user}
-                />
-                <PrivateRoute
-                    path="/editParcel" //veliau is backendo pasiimt parceli pagal ID (pvz.: /editParcel?ID=5)
-                    component={ParcelEdit}
                     authed={this.state.authed}
                     user={this.state.user}
                 />

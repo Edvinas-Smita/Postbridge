@@ -1,8 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Button from '@material-ui/core/Button/Button';
-import Modal from '@material-ui/core/Modal';
-import { Redirect } from 'react-router-dom';
 
 import './ParcelList.css';
 
@@ -38,7 +36,8 @@ class ParcelList extends React.Component {
         }
     };
 
-    finishEdit = () => {
+    finishEdit = parcel => {
+        console.log("After edit parcel:", parcel === this.state.parcelToEdit || parcel == null ? " unchanged" : parcel);  //
         this.setState({
             editingParcel: false,
             parcelToEdit: null
@@ -46,9 +45,6 @@ class ParcelList extends React.Component {
     };
 
     render() {
-        if (this.state.editingParcel) {
-            return <Redirect to='/editParcel' />
-        }
         return (
             <div className="ParcelListPage">
                 {/* <div>
@@ -58,53 +54,52 @@ class ParcelList extends React.Component {
                     <div>Show assigned to me</div>
                 </div>
                  */}
-                 <Header/>
-                 <Decoration/>
+                <Header/>
+                <Decoration/>
                 <section className="Parcels">
-                <ColumnTitles
-                    timeFilter={this.sortingFactory('createdDate')}
-                    statusFilter={this.sortingFactory('status')}
-                    weightFilter={this.sortingFactory('weight')}
-                />     
-                {this.props.parcels.map((parcel, index) => {
-                    let buttonText = "View details";
-                    if (parcel.recipient.id === this.props.userId) {
-                        buttonText = "I'll deliver"
-                    }
-                    return <div
-                        className="ParcelAndEdit"
-                        key={index}>
-                        <Parcel
-                        fromPoint={parcel.startLocation}
-                        toPoint={parcel.endLocation}
-                        status={parcel.status}
-                        description={parcel.description} 
-                        weight={parcel.weight} 
-                        created={parcel.createdDate}
-                        delivered={parcel.delivered}
-                        recipient={
-                            (parcel.recipient.id === this.props.userId)
-                            ? "Me"
-                            : parcel.recipient.firstName + " " + parcel.recipient.lastName
+                    <ColumnTitles
+                        timeFilter={this.sortingFactory('createdDate')}
+                        statusFilter={this.sortingFactory('status')}
+                        weightFilter={this.sortingFactory('weight')}
+                    />
+                    {this.props.parcels.map((parcel, index) => {
+                        let buttonText = "View details";
+                        if (parcel.recipient.id === this.props.userId) {
+                            buttonText = "I'll deliver"
                         }
-                        courier={
-                            (parcel.courier.id === this.props.userId)
-                            ? "Me"
-                            : parcel.courier.firstName + " " + parcel.courier.lastName
-                        }
-                        buttonText={buttonText} />
-                        <div>
-                            <Button onClick={this.editParcel(parcel)}>EDIT</Button>
+                        return <div
+                            className="ParcelAndEditButton"
+                            key={index}>
+                            <Parcel
+                                fromPoint={parcel.startLocation}
+                                toPoint={parcel.endLocation}
+                                status={parcel.status}
+                                description={parcel.description}
+                                weight={parcel.weight}
+                                created={parcel.createdDate}
+                                delivered={parcel.delivered}
+                                recipient={
+                                    (parcel.recipient.id === this.props.userId)
+                                        ? "Me"
+                                        : parcel.recipient.firstName + " " + parcel.recipient.lastName
+                                }
+                                courier={
+                                    (parcel.courier.id === this.props.userId)
+                                        ? "Me"
+                                        : parcel.courier.firstName + " " + parcel.courier.lastName
+                                }
+                                buttonText={buttonText}/>
+                            <div>
+                                <Button disabled={parcel.courier.id !== this.props.userId} onClick={this.editParcel(parcel)}>EDIT</Button>
+                            </div>
                         </div>
-                    </div>
-                })}
+                    })}
                 </section>
-                <Modal
-                    open={false && this.state.editingParcel}
+                <ParcelEdit
+                    parcel={this.state.parcelToEdit}
+                    open={this.state.editingParcel}
                     onClose={this.finishEdit}
-                >
-                    <ParcelEdit parcel={this.state.parcelToEdit}/>
-                </Modal>
+                />
             </div>
         )
     }

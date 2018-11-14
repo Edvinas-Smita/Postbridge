@@ -41,9 +41,9 @@ public class ParcelsController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Parcel> deleteParcel(@PathVariable("id") long id) {
-    logger.debug("deleteParcel started with id %lld", id);
+    logger.debug("deleteParcel started with id " + id);
     parcelsService.deleteParcel(id);
-    logger.debug("deleteParcel finished with id %lld", id);
+    logger.debug("deleteParcel finished with id " + id);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }

@@ -20,4 +20,8 @@ public class ParcelsService {
     return parcelsMapper.getParcels();
   }
 
+  public void deleteParcel(long id) {
+    parcelsMapper.deleteParcel(id);
+  }
+
 }

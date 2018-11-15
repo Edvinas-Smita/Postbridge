@@ -39,8 +39,8 @@ class ParcelList extends React.Component {
         }
     };
 
-    finishEdit = parcel => {
-        console.log("After edit parcel:", parcel === this.state.parcelToEdit || parcel == null ? " unchanged" : parcel);  //
+    finishEdit = newValues => {
+        console.log("Changed values:", newValues);
         this.setState({
             editingParcel: false,
             parcelToEdit: null
@@ -66,7 +66,7 @@ class ParcelList extends React.Component {
                         deleteParcelFactory={this.deleteParcelFactory}
                         parcels={this.props.parcels}
                         userId={this.props.userId}
-                        onEditParcel={this.editParcel}
+                        onEditParcel={this.editParcel.bind(this)}
                     />
                 </Grid>
                 <ParcelEdit

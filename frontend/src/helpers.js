@@ -9,9 +9,12 @@ export const STATUS = {
   4: 'Delivered'
 };
 
-export const STATUS_COLORS = {
-    1: 'Blue',
-    2: 'Gray',
-    3: 'Green',
-    4: 'Orange',  //TODO: couldnt find a picture with delivered status
-};
+export function deepDiff(o1, o2) {
+    return Object.keys(o1).reduce((diff, key) => {
+        if (o2[key] === o1[key]) return diff;
+        return {
+            ...diff,
+            [key]: o1[key]
+        }
+    }, {});
+}

@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import NumberFormat from 'react-number-format';
+
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -12,9 +14,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
+import InfoOutlined from '@material-ui/icons/InfoOutlined';
+import Tooltip from '@material-ui/core/Tooltip';
 
-import './ParcelEdit.css'
-import {STATUS, STATUS_COLORS} from '../../helpers'
+import {STATUS, deepDiff} from '../../helpers';
+import Box from './Box.svg';
 
 const styles = theme => ({
     setWidth: {
@@ -30,8 +34,47 @@ const styles = theme => ({
     fullWidth: {
         width: '100%',
         padding: '4px'
+    },
+    toAndFrom: {
+        display: 'grid',
+        gridTemplateColumns: '50% 50%',
+        columnGap: '12px'
+    },
+    weightAndInfo: {
+        display: 'grid',
+        gridTemplateColumns: '92% 8%',
+        columnGap: '12px',
+    },
+    icon: {
+        height: '32px',
+        width: '32px',
+        marginRight: '12px',
+        marginLeft: '2.5%',
     }
 });
+
+function NumberFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={inputRef}
+            onValueChange={values => {
+                onChange({
+                    target: {
+                        value: values.value,
+                    },
+                });
+            }}
+            decimalSeparator='.'
+            decimalScale={3}
+            isNumericString
+            allowNegative={false}
+            suffix='kg'
+        />
+    );
+}
 
 class ParcelEdit extends Component {
     constructor(props) {
@@ -45,7 +88,17 @@ class ParcelEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.open && (!this.state.parcel || nextProps.parcel !== this.state.parcel)) {
             this.setState({
-                parcel: nextProps.parcel,
+                parcel: {   //getting a custom copy to store only the information that is relevant in state
+                    recipient: {
+                        firstName: nextProps.parcel.recipient.firstName,
+                        lastName: nextProps.parcel.recipient.lastName
+                    },
+                    startLocation: nextProps.parcel.startLocation,
+                    endLocation: nextProps.parcel.endLocation,
+                    status: nextProps.parcel.status,
+                    description: nextProps.parcel.description,
+                    weight: nextProps.parcel.weight
+                },
                 changesPending: false
             });
         }
@@ -70,13 +123,21 @@ class ParcelEdit extends Component {
             }
         });
     };
+    handleWeightChange = (event) => {
+        this.setState({
+            parcel: {
+                ...this.state.parcel,
+                weight: Number(event.target.value) * 1000
+            }
+        })
+    };
 
     closeModal = () => {
-        //return the resulting parcel after edit
-        this.props.onClose(this.state.parcel);
+        //return the fields that were changed after edit (for convenient UPDATE)
+        this.props.onClose(deepDiff(this.state.parcel, this.props.parcel));
     };
     closeAndDiscard = () => {
-        this.props.onClose(null);   //or this.props.parcel instead of null to return the same object
+        this.props.onClose({});   //return an empty object representing that no fields have been changed
     };
 
     changesPendingPrompt = () => {
@@ -102,7 +163,7 @@ class ParcelEdit extends Component {
     onSaveClick = () => {
         //check if changes are valid?
 
-        //update parcels
+        //update parcel database in backend
         this.closeModal();
     };
 
@@ -117,7 +178,7 @@ class ParcelEdit extends Component {
         else if (isConfirmation) {
             return (
                 <Dialog
-                    open={true} //or open={isConfirmation} but it is already in an if
+                    open={true} //or open={isConfirmation} but it is already inside of an if statement
                     onBackdropClick={this.exitPendingPrompt}
                     onEscapeKeyDown={this.exitPendingPrompt}
                     scroll='body'
@@ -152,6 +213,7 @@ class ParcelEdit extends Component {
             )
         }
 
+        const {parcel} = this.state;
         return (
             <Dialog
                 open={this.props.open === true}
@@ -159,7 +221,12 @@ class ParcelEdit extends Component {
                 onEscapeKeyDown={this.changesPendingPrompt}
                 scroll='body'
             >
-                <DialogTitle>Edit order</DialogTitle>
+                <DialogTitle>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        <img className={classes.icon} src={Box} alt=''/>
+                        Edit order
+                    </div>
+                </DialogTitle>
 
                 <DialogContent>
                     <Grid
@@ -172,11 +239,11 @@ class ParcelEdit extends Component {
                         <Grid item className={classes.setWidth}>
                             <FormControl className={classes.fullWidth}>
                                 <FormLabel>FIRST NAME</FormLabel>
-                                <TextField
+                                <TextField  //TODO: possibly validate inputs as last line of defence from SQL injection
                                     variant="outlined"
                                     placeholder="Enter recipients first name"
-                                    inputProps={{className: classes.whiteField}}
-                                    value={this.state.parcel.recipient.firstName}
+                                    InputProps={{className: classes.whiteField}}
+                                    value={parcel.recipient.firstName}
                                     onChange={this.handleParcelRecipientChange('firstName')}
                                 />
                             </FormControl>
@@ -187,26 +254,26 @@ class ParcelEdit extends Component {
                                 <TextField
                                     variant="outlined"
                                     placeholder="Enter recipients last name"
-                                    inputProps={{className: classes.whiteField}}
-                                    value={this.state.parcel.recipient.lastName}
+                                    InputProps={{className: classes.whiteField}}
+                                    value={parcel.recipient.lastName}
                                     onChange={this.handleParcelRecipientChange('lastName')}
                                 />
                             </FormControl>
                         </Grid>
 
                         <Grid item className={classes.setWidth}>
-                            <div className="ToAndFrom">
+                            <div className={classes.toAndFrom}>
                                 <FormControl className={classes.fullWidth}>
                                     <FormLabel>FROM</FormLabel>
                                     <Select
                                         variant="outlined"
-                                        value={this.state.parcel.startLocation}
+                                        value={parcel.startLocation}
                                         onChange={this.handleParcelChange('startLocation')}
                                     >
                                         <MenuItem
-                                            value={this.state.parcel.startLocation}
+                                            value={parcel.startLocation}    //TODO: get list of locations from backend and map them to array of MenuItem
                                         >
-                                            {this.state.parcel.startLocation}
+                                            {parcel.startLocation}
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
@@ -214,13 +281,13 @@ class ParcelEdit extends Component {
                                     <FormLabel>TO</FormLabel>
                                     <Select
                                         variant="outlined"
-                                        value={this.state.parcel.endLocation}
+                                        value={parcel.endLocation}
                                         onChange={this.handleParcelChange('endLocation')}
                                     >
                                         <MenuItem
-                                            value={this.state.parcel.endLocation}
+                                            value={parcel.endLocation}
                                         >
-                                            {this.state.parcel.endLocation}
+                                            {parcel.endLocation}
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
@@ -237,20 +304,26 @@ class ParcelEdit extends Component {
                             >
                                 {Object.keys(STATUS).map(key =>
                                     <Grid item key={key}>
-                                        <Button value={key}
-                                                disabled={true}
-                                                /*onClick={() => this.setState({    //if we were to allow editing state from this form
-                                                    parcel: {
-                                                        ...this.state.parcel,
-                                                        status: Number(key)
-                                                    }
-                                                })}*/
-                                                variant='outlined'
-                                                style={{
-                                                    color: STATUS_COLORS[key] ? STATUS_COLORS[key] : 'Blue',    //TODO: probably use theme and set this from classes
-                                                    borderColor: STATUS_COLORS[key] ? STATUS_COLORS[key] : 'Blue',
-                                                    borderStyle: this.props.parcel.status === Number(key) ? 'solid' : 'dashed'  //the original state button gets a solid border //TODO: maybe something a bit more obvious?
-                                                }}
+                                        <Button
+                                            disabled={true}
+                                            /*value={key}
+                                            onClick={() => this.setState({    //if we were to allow editing state from this form
+                                                parcel: {
+                                                    ...parcel,
+                                                    status: Number(key)
+                                                }
+                                            })}*/
+                                            variant='outlined'
+                                            style={this.props.parcel.status === Number(key)
+                                                ? {
+                                                    backgroundColor: '#00C770', //currently active button is highlighted green
+                                                    borderWidth: '0',
+                                                    color: 'white'
+                                                } :
+                                                {
+                                                    borderStyle: 'dashed'
+                                                }
+                                            }
                                         >
                                             {STATUS[key]}
                                         </Button>
@@ -266,9 +339,10 @@ class ParcelEdit extends Component {
                                     variant="outlined"
                                     multiline
                                     rows="6"
-                                    inputProps={{className: classes.whiteField}}
-                                    value={this.state.parcel.description}
+                                    InputProps={{className: classes.whiteField}}
+                                    value={parcel.description}
                                     onChange={this.handleParcelChange('description')}
+                                    placeholder="Give a short description of what's in the package, if it's fragile, etc..."
                                 />
                             </FormControl>
                         </Grid>
@@ -276,12 +350,29 @@ class ParcelEdit extends Component {
                         <Grid item className={classes.setWidth}>
                             <FormControl className={classes.fullWidth}>
                                 <FormLabel>PARCEL WEIGHT</FormLabel>
-                                <TextField
-                                    variant="outlined"
-                                    inputProps={{className: classes.whiteField}}
-                                    value={this.state.parcel.weight}
-                                    onChange={this.handleParcelChange('weight')}
-                                />
+                                <div className={classes.weightAndInfo}>
+                                    <TextField
+                                        variant="outlined"
+                                        value={Number(parcel.weight) / 1000}
+                                        onChange={this.handleWeightChange}
+                                        InputProps={{
+                                            className: classes.whiteField,
+                                            inputComponent: NumberFormatCustom
+                                        }}
+                                    />
+                                    <Tooltip
+                                        title="TODO tooltip text"
+                                        enterTouchDelay={0}>
+                                        <InfoOutlined
+                                            color="disabled"
+                                            style={{
+                                                fontSize: '200%',
+                                                position: 'relative',
+                                                top: '12px'
+                                            }}
+                                        />
+                                    </Tooltip>
+                                </div>
                             </FormControl>
                         </Grid>
                     </Grid>

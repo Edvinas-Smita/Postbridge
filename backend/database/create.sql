@@ -14,9 +14,9 @@ create table users (
 create table locations (
   id bigserial not null,
   name character varying(256) not null,
-  primary key (id)
+  primary key (id),
+  constraint locations_uk unique (name)
 );
-create unique index locations_uk on locations(name);
 
 create table parcels (
   id bigserial not null,

@@ -27,7 +27,6 @@ function* deleteParcel(action) {
         }).then(response => {
             if(response.status >= 400 && response.status < 600)
                 throw new Error("Bad response from server");
-            return response.json();
         });
 
         yield put(deleteParcelSuccess(id));

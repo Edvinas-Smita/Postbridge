@@ -7,13 +7,15 @@ function* getParcelStatusHistory(action) {
 
         const { id } = action;
         let parcelStatusHistory = [];
-        yield fetch("http://localhost:8080/api/parcelStatusHistory/" + id).then(response => {     
+        yield fetch("http://localhost:8080/api/parcels/" + id + "/statusHistory").then(response => {     
             return response.json();
         }).then(data => {
-            parcelStatusHistory = Object.values(data.changed);
+            console.log(data);
+            parcelStatusHistory = Object.values(data);
         });
         yield put(getParcelStatusHistorySuccess(parcelStatusHistory));
     } catch (e){
+        console.log(e);
         yield put(getParcelStatusHistoryError(e));
     }
 }

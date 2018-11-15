@@ -43,9 +43,9 @@ public interface ParcelsMapper {
   })
   List<Parcel> getParcels();
 
-  @Select("select * from parcel_status_history where ref_parcel = #{id}")
+  @Select("select * from parcel_status_history where ref_parcel = #{id} order by date_changed desc")
   @Results({
-          @Result(property = "dateChanged", column = "DATE_CHANGED"),
+          @Result(property = "date", column = "DATE_CHANGED"),
           @Result(property = "user", javaType = User.class, column = "REF_USER",
                   one = @One(select = "getUser"))
   })

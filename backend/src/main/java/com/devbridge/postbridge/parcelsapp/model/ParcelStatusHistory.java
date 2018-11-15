@@ -21,5 +21,5 @@ public class ParcelStatusHistory {
   private User user;
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") //TODO: how to get correct format?
-  private Date dateChanged;
+  private Date date;
 }

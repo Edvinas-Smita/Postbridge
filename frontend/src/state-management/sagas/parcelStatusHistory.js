@@ -3,15 +3,14 @@ import { GET_PARCEL_STATUS_HISTORY } from '../constants/parcelStatusHistory';
 import { getParcelStatusHistoryError, getParcelStatusHistorySuccess } from '../actions/parcelStatusHistory';
 
 function* getParcelStatusHistory(action) {
-    console.log(action);
     try {
+
         const { id } = action;
         let parcelStatusHistory = [];
-        yield fetch("http://localhost:8080/api/parcelStatusHistory/" + id).then(response => {
-            
+        yield fetch("http://localhost:8080/api/parcelStatusHistory/" + id).then(response => {     
             return response.json();
         }).then(data => {
-            parcelStatusHistory = Object.values(data);
+            parcelStatusHistory = Object.values(data.changed);
         });
         yield put(getParcelStatusHistorySuccess(parcelStatusHistory));
     } catch (e){

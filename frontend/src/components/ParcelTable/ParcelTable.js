@@ -222,7 +222,3 @@ const parcelTable = (props) => {
 }
 
 export default withStyles(styles)(parcelTable);
-
-/*
-<ParcelStatusHistory/>
-*/

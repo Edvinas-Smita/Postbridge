@@ -19,12 +19,13 @@ export default function parcelStatusHistoryReducer(state = initialState, action 
         case GET_PARCEL_STATUS_HISTORY_SUCCESS: return {
             ...state,
             isLoading: false,
-            parcels: action.parcelStatusHistory,
+            history: action.parcelStatusHistory,
         };
         case GET_PARCEL_STATUS_HISTORY_ERROR: return {
             ...state,
             isLoading: false,
             error: action.error,
+            history: []
         };
         default: return state;
     }

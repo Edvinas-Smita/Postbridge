@@ -56,7 +56,6 @@ class ParcelList extends React.Component {
     }
 
     render() {
-
         return (       
             <div className="ParcelListPage">
                 <Header/>
@@ -80,7 +79,8 @@ class ParcelList extends React.Component {
                 <ParcelStatusHistory 
                     open={this.state.isOpenHist} 
                     onRequestClose={this.closeParcelStatusHistory}
-                    parcelStatusHistory={this.props.parcelStatusHistory}/>           
+                    parcelStatusHistory={this.props.parcelStatusHistory}
+                    isHistoryLoading={this.props.isHistoryLoading}/>           
             </div>
         )
     }
@@ -98,7 +98,8 @@ const mapStateToProps = state => ({
     sortBy: state.parcels.sortBy,
     sortOrder: state.parcels.sortOrder,
     parcels: getSortedParcels(state),
-    /*parcelStatusHistory: getParcelStatusHistoryAction(),*/
+    parcelStatusHistory: state.parcelStatusHistory.history,
+    isHistoryLoading: state.parcelStatusHistory.isLoading
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelList);

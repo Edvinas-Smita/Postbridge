@@ -19,19 +19,7 @@ module.exports = function() {
               "id": 4,
               "firstName": "Osvaldas",
               "lastName": "Kisielius"
-            },
-            "history": [
-              {
-                "user": 9,
-                "date": "2018-08-18T07:03:54.000Z",
-                "status": 1
-              },
-              {
-                "user": 18,
-                "date": "2018-08-17T13:18:21.000Z",
-                "status": 2
-              },
-            ]
+            }
           },
           {
             "id": 2,
@@ -51,19 +39,7 @@ module.exports = function() {
               "id": 1,
               "firstName": "Johna",
               "lastName": "Bill"
-            },
-            "history": [
-              {
-                "user": 15,
-                "date": "2018-08-27T13:30:36.000Z",
-                "status": 2
-              },
-              {
-                "user": 9,
-                "date": "2018-08-20T18:23:01.000Z",
-                "status": 3
-              },
-            ]
+            }
           },
           {
             "id": 3,
@@ -83,8 +59,7 @@ module.exports = function() {
               "id": 1,
               "firstName": "Johna",
               "lastName": "Bill"
-            },
-            "history": [],
+            }
           },
           {
             "id": 4,
@@ -104,8 +79,7 @@ module.exports = function() {
               "id": 3,
               "firstName": "Kol",
               "lastName": "Bum"
-            },
-            "history": [],
+            }
           },
           {
             "id": 5,
@@ -125,8 +99,7 @@ module.exports = function() {
               "id": 7,
               "firstName": "Mat",
               "lastName": "Cox"
-            },
-            "history": [],
+            }
           },
           {
             "id": 6,
@@ -146,8 +119,7 @@ module.exports = function() {
               "id": 15,
               "firstName": "Caroline",
               "lastName": "Jaymes"
-            },
-            "history": [],
+            }
           },
           {
             "id": 7,
@@ -167,66 +139,60 @@ module.exports = function() {
               "id": 13,
               "firstName": "Monica",
               "lastName": "Wilde"
-            },
-            "history": [],
+            }
         }
     ],
-    "parcelStatusHistory":[
-      {
-        "id": 1,
-        "changed": [ 
-          {
-            "user": {
-              "id": 1,
-              "firstName": "Johna",
-              "lastName": "Bill"
-            },
-            "status": 1,
-            "date": "2018-08-05T23:15:30.000Z"
+      "statusHistory":[
+        {
+          "user": {
+          "id": 1,
+          "firstName": "Johna",
+          "lastName": "Bill"
           },
-          {
-            "user": {
-              "id": 7,
-              "firstName": "Mat",
-              "lastName": "Cox"
-            },
-            "status": 2,
-            "date": "2018-08-08T13:08:03.000Z"
+          "status": 1,
+          "date": "2018-08-05T23:15:30.000Z",
+          "parcelId": 1
+        },
+        {
+          "user": {
+            "id": 7,
+            "firstName": "Mat",
+            "lastName": "Cox"
           },
-          {
-            "user": {
-              "id": 8,
-              "firstName": "John",
-              "lastName": "Wick"
-            },
-            "status": 3,
-            "date": "2018-08-08T13:08:03.000Z"
+          "status": 2,
+          "date": "2018-08-08T13:08:03.000Z",
+          "parcelId": 1
+        },
+        {
+          "user": {
+            "id": 8,
+            "firstName": "John",
+            "lastName": "Wick"
           },
-        ]
-      },
-      {
-        "id": 2,
-        "changed": [ 
-          {
-            "user": {
-              "id": 18,
-              "firstName": "Patrick",
-              "lastName": "Strongwell"
-            },
-            "status": 1,
-            "date": "2018-08-03T08:01:13.000Z"
+          "status": 3,
+          "date": "2018-08-08T13:08:03.000Z",
+          "parcelId": 1
+        },
+        {
+          "user": {
+            "id": 18,
+            "firstName": "Patrick",
+            "lastName": "Strongwell"
           },
-          {
-            "user": {
-              "id": 3,
-              "firstName": "Kol",
-              "lastName": "Bum"
-            },
-            "status": 2,
-            "date": "2018-08-08T20:06:13.000Z"
-          }
-        ]
-      },      
-    ]
+          "status": 1,
+          "date": "2018-08-03T08:01:13.000Z",
+          "parcelId": 2
+        },
+        {
+          "user": {
+            "id": 3,
+            "firstName": "Kol",
+            "lastName": "Bum"
+          },
+          "status": 2,
+          "date": "2018-08-08T20:06:13.000Z",
+          "parcelId": 2
+        }
+      ]
   }
 }

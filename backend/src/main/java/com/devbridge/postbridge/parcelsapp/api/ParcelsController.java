@@ -41,7 +41,7 @@ public class ParcelsController {
   }
 
   @GetMapping("/{id}/statusHistory")
-  public ResponseEntity<List<ParcelStatusHistory>> getParcelStatusHistory(@PathVariable long id){
+  public ResponseEntity<List<ParcelStatusHistory>> getParcelStatusHistory(@PathVariable long id) {
     logger.debug("getParcelStatusHistory started(id=>" + id + ") started...", id);
     List<ParcelStatusHistory> statusHistory = parcelsService.getParcelStatusHistory(id);
     logger.debug("getParcelStatusHistory started(id=>" + id + ") finished", id);

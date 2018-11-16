@@ -21,7 +21,7 @@ public class ParcelsService {
     return parcelsMapper.getParcels();
   }
 
-  public List<ParcelStatusHistory> getParcelStatusHistory(long id){
+  public List<ParcelStatusHistory> getParcelStatusHistory(long id) {
     return parcelsMapper.getParcelStatusHistory(id);
   }
   public void deleteParcel(long id) {

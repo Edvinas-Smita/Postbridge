@@ -55,7 +55,7 @@ class ParcelTableHeader extends Component {
                         <Grid container alignItems="center">
                             DESCRIPTION
                         </Grid>
-                </TableCell>
+                    </TableCell>
                     <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}} >
                         <Grid container alignItems="center">
                             <TableSortLabel 

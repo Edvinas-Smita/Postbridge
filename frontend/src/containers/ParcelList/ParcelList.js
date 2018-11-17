@@ -96,7 +96,13 @@ class ParcelList extends React.Component {
                         <ParcelTable
                             deleteParcelFactory={this.deleteParcelFactory}
                             parcels={this.props.parcels}
-                            userId={this.props.userId} />
+                            userId={this.props.userId}
+                            deleteParcelFactory={this.deleteParcelFactory}
+                            openParcelStatusHistory={this.openParcelStatusHistory}
+                            onEditParcel={this.editParcel.bind(this)}
+                            
+                            
+                            />
                     </Table>
                 </Grid>
                 <ParcelStatusHistory 

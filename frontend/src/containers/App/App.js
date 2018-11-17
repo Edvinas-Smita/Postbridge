@@ -14,7 +14,7 @@ const PrivateRoute = ({ component: Component, authed, user, ...rest}) => (
           state: { from: props.location }
         }} />
     )}/>
-)
+);
 
 class App extends Component {
 

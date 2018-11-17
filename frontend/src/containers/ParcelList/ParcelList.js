@@ -9,12 +9,13 @@ import ParcelTable from '../../components/ParcelTable/ParcelTable';
 import Grid from '@material-ui/core/Grid/Grid';
 import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels } from '../../state-management/actions/parcels';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
-
+import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
 class ParcelList extends React.Component {
     constructor(props){
         super(props);
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
+        this.state = {};
     }
 
     componentWillMount() {
@@ -29,30 +30,50 @@ class ParcelList extends React.Component {
         return () => this.props.deleteParcel(id);
     }
 
-    render() {
+    editParcel(parcel) {
+        return () => {
+            this.setState({
+                editingParcel: true,
+                parcelToEdit: parcel
+            });
+        }
+    };
 
-        return (       
+    finishEdit = newValues => {
+        console.log("Changed values:", newValues);
+        this.setState({
+            editingParcel: false,
+            parcelToEdit: null
+        });
+    };
+
+    render() {
+        return (
             <div className="ParcelListPage">
                 <Header/>
-                 <Decoration/> 
-                <Grid               
+                <Decoration/>
+                <Grid
                     container
                     direction="column"
                     alignItems="center"
                     justify="center"
                     className="ParcelTable"
                 >
-                                        <ParcelTable  
+                    <ParcelTable
                         timeFilter={this.sortingFactory('createdDate')}
                         statusFilter={this.sortingFactory('status')}
                         weightFilter={this.sortingFactory('weight')}
                         deleteParcelFactory={this.deleteParcelFactory}
                         parcels={this.props.parcels}
-                        userId={this.props.userId} />
+                        userId={this.props.userId}
+                        onEditParcel={this.editParcel.bind(this)}
+                    />
                 </Grid>
-  
-                    
-           
+                <ParcelEdit
+                    parcel={this.state.parcelToEdit}
+                    open={this.state.editingParcel}
+                    onClose={this.finishEdit}
+                />
             </div>
         )
     }

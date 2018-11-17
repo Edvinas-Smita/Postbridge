@@ -13,6 +13,7 @@ import ParcelStatusHistory from '../../containers/ParcelStatusHistory/ParcelStat
 import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels } from '../../state-management/actions/parcels';
 import { getParcelStatusHistory as getParcelStatusHistoryAction } from '../../state-management/actions/parcelStatusHistory';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
+import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
 class ParcelList extends React.Component {
     constructor(props){
@@ -39,21 +40,34 @@ class ParcelList extends React.Component {
     }
 
     openParcelStatusHistory(id){
-        this.setState(
-            {
+        this.setState({
                 isOpenHist: true,
             },
             () => {this.props.getParcelStatusHistory(id);});
     }
 
     closeParcelStatusHistory(id){
-        this.setState(
-            {
+        this.setState({
                 isOpenHist: false,
-            }
-            );
-
+            });
     }
+
+    editParcel(parcel) {
+        return () => {
+            this.setState({
+                editingParcel: true,
+                parcelToEdit: parcel
+            });
+        }
+    };
+
+    finishEdit = newValues => {
+        console.log("Changed values:", newValues);
+        this.setState({
+            editingParcel: false,
+            parcelToEdit: null
+        });
+    };
 
     render() {
         return (       
@@ -67,20 +81,27 @@ class ParcelList extends React.Component {
                     justify="center"
                     className="ParcelTable"
                 >
-                    <ParcelTable  
+                    <ParcelTable
                         timeFilter={this.sortingFactory('createdDate')}
                         statusFilter={this.sortingFactory('status')}
                         weightFilter={this.sortingFactory('weight')}
                         deleteParcelFactory={this.deleteParcelFactory}
                         openParcelStatusHistory={this.openParcelStatusHistory}
                         parcels={this.props.parcels}
-                        userId={this.props.userId} />
+                        userId={this.props.userId}
+                        onEditParcel={this.editParcel.bind(this)}
+                    />
                 </Grid>
                 <ParcelStatusHistory 
                     open={this.state.isOpenHist} 
                     onRequestClose={this.closeParcelStatusHistory}
                     parcelStatusHistory={this.props.parcelStatusHistory}
                     isHistoryLoading={this.props.isHistoryLoading}/>           
+                <ParcelEdit
+                    parcel={this.state.parcelToEdit}
+                    open={this.state.editingParcel}
+                    onClose={this.finishEdit}
+                />
             </div>
         )
     }

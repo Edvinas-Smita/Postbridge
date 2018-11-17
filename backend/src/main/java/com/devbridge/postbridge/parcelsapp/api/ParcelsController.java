@@ -3,6 +3,7 @@ package com.devbridge.postbridge.parcelsapp.api;
 import java.util.List;
 
 import com.devbridge.postbridge.parcelsapp.model.Parcel;
+import com.devbridge.postbridge.parcelsapp.model.ParcelStatusHistory;
 import com.devbridge.postbridge.parcelsapp.service.ParcelsService;
 
 import org.slf4j.Logger;
@@ -34,6 +35,19 @@ public class ParcelsController {
 
     if (parcels != null) {
       return new ResponseEntity<>(parcels, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @GetMapping("/{id}/statusHistory")
+  public ResponseEntity<List<ParcelStatusHistory>> getParcelStatusHistory(@PathVariable long id) {
+    logger.debug("getParcelStatusHistory started(id=>" + id + ") started...", id);
+    List<ParcelStatusHistory> statusHistory = parcelsService.getParcelStatusHistory(id);
+    logger.debug("getParcelStatusHistory started(id=>" + id + ") finished", id);
+
+    if (statusHistory != null) {
+      return new ResponseEntity<>(statusHistory, HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

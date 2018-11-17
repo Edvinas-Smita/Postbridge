@@ -1,5 +1,6 @@
 module.exports = function() {
-    return { "parcels": [ 
+    return { 
+      "parcels": [ 
         {
             "id": 1,
             "startLocation": "Vilnius",
@@ -140,6 +141,58 @@ module.exports = function() {
               "lastName": "Wilde"
             }
         }
-    ]
+    ],
+      "statusHistory":[
+        {
+          "user": {
+          "id": 1,
+          "firstName": "Johna",
+          "lastName": "Bill"
+          },
+          "status": 1,
+          "date": "2018-08-05T23:15:30.000Z",
+          "parcelId": 1
+        },
+        {
+          "user": {
+            "id": 7,
+            "firstName": "Mat",
+            "lastName": "Cox"
+          },
+          "status": 2,
+          "date": "2018-08-08T13:08:03.000Z",
+          "parcelId": 1
+        },
+        {
+          "user": {
+            "id": 8,
+            "firstName": "John",
+            "lastName": "Wick"
+          },
+          "status": 3,
+          "date": "2018-08-08T13:08:03.000Z",
+          "parcelId": 1
+        },
+        {
+          "user": {
+            "id": 18,
+            "firstName": "Patrick",
+            "lastName": "Strongwell"
+          },
+          "status": 1,
+          "date": "2018-08-03T08:01:13.000Z",
+          "parcelId": 2
+        },
+        {
+          "user": {
+            "id": 3,
+            "firstName": "Kol",
+            "lastName": "Bum"
+          },
+          "status": 2,
+          "date": "2018-08-08T20:06:13.000Z",
+          "parcelId": 2
+        }
+      ]
   }
 }

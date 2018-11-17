@@ -2,14 +2,16 @@ package com.devbridge.postbridge.parcelsapp.mapper;
 
 import java.util.List;
 import com.devbridge.postbridge.parcelsapp.model.Parcel;
+import com.devbridge.postbridge.parcelsapp.model.ParcelStatusHistory;
 import com.devbridge.postbridge.parcelsapp.model.User;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.One;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.One;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -47,6 +49,14 @@ public interface ParcelsMapper {
                   one = @One(select = "getUser"))
   })
   List<Parcel> getParcels();
+
+  @Select("select * from parcel_status_history where ref_parcel = #{id} order by date_changed desc")
+  @Results({
+          @Result(property = "date", column = "DATE_CHANGED"),
+          @Result(property = "user", javaType = User.class, column = "REF_USER",
+                  one = @One(select = "getUser"))
+  })
+  List<ParcelStatusHistory> getParcelStatusHistory(@Param("id") long id);
 
   @Select("select id, first_name, last_name from users where id = #{user_id}")
   @Results({

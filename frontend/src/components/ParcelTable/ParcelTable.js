@@ -220,7 +220,7 @@ const parcelTable = (props) => {
                             <Button variant={buttonVariant} color={buttonColor}  size="small" className={classes.button}>
                                 {buttonText}
                             </Button>
-                            { (STATUS[parcel.status] === 'Open' || STATUS[parcel.status] === 'Picked up')
+                            { (parcel.courier.id === props.userId)
                             ? <IconButton className={classes.iconButton} onClick={props.onEditParcel(parcel)}> <EditIcon fontSize="small"/> </IconButton>
                             : null }
                             { (STATUS[parcel.status] === 'Open')

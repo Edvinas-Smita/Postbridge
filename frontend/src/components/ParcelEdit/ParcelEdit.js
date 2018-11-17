@@ -142,7 +142,7 @@ class ParcelEdit extends Component {
 
     changesPendingPrompt = () => {
         //if changed then open a confirmation dialog
-        if (this.state.parcel !== this.props.parcel) {
+        if (Object.keys(deepDiff(this.state.parcel, this.props.parcel)).length) {   //if there are changed values
             this.setState({
                 changesPending: true
             });

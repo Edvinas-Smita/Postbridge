@@ -17,6 +17,10 @@ import { getSortedParcels } from '../../state-management/selectors/parcelsSelect
 class ParcelList extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            sortOrder: 'asc',
+            sortBy: 'createdDate'
+        }
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
     }
 
@@ -28,13 +32,16 @@ class ParcelList extends React.Component {
         return () => this.props.deleteParcel(id);
     }
 
+    sortingFactory(sortBy) {
+        return () => this.props.sortParcels(sortBy);
+    }
+
     handleRequestSort = (event, property) => {
         this.props.sortParcels(property);
     }
 
     render() {
-
-        return (       
+        return (     
             <div className="ParcelListPage">
                 <Header/>
                 <Decoration/> 
@@ -47,7 +54,9 @@ class ParcelList extends React.Component {
                 >
                     <Table style={{width: '85%', marginLeft: '4%', marginRight: '4%', tableLayout: 'fixed',}}>
                         <ParcelTableHeader 
-                            onRequestSort={this.handleRequestSort}/>
+                            onRequestSort={this.handleRequestSort}
+                            sortOrder={this.props.sortOrder}
+                            sortBy={this.props.sortBy}/>
                         <ParcelTable
                             deleteParcelFactory={this.deleteParcelFactory}
                             parcels={this.props.parcels}

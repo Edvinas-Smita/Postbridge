@@ -92,13 +92,11 @@ const styles = theme => ({
 class ParcelTableHeader extends Component {
 
     createSortHandler = property => event => {
-        console.log(property);
-        this.props.onRequestSort(property);
+        this.props.onRequestSort(event, property);
     }
 
     render () {
-        const { classes, order, orderBy } = this.props;
-
+        const { classes } = this.props;
         return (
             <TableHead >
                 <TableRow style={{marginBottom: '10px'}}>
@@ -113,7 +111,11 @@ class ParcelTableHeader extends Component {
                     <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}}></TableCell>
                     <TableCell style={{width: '8%', fontWeight:'bold', padding: '12px'}} >
                         <Grid container alignItems="center" >
-                            <TableSortLabel active={true} onClick={this.createSortHandler('status')} style={{width: '42%'}}>
+                            <TableSortLabel 
+                                active={this.props.sortBy === 'status'}
+                                direction={this.props.sortOrder}
+                                onClick={this.createSortHandler('status')} 
+                                style={{width: '42%'}}>
                                 STATUS
                             </TableSortLabel>
                             <IconButton className={classes.iconButton}>
@@ -128,7 +130,11 @@ class ParcelTableHeader extends Component {
                 </TableCell>
                     <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}} >
                         <Grid container alignItems="center">
-                            <TableSortLabel onClick={this.createSortHandler('weight')} style={{width: '52%'}}>
+                            <TableSortLabel 
+                                active={this.props.sortBy === 'weight'}
+                                direction={this.props.sortOrder}
+                                onClick={this.createSortHandler('weight')} 
+                                style={{width: '52%'}}>
                                 WEIGHT
                             </TableSortLabel>
                             <IconButton className={classes.iconButton}>
@@ -138,7 +144,11 @@ class ParcelTableHeader extends Component {
                     </TableCell>
                     <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}} >
                         <Grid container alignItems="center">
-                            <TableSortLabel onClick={this.createSortHandler('time')} style={{width: '62%'}}>
+                            <TableSortLabel 
+                                active={this.props.sortBy === 'createdDate'}
+                                direction={this.props.sortOrder}
+                                onClick={this.createSortHandler('createdDate')} 
+                                style={{width: '62%'}}>
                                 CREATED
                             </TableSortLabel> 
                             <IconButton className={classes.iconButton} >

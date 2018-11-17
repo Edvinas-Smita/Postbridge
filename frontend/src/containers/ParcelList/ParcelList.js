@@ -32,10 +32,6 @@ class ParcelList extends React.Component {
         return () => this.props.deleteParcel(id);
     }
 
-    sortingFactory(sortBy) {
-        return () => this.props.sortParcels(sortBy);
-    }
-
     handleRequestSort = (event, property) => {
         this.props.sortParcels(property);
     }

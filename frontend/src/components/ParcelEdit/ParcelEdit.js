@@ -19,6 +19,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import {STATUS, deepDiff} from '../../helpers';
 import Box from './Box.svg';
+import { Typography } from '@material-ui/core';
 
 const styles = theme => ({
     setWidth: {
@@ -50,6 +51,11 @@ const styles = theme => ({
         width: '32px',
         marginRight: '12px',
         marginLeft: '2.5%',
+    },
+    label: {
+        fontWeight: 'bold',
+        color: theme.palette.grey[600],
+        marginBottom: theme.spacing.unit, 
     }
 });
 
@@ -89,6 +95,7 @@ class ParcelEdit extends Component {
         if (nextProps.open && (!this.state.parcel || nextProps.parcel !== this.state.parcel)) {
             this.setState({
                 parcel: {   //getting a custom copy to store only the information that is relevant in state
+                    id: nextProps.parcel.id,
                     recipient: {
                         firstName: nextProps.parcel.recipient.firstName,
                         lastName: nextProps.parcel.recipient.lastName
@@ -224,7 +231,9 @@ class ParcelEdit extends Component {
                 <DialogTitle>
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <img className={classes.icon} src={Box} alt=''/>
-                        Edit order
+                        <Typography variant="h5" style={{fontWeight: 'bold'}}>
+                            {parcel.id === '' ? 'Request new delivery' : 'Edit order'}
+                        </Typography>
                     </div>
                 </DialogTitle>
 
@@ -238,7 +247,7 @@ class ParcelEdit extends Component {
                     >
                         <Grid item className={classes.setWidth}>
                             <FormControl className={classes.fullWidth}>
-                                <FormLabel>FIRST NAME</FormLabel>
+                                <FormLabel className={classes.label}>FIRST NAME</FormLabel>
                                 <TextField  //TODO: possibly validate inputs as last line of defence from SQL injection
                                     variant="outlined"
                                     placeholder="Enter recipients first name"
@@ -250,7 +259,7 @@ class ParcelEdit extends Component {
                         </Grid>
                         <Grid item className={classes.setWidth}>
                             <FormControl className={classes.fullWidth}>
-                                <FormLabel>LAST NAME</FormLabel>
+                                <FormLabel className={classes.label}>LAST NAME</FormLabel>
                                 <TextField
                                     variant="outlined"
                                     placeholder="Enter recipients last name"
@@ -264,7 +273,7 @@ class ParcelEdit extends Component {
                         <Grid item className={classes.setWidth}>
                             <div className={classes.toAndFrom}>
                                 <FormControl className={classes.fullWidth}>
-                                    <FormLabel>FROM</FormLabel>
+                                    <FormLabel className={classes.label}>FROM</FormLabel>
                                     <Select
                                         variant="outlined"
                                         value={parcel.startLocation}
@@ -278,7 +287,7 @@ class ParcelEdit extends Component {
                                     </Select>
                                 </FormControl>
                                 <FormControl className={classes.fullWidth}>
-                                    <FormLabel>TO</FormLabel>
+                                    <FormLabel className={classes.label}>TO</FormLabel>
                                     <Select
                                         variant="outlined"
                                         value={parcel.endLocation}
@@ -294,8 +303,9 @@ class ParcelEdit extends Component {
                             </div>
                         </Grid>
 
+                        {parcel.id !== '' &&
                         <Grid item className={classes.setWidth}>
-                            <FormLabel>STATUS</FormLabel>
+                            <FormLabel className={classes.label}>STATUS</FormLabel>
                             <Grid
                                 container
                                 wrap='nowrap'
@@ -331,10 +341,11 @@ class ParcelEdit extends Component {
                                 }
                             </Grid>
                         </Grid>
+                        }
 
                         <Grid item className={classes.setWidth}>
                             <FormControl className={classes.fullWidth}>
-                                <FormLabel>DESCRIPTION</FormLabel>
+                                <FormLabel className={classes.label}>DESCRIPTION</FormLabel>
                                 <TextField
                                     variant="outlined"
                                     multiline
@@ -349,7 +360,7 @@ class ParcelEdit extends Component {
 
                         <Grid item className={classes.setWidth}>
                             <FormControl className={classes.fullWidth}>
-                                <FormLabel>PARCEL WEIGHT</FormLabel>
+                                <FormLabel className={classes.label}>PARCEL WEIGHT</FormLabel>
                                 <div className={classes.weightAndInfo}>
                                     <TextField
                                         variant="outlined"

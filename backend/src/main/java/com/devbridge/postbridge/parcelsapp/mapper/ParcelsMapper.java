@@ -1,17 +1,26 @@
 package com.devbridge.postbridge.parcelsapp.mapper;
 
 import java.util.List;
+
 import com.devbridge.postbridge.parcelsapp.model.Parcel;
 import com.devbridge.postbridge.parcelsapp.model.ParcelStatusHistory;
 import com.devbridge.postbridge.parcelsapp.model.User;
-
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.One;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.Results;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @Mapper
 public interface ParcelsMapper {
-    
+
     //<editor-fold desc="parcel CRUD" defaultstate="collapsed">
     @Insert("INSERT INTO parcels values(" +
                     "DEFAULT, " +
@@ -25,7 +34,7 @@ public interface ParcelsMapper {
                     "(select id from locations where name = #{endLocation}))")
     @Options(useGeneratedKeys = true)
     void createParcel(Parcel parcel);
-    
+
     @Select("select " +
                     "  p.id, " +
                     "  start_loc.name as start_location, " +
@@ -58,7 +67,7 @@ public interface ParcelsMapper {
                     one = @One(select = "getUser"))
     })
     Parcel getParcel(long id);
-    
+
     @Select("select " +
                     "  p.id, " +
                     "  start_loc.name as start_location, " +
@@ -90,7 +99,7 @@ public interface ParcelsMapper {
                     one = @One(select = "getUser"))
     })
     List<Parcel> getParcels();
-    
+
     @Update("UPDATE parcels SET " +
                     "ref_user_courier = COALESCE((SELECT id FROM users WHERE id = #{courier.id}), ref_user_courier), " +
                     "status = COALESCE(#{status}, status), " +
@@ -98,13 +107,13 @@ public interface ParcelsMapper {
                     "weight = COALESCE(#{weight}, weight), " +
                     "ref_location_start = COALESCE((select id from locations where name = #{startLocation}), ref_location_start), " +
                     "ref_location_end = COALESCE((select id from locations where name = #{endLocation}), ref_location_end) " +
-                "WHERE id = #{id};")
+                    "WHERE id = #{id};")
     int updateParcel(Parcel parcel);
-    
+
     @Delete("delete from parcels where id = #{parcel_id}")
     int deleteParcel(long parcel_id);
     //</editor-fold>
-    
+
     @Select("select id, first_name, last_name from users where id = #{user_id}")
     @Results({
             @Result(property = "id", column = "ID"),
@@ -112,7 +121,7 @@ public interface ParcelsMapper {
             @Result(property = "lastName", column = "LAST_NAME")
     })
     User getUser(Integer user_id);
-    
+
     @Select("select * from parcel_status_history where ref_parcel = #{id} order by date_changed desc")
     @Results({
             @Result(property = "date", column = "DATE_CHANGED"),
@@ -120,7 +129,7 @@ public interface ParcelsMapper {
                     one = @One(select = "getUser"))
     })
     List<ParcelStatusHistory> getParcelStatusHistory(@Param("id") long id);
-    
+
     @Insert("INSERT INTO parcel_status_history values(" +
                     "DEFAULT, " +
                     "#{parcelID}, " +

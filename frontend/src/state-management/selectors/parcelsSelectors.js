@@ -4,14 +4,82 @@ const parcelsSelector = state => state.parcels.parcels;
 const sortBySelector = state => state.parcels.sortBy;
 const sortOrderSelector = state => state.parcels.sortOrder;
 
+const startLocationSelector = state => state.parcels.startLocation;
+const endLocationSelector = state => state.parcels.endLocation;
+const statusSelector = state => state.parcels.status;
+const weightFromSelector = state => state.parcels.weightFrom;
+const weightToSelector  = state => state.parcels.weightTo;
+const createdFromSelector = state => state.parcels.createdFrom;
+const createdToSelector = state => state.parcels.createdTo;
+const courierSelector = state => state.parcels.courier;
+const filterBySelector = state => state.parcels.filterBy;
+const userIdSelector = state => state.parcels.userId;
+
 const compareStrings = (a, b) =>{
     if(a < b) return -1;
     if(a === b) return 0;
     return -1;
 }
 
-export const getSortedParcels = createSelector(
+
+
+export const getFilteredParcels = createSelector(
+    startLocationSelector,
+    endLocationSelector,
+    statusSelector,
+    weightFromSelector,
+    weightToSelector,
+    createdFromSelector,
+    createdToSelector,
+    courierSelector,
+    filterBySelector,
     parcelsSelector,
+    userIdSelector,
+    (startLocation, endLocation, status, weightFrom, weightTo, createdFrom,  createdTo, courier, filterBy, parcels, userId) => {
+    let filteredParcels = [...parcels];
+    const courierName = 'me';
+        switch(filterBy){
+            case 'destination':
+                filteredParcels = startLocation !== '' && endLocation!== ''
+                ? filteredParcels.filter(
+                    parcel => parcel['startLocation'].includes(startLocation) && parcel['endLocation'].includes(endLocation)
+                )
+                : filteredParcels;
+                return filteredParcels;
+            case 'status':
+                filteredParcels = status[0] || status[1] || status[2]  || status[3] 
+                ? filteredParcels.filter(
+                    parcel =>  (status[0]  && parcel.status === 1) || (status[1] && parcel.status === 2)  || (status[2] && parcel.status ===  3) || (status[3]  && parcel.status === 4)
+                )
+                : filteredParcels;
+                return filteredParcels;
+            case 'weight':
+                filteredParcels = weightFrom!== '' && weightTo !== '' 
+                ? filteredParcels.filter(
+                    parcel => parseInt(weightFrom)*1000 <= parcel['weight'] && parcel['weight'] <= parseInt(weightTo)*1000
+                )
+                : filteredParcels;
+                return filteredParcels;
+            case 'created':
+                filteredParcels = createdFrom !== '' && createdTo !== ''
+                ? filteredParcels.filter(
+                    parcel => new Date(createdFrom).getTime() <= new Date(parcel['createdDate']).getTime() && new Date(parcel['createdDate']).getTime() <= new Date(createdTo).getTime()
+                )
+                : filteredParcels;
+                return filteredParcels;
+            case 'courier':
+                filteredParcels = courier !== '' 
+                ? filteredParcels.filter(
+                    parcel =>  userId === parcel.courier.id ? courierName.includes(courier.toLowerCase()) :((parcel.courier.firstName).toLowerCase() + " " + (parcel.courier.lastName).toLowerCase()).includes(courier.toLowerCase()) 
+                )
+                : filteredParcels;
+            default:
+                return filteredParcels
+        }
+    }
+);
+export const getSortedParcels = createSelector(
+    getFilteredParcels,
     sortBySelector,
     sortOrderSelector,
     (parcels, sortBy, sortOrder) => {
@@ -37,3 +105,14 @@ export const getSortedParcels = createSelector(
         }
     }
 );
+
+
+
+
+
+
+
+    
+
+
+

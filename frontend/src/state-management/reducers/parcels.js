@@ -6,7 +6,9 @@ import {
     DELETE_PARCEL_SUCCESS,
     DELETE_PARCEL_ERROR, 
     SORT_PARCELS,
+    SET_PARCEL_FILTER,
 } from '../constants/parcels';
+// import { number } from 'prop-types';
 
 const initialState = {
     isLoading: false,
@@ -14,6 +16,21 @@ const initialState = {
     parcels: [],
     sortBy: 'createdDate',
     sortOrder: 'desc',
+    filterBy: '',
+
+    filteredParcels: [],
+    startLocation: '',
+    endLocation: '',
+    status: [ false, 
+        false,
+        false,
+        false],
+    weightFrom: '',
+    weightTo: '',
+    createdFrom: '',
+    createdTo: '',
+    courier: '',
+    userId: 1
 };
 
 export default function parcelsReducer(state = initialState, action = {}){
@@ -61,6 +78,37 @@ export default function parcelsReducer(state = initialState, action = {}){
                 ...state,
                 sortBy: action.sortBy,
                 sortOrder: newOrder,
+            }
+        case SET_PARCEL_FILTER: 
+            if (action.filterBy === 'status') {
+                let updatedStatus = [...state.status];
+                updatedStatus[action.value] = !state.status[action.value]
+                return {
+                    ...state,
+                    status: updatedStatus,
+                    filterBy: action.filterBy
+                }; 
+            }
+            else {
+                let updatedFilterBy;
+                if (action.filterBy === 'startLocation' || action.filterBy === 'endLocation') {
+                    updatedFilterBy = 'destination'
+                }
+                else if (action.filterBy === 'weightFrom' || action.filterBy === 'weightTo') {
+                    updatedFilterBy = 'weight'
+                }
+                else if (action.filterBy === 'createdFrom' || action.filterBy === 'createdTo') {
+                    updatedFilterBy = 'created'
+                }
+                else {
+                    updatedFilterBy = 'courier'
+                }
+
+                return {
+                    ...state,
+                    [action.filterBy]: action.value,
+                    filterBy: updatedFilterBy
+                }; 
             }
         default: return state;
     }

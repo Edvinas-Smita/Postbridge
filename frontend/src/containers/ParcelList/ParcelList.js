@@ -7,7 +7,7 @@ import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
 import ParcelTable from '../../components/ParcelTable/ParcelTable';
 import Grid from '@material-ui/core/Grid/Grid';
-import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels } from '../../state-management/actions/parcels';
+import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels} from '../../state-management/actions/parcels';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
 
 
@@ -42,13 +42,12 @@ class ParcelList extends React.Component {
                     justify="center"
                     className="ParcelTable"
                 >
-                                        <ParcelTable  
+                        <ParcelTable  
                         timeFilter={this.sortingFactory('createdDate')}
                         statusFilter={this.sortingFactory('status')}
                         weightFilter={this.sortingFactory('weight')}
                         deleteParcelFactory={this.deleteParcelFactory}
-                        parcels={this.props.parcels}
-                        userId={this.props.userId} />
+                        parcels={this.props.parcels}/>
                 </Grid>
   
                     
@@ -68,7 +67,8 @@ const mapStateToProps = state => ({
     isLoading: state.parcels.isLoading,
     sortBy: state.parcels.sortBy,
     sortOrder: state.parcels.sortOrder,
-    parcels: getSortedParcels(state),
+    filterBy: state.parcels.filterBy,
+    parcels: getSortedParcels(state)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelList);

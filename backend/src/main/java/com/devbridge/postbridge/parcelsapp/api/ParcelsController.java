@@ -30,7 +30,7 @@ public class ParcelsController {
 
     //<editor-fold desc="parcel CRUD" defaultstate="collapsed">
     @PostMapping
-    public ResponseEntity<Parcel> createParcel(@RequestBody @Valid Parcel parcel) {
+    public ResponseEntity<Parcel> postParcel(@RequestBody @Valid Parcel parcel) {
         logger.debug("Checking given data...");
         //TODO: modify @NotNull annotations in parcel class depending on what values we decide to be not null
         if (parcel.getRecipient().getId() == null || parcelsService.getUser(parcel.getRecipient().getId()) == null) {
@@ -38,7 +38,7 @@ public class ParcelsController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);    //TODO: currently this has empty body
         }
         logger.debug("Creating parcel: {}", parcel);
-        parcelsService.createParcel(parcel);
+        parcelsService.insertParcel(parcel);
         Parcel createdParcel = parcelsService.getParcel(parcel.getId());    //TODO: could not figure out how to save the rest of the properties to the original object
         logger.debug("Saved parcel: {}", createdParcel);
         return new ResponseEntity<>(createdParcel, HttpStatus.CREATED);

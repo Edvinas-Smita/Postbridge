@@ -33,7 +33,7 @@ public interface ParcelsMapper {
                     "(select id from locations where name = #{startLocation}), " +
                     "(select id from locations where name = #{endLocation}))")
     @Options(useGeneratedKeys = true)
-    void createParcel(Parcel parcel);
+    void insertParcel(Parcel parcel);
 
     @Select("select " +
                     "  p.id, " +

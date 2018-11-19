@@ -38,8 +38,8 @@ const styles = theme => ({
     },
     toAndFrom: {
         display: 'grid',
-        gridTemplateColumns: '50% 50%',
-        columnGap: '12px'
+        gridTemplateColumns: '48% 48%',
+        columnGap: '4%'
     },
     weightAndInfo: {
         display: 'grid',
@@ -56,7 +56,7 @@ const styles = theme => ({
         fontWeight: 'bold',
         color: theme.palette.grey[600],
         marginBottom: theme.spacing.unit, 
-    }
+    },
 });
 
 function NumberFormatCustom(props) {

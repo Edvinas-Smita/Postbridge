@@ -57,6 +57,31 @@ const styles = theme => ({
         color: theme.palette.grey[600],
         marginBottom: theme.spacing.unit, 
     },
+    gridStatus: {
+        marginTop: theme.spacing.unit, 
+    },
+    statusButton: {
+        justifyContent: 'center',
+        borderRadius: '3px',
+        height: '30px',
+        width: '120px',
+        textAlign: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        fontWeight: 'bold',
+        textTransform: 'none',
+        pointerEvents: 'none',
+        color: theme.palette.grey[500]
+    },
+    statusButtonNotActive: {
+        border: '1px dashed',
+        color: theme.palette.grey[500]
+    },
+    statusButtonActive: {
+        border: 'none',
+        color: theme.palette.common.white,
+        backgroundColor: theme.palette.secondary.dark
+    }
 });
 
 function NumberFormatCustom(props) {
@@ -251,6 +276,7 @@ class ParcelEdit extends Component {
                                 <TextField  //TODO: possibly validate inputs as last line of defence from SQL injection
                                     variant="outlined"
                                     placeholder="Enter recipients first name"
+                                    disabled
                                     InputProps={{className: classes.whiteField}}
                                     value={parcel.recipient.firstName}
                                     onChange={this.handleParcelRecipientChange('firstName')}
@@ -263,6 +289,7 @@ class ParcelEdit extends Component {
                                 <TextField
                                     variant="outlined"
                                     placeholder="Enter recipients last name"
+                                    disabled
                                     InputProps={{className: classes.whiteField}}
                                     value={parcel.recipient.lastName}
                                     onChange={this.handleParcelRecipientChange('lastName')}
@@ -273,7 +300,7 @@ class ParcelEdit extends Component {
                         <Grid item className={classes.setWidth}>
                             <div className={classes.toAndFrom}>
                                 <FormControl className={classes.fullWidth}>
-                                    <FormLabel className={classes.label}>FROM</FormLabel>
+                                    <FormLabel className={classes.label}>FROM *</FormLabel>
                                     <Select
                                         variant="outlined"
                                         value={parcel.startLocation}
@@ -287,7 +314,7 @@ class ParcelEdit extends Component {
                                     </Select>
                                 </FormControl>
                                 <FormControl className={classes.fullWidth}>
-                                    <FormLabel className={classes.label}>TO</FormLabel>
+                                    <FormLabel className={classes.label}>TO *</FormLabel>
                                     <Select
                                         variant="outlined"
                                         value={parcel.endLocation}
@@ -311,33 +338,44 @@ class ParcelEdit extends Component {
                                 wrap='nowrap'
                                 spacing={8}
                                 justify="center"
+                                className={classes.gridStatus}
                             >
-                                {Object.keys(STATUS).map(key =>
-                                    <Grid item key={key}>
-                                        <Button
-                                            disabled={true}
-                                            /*value={key}
-                                            onClick={() => this.setState({    //if we were to allow editing state from this form
-                                                parcel: {
-                                                    ...parcel,
-                                                    status: Number(key)
-                                                }
-                                            })}*/
-                                            variant='outlined'
-                                            style={this.props.parcel.status === Number(key)
-                                                ? {
-                                                    backgroundColor: '#00C770', //currently active button is highlighted green
-                                                    borderWidth: '0',
-                                                    color: 'white'
-                                                } :
-                                                {
-                                                    borderStyle: 'dashed'
-                                                }
-                                            }
-                                        >
-                                            {STATUS[key]}
-                                        </Button>
-                                    </Grid>)
+                                {Object.keys(STATUS).map(key => {                                    
+                                    let statusStyle = [
+                                        classes.statusButton,
+                                        (this.props.parcel.status === Number(key)) ? classes.statusButtonActive : classes.statusButtonNotActive].join(' ')
+                                    return (
+                                        <Grid item key={key} xs={3}>
+                                            <Button
+                                                /*disabled={true}*/
+                                                /*value={key}
+                                                onClick={() => this.setState({    //if we were to allow editing state from this form
+                                                    parcel: {
+                                                        ...parcel,
+                                                        status: Number(key)
+                                                    }
+                                                })}*/
+                                                variant='outlined'
+                                                className={statusStyle}
+                                                /*
+                                                style={this.props.parcel.status === Number(key)
+                                                    ? {
+                                                        backgroundColor: '#00C770', //currently active button is highlighted green
+                                                        borderWidth: '0',
+                                                        color: 'white'
+                                                    } :
+                                                    {
+                                                        borderStyle: 'dashed'
+                                                    }
+                                                    
+                                                }*/
+                                            >
+                                                {STATUS[key]}
+                                            </Button>
+                                        </Grid>
+                                
+                                        );
+                                    })
                                 }
                             </Grid>
                         </Grid>
@@ -345,13 +383,14 @@ class ParcelEdit extends Component {
 
                         <Grid item className={classes.setWidth}>
                             <FormControl className={classes.fullWidth}>
-                                <FormLabel className={classes.label}>DESCRIPTION</FormLabel>
+                                <FormLabel className={classes.label}>DESCRIPTION *</FormLabel>
                                 <TextField
                                     variant="outlined"
                                     multiline
                                     rows="6"
                                     InputProps={{className: classes.whiteField}}
                                     value={parcel.description}
+                                    required
                                     onChange={this.handleParcelChange('description')}
                                     placeholder="Give a short description of what's in the package, if it's fragile, etc..."
                                 />

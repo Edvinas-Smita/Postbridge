@@ -142,57 +142,80 @@ module.exports = function() {
             }
         }
     ],
-      "statusHistory":[
-        {
-          "user": {
-          "id": 1,
-          "firstName": "Johna",
-          "lastName": "Bill"
-          },
-          "status": 1,
-          "date": "2018-08-05T23:15:30.000Z",
-          "parcelId": 1
+    "statusHistory":[
+      {
+        "user": {
+        "id": 1,
+        "firstName": "Johna",
+        "lastName": "Bill"
         },
-        {
-          "user": {
-            "id": 7,
-            "firstName": "Mat",
-            "lastName": "Cox"
-          },
-          "status": 2,
-          "date": "2018-08-08T13:08:03.000Z",
-          "parcelId": 1
+        "status": 1,
+        "date": "2018-08-05T23:15:30.000Z",
+        "parcelId": 1
+      },
+      {
+        "user": {
+          "id": 7,
+          "firstName": "Mat",
+          "lastName": "Cox"
         },
-        {
-          "user": {
-            "id": 8,
-            "firstName": "John",
-            "lastName": "Wick"
-          },
-          "status": 3,
-          "date": "2018-08-08T13:08:03.000Z",
-          "parcelId": 1
+        "status": 2,
+        "date": "2018-08-08T13:08:03.000Z",
+        "parcelId": 1
+      },
+      {
+        "user": {
+          "id": 8,
+          "firstName": "John",
+          "lastName": "Wick"
         },
-        {
-          "user": {
-            "id": 18,
-            "firstName": "Patrick",
-            "lastName": "Strongwell"
-          },
-          "status": 1,
-          "date": "2018-08-03T08:01:13.000Z",
-          "parcelId": 2
+        "status": 3,
+        "date": "2018-08-08T13:08:03.000Z",
+        "parcelId": 1
+      },
+      {
+        "user": {
+          "id": 18,
+          "firstName": "Patrick",
+          "lastName": "Strongwell"
         },
-        {
-          "user": {
-            "id": 3,
-            "firstName": "Kol",
-            "lastName": "Bum"
-          },
-          "status": 2,
-          "date": "2018-08-08T20:06:13.000Z",
-          "parcelId": 2
-        }
-      ]
+        "status": 1,
+        "date": "2018-08-03T08:01:13.000Z",
+        "parcelId": 2
+      },
+      {
+        "user": {
+          "id": 3,
+          "firstName": "Kol",
+          "lastName": "Bum"
+        },
+        "status": 2,
+        "date": "2018-08-08T20:06:13.000Z",
+        "parcelId": 2
+      }
+    ],
+    "users": [
+      {
+        "id": 1,
+        "firstName": "Johna",
+        "lastName": "Bill",
+        "username": "test",
+        "password": "test"
+      },
+      {
+        "id": 2,
+        "firstName": "Saulius",
+        "lastName": "Virnys",
+        "username": "test2",
+        "password": "test"
+      },
+      {
+        "id": 4,
+        "firstName": "Osvaldas",
+        "lastName": "Kisielius",
+        "username": "test3",
+        "password": "test"
+      }
+    ]
   }
 }

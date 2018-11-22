@@ -2,20 +2,16 @@ import React from 'react';
 
 import { withStyles } from "@material-ui/core/styles";
 
-import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button/Button'
 import Grid from '@material-ui/core/Grid/Grid';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
 import IconButton from '@material-ui/core/IconButton';
 
 import PlaneIcon from '@material-ui/icons/AirplanemodeActive';
 import PointIcon from '@material-ui/icons/Lens';
 import CarIcon from '@material-ui/icons/DirectionsCar';
-import ArrowIcon from '@material-ui/icons/ArrowDropDown';
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 
@@ -105,67 +101,9 @@ const parcelTable = (props) => {
     const { classes } = props;
     const destinationColumnStyle = [classes.column, classes.boldText].join(' ');
     const otherColumnStyle = [classes.column, classes.greyTextColor].join(' ');
+    
     return (
-
-            <Table className={classes.table}>
-                <TableHead >
-                <TableRow style={{marginBottom: '10px'}}>
-                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '0px'}}>
-                        <Grid container alignItems="center">
-                            DESTINATION 
-                            <IconButton className={classes.iconButton}>
-                                <ArrowIcon fontSize="small"/>
-                            </IconButton> 
-                        </Grid> 
-                    </TableCell>
-                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}}></TableCell>
-                    <TableCell style={{width: '8%', fontWeight:'bold', padding: '12px'}} >
-                        <Grid container alignItems="center" >
-                            <TableSortLabel onClick={props.statusFilter} style={{width: '42%'}}>
-                                STATUS
-                            </TableSortLabel>
-                            <IconButton className={classes.iconButton}>
-                                <ArrowIcon fontSize="small"/>
-                            </IconButton>
-                        </Grid>
-                    </TableCell>
-                    <TableCell style={{width: '8%', fontWeight:'bold', padding: '12px'}}>
-                        <Grid container alignItems="center">
-                            DESCRIPTION
-                        </Grid>
-                   </TableCell>
-                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}} >
-                        <Grid container alignItems="center">
-                            <TableSortLabel onClick={props.weightFilter} style={{width: '52%'}}>
-                                WEIGHT
-                            </TableSortLabel>
-                            <IconButton className={classes.iconButton}>
-                                <ArrowIcon fontSize="small"/>
-                            </IconButton> 
-                        </Grid>
-                    </TableCell>
-                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}} >
-                        <Grid container alignItems="center">
-                            <TableSortLabel onClick={props.timeFilter} style={{width: '62%'}}>
-                                CREATED
-                            </TableSortLabel> 
-                            <IconButton className={classes.iconButton} >
-                                <ArrowIcon fontSize="small"/>
-                            </IconButton> 
-                        </Grid>  
-                    </TableCell>
-                    <TableCell style={{width: '9%', fontWeight:'bold', padding: '12px'}}>
-                        <Grid container alignItems="center">
-                            COURIER
-                            <IconButton className={classes.iconButton}>
-                                <ArrowIcon fontSize="small"/>
-                            </IconButton> 
-                        </Grid>
-                    </TableCell>
-                    <TableCell style={{width: '12%', fontWeight:'bold', padding: '12px'}}></TableCell>
-                </TableRow>
-                </TableHead>
-                <TableBody >
+            <TableBody >
                 {props.parcels.map((parcel, index) => {
                     let buttonText = "View details";
                     let buttonVariant = "outlined";
@@ -233,7 +171,6 @@ const parcelTable = (props) => {
                     );
                 })}
                 </TableBody>
-            </Table>
 
         )
 }

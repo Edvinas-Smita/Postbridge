@@ -4,20 +4,27 @@ import { connect } from 'react-redux';
 import './ParcelList.css';
 
 import Grid from '@material-ui/core/Grid/Grid';
+import Table from '@material-ui/core/Table';
 
 import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
 import ParcelTable from '../../components/ParcelTable/ParcelTable';
+import ParcelTableHeader from '../../components/ParcelTableHeader/ParcelTableHeader';
 import ParcelStatusHistory from '../../containers/ParcelStatusHistory/ParcelStatusHistory';
+
+import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
 import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels } from '../../state-management/actions/parcels';
 import { getParcelStatusHistory as getParcelStatusHistoryAction } from '../../state-management/actions/parcelStatusHistory';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
-import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
 class ParcelList extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            sortOrder: 'asc',
+            sortBy: 'createdDate'
+        }
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
         this.openParcelStatusHistory = this.openParcelStatusHistory.bind(this);
         this.closeParcelStatusHistory = this.closeParcelStatusHistory.bind(this);
@@ -31,14 +38,14 @@ class ParcelList extends React.Component {
         this.props.getParcels();
     }
 
-    sortingFactory(sortBy) {
-        return () => this.props.sortParcels(sortBy);
-    }
-
     deleteParcelFactory(id) {
         return () => this.props.deleteParcel(id);
     }
 
+    handleRequestSort = (event, property) => {
+        this.props.sortParcels(property);
+    }
+    
     openParcelStatusHistory(id){
         this.setState({
                 isOpenHist: true,
@@ -81,16 +88,22 @@ class ParcelList extends React.Component {
                     justify="center"
                     className="ParcelTable"
                 >
-                    <ParcelTable
-                        timeFilter={this.sortingFactory('createdDate')}
-                        statusFilter={this.sortingFactory('status')}
-                        weightFilter={this.sortingFactory('weight')}
-                        deleteParcelFactory={this.deleteParcelFactory}
-                        openParcelStatusHistory={this.openParcelStatusHistory}
-                        parcels={this.props.parcels}
-                        userId={this.props.userId}
-                        onEditParcel={this.editParcel.bind(this)}
-                    />
+                    <Table style={{width: '85%', marginLeft: '4%', marginRight: '4%', tableLayout: 'fixed',}}>
+                        <ParcelTableHeader 
+                            onRequestSort={this.handleRequestSort}
+                            sortOrder={this.props.sortOrder}
+                            sortBy={this.props.sortBy}/>
+                        <ParcelTable
+                            deleteParcelFactory={this.deleteParcelFactory}
+                            parcels={this.props.parcels}
+                            userId={this.props.userId}
+                            deleteParcelFactory={this.deleteParcelFactory}
+                            openParcelStatusHistory={this.openParcelStatusHistory}
+                            onEditParcel={this.editParcel.bind(this)}
+                            
+                            
+                            />
+                    </Table>
                 </Grid>
                 <ParcelStatusHistory 
                     open={this.state.isOpenHist} 

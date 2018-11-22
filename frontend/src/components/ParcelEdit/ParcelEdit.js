@@ -276,7 +276,7 @@ class ParcelEdit extends Component {
                                 <TextField  //TODO: possibly validate inputs as last line of defence from SQL injection
                                     variant="outlined"
                                     placeholder="Enter recipients first name"
-                                    disabled
+                                    disabled={parcel.id === ''}
                                     InputProps={{className: classes.whiteField}}
                                     value={parcel.recipient.firstName}
                                     onChange={this.handleParcelRecipientChange('firstName')}
@@ -289,7 +289,7 @@ class ParcelEdit extends Component {
                                 <TextField
                                     variant="outlined"
                                     placeholder="Enter recipients last name"
-                                    disabled
+                                    disabled={parcel.id === ''}
                                     InputProps={{className: classes.whiteField}}
                                     value={parcel.recipient.lastName}
                                     onChange={this.handleParcelRecipientChange('lastName')}

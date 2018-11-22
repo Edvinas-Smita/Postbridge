@@ -97,7 +97,6 @@ class ParcelList extends React.Component {
                             deleteParcelFactory={this.deleteParcelFactory}
                             parcels={this.props.parcels}
                             userId={this.props.userId}
-                            deleteParcelFactory={this.deleteParcelFactory}
                             openParcelStatusHistory={this.openParcelStatusHistory}
                             onEditParcel={this.editParcel.bind(this)}
                             

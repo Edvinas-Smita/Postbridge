@@ -11,6 +11,7 @@ import Decoration from '../../components/Decoration/Decoration';
 import ParcelTable from '../../components/ParcelTable/ParcelTable';
 import ParcelTableHeader from '../../components/ParcelTableHeader/ParcelTableHeader';
 import ParcelStatusHistory from '../../containers/ParcelStatusHistory/ParcelStatusHistory';
+import ParcelStatus from '../../components/ParcelStatus/ParcelStatus';
 
 import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
@@ -28,9 +29,13 @@ class ParcelList extends React.Component {
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
         this.openParcelStatusHistory = this.openParcelStatusHistory.bind(this);
         this.closeParcelStatusHistory = this.closeParcelStatusHistory.bind(this);
+        this.openParcelStatus = this.openParcelStatus.bind(this);
+        this.closeParcelStatus = this.closeParcelStatus.bind(this);
 
         this.state = {
-            isOpenHist: false
+            isOpenHist: false,
+            isOpenStatus: false,
+            parcelToEdit: {}
         }
     }
 
@@ -53,10 +58,24 @@ class ParcelList extends React.Component {
             () => {this.props.getParcelStatusHistory(id);});
     }
 
+    openParcelStatus(parcel){
+        this.setState({
+            isOpenStatus: true,
+            parcelToEdit: parcel
+        });
+    }
+
     closeParcelStatusHistory(id){
         this.setState({
-                isOpenHist: false,
-            });
+            isOpenHist: false,
+        });
+    }
+
+    closeParcelStatus(id){
+        this.setState({
+            isOpenStatus: false,
+            parcelToEdit: []
+        });
     }
 
     editParcel(parcel) {
@@ -72,7 +91,7 @@ class ParcelList extends React.Component {
         console.log("Changed values:", newValues);
         this.setState({
             editingParcel: false,
-            parcelToEdit: null
+            parcelToEdit: []
         });
     };
 
@@ -97,11 +116,9 @@ class ParcelList extends React.Component {
                             deleteParcelFactory={this.deleteParcelFactory}
                             parcels={this.props.parcels}
                             userId={this.props.userId}
-                            deleteParcelFactory={this.deleteParcelFactory}
                             openParcelStatusHistory={this.openParcelStatusHistory}
                             onEditParcel={this.editParcel.bind(this)}
-                            
-                            
+                            openParcelStatus={this.openParcelStatus.bind(this)}
                             />
                     </Table>
                 </Grid>
@@ -115,6 +132,10 @@ class ParcelList extends React.Component {
                     open={this.state.editingParcel}
                     onClose={this.finishEdit}
                 />
+                <ParcelStatus
+                    open={this.state.isOpenStatus} 
+                    onRequestClose={this.closeParcelStatus}
+                    parcel={this.state.parcelToEdit}/>
             </div>
         )
     }

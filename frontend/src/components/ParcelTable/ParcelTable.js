@@ -146,7 +146,9 @@ const parcelTable = (props) => {
                                 {parcel.endLocation}
                             </Grid> 
                         </TableCell>
-                        <TableCell className={classes.column} ><div className={statusColumn}>{STATUS[parcel.status]}</div></TableCell>
+                        <TableCell className={classes.column} >
+                            <Button className={statusColumn} onClick={() => {props.openParcelStatus(parcel)}}>{STATUS[parcel.status]}</Button>
+                        </TableCell>
                         <TableCell className={otherColumnStyle} >{parcel.description}</TableCell>
                         <TableCell className={otherColumnStyle} >{formatWeight(parcel.weight)}</TableCell>
                         <TableCell className={otherColumnStyle} >{parcel.createdDate.slice(0, 10)}</TableCell>

@@ -85,29 +85,13 @@ export default function parcelsReducer(state = initialState, action = {}){
                 updatedStatus[action.value] = !state.status[action.value]
                 return {
                     ...state,
-                    status: updatedStatus,
-                    filterBy: action.filterBy
+                    status: updatedStatus
                 }; 
             }
             else {
-                let updatedFilterBy;
-                if (action.filterBy === 'startLocation' || action.filterBy === 'endLocation') {
-                    updatedFilterBy = 'destination'
-                }
-                else if (action.filterBy === 'weightFrom' || action.filterBy === 'weightTo') {
-                    updatedFilterBy = 'weight'
-                }
-                else if (action.filterBy === 'createdFrom' || action.filterBy === 'createdTo') {
-                    updatedFilterBy = 'created'
-                }
-                else {
-                    updatedFilterBy = 'courier'
-                }
-
                 return {
                     ...state,
                     [action.filterBy]: action.value,
-                    filterBy: updatedFilterBy
                 }; 
             }
         default: return state;

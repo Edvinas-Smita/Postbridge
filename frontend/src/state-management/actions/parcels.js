@@ -7,7 +7,6 @@ import {
     DELETE_PARCEL_ERROR, 
     SORT_PARCELS,
     SET_PARCEL_FILTER,
-    FILTER_PARCELS
 } from '../constants/parcels';
 
 export const getParcels = () => ({

@@ -15,7 +15,7 @@ import CarIcon from '@material-ui/icons/DirectionsCar';
 import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 
-import {formatWeight} from '../../helpers';
+import { formatWeight } from '../../helpers';
 import { STATUS } from '../../helpers';
 
 const styles = theme => ({
@@ -45,14 +45,15 @@ const styles = theme => ({
         fontWeight: 'bold'
       },
       statusColumnBorder: {
-        border: '1.5px dashed',
+        border: '1px dashed',
         justifyContent: 'center',
         borderRadius: '3px',
         height: '30px',
         width: '90px',
         textAlign: 'center',
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        fontWeight: 'bold'
       },
       button: {
         height: '20px',
@@ -85,11 +86,11 @@ const styles = theme => ({
       greyColor: {
         color: theme.palette.grey[500]
       },
-      blueColor: {
-        color: '#0F10A6'
+      primaryColor: {
+        color: theme.palette.primary.dark
       },
-      greenColor: {
-          color: '#22E52C'
+      secondaryColor: {
+          color: theme.palette.secondary.dark
       },
       iconButton: {
         padding: '7px'
@@ -107,26 +108,25 @@ const parcelTable = (props) => {
                     let buttonText = "View details";
                     let buttonVariant = "outlined";
                     let buttonColor = "default";
-                    let statusColumn;
-                    let pointIcon;
+                    let statusColor;
+                    switch(parcel.status)
+                    {
+                        case 1: 
+                            statusColor = classes.primaryColor;
+                            break;
+                        case 2: 
+                            statusColor = classes.secondaryColor;
+                            break;
+                        default: 
+                            statusColor = classes.greyColor;
+                    }
+                    let statusColumn = [statusColor, classes.statusColumnBorder].join(' ');
+                    let pointIcon = [statusColor, classes.pointIcon].join(' ');;
                     let icon = <PlaneIcon className={[classes.planeIcon, classes.endLocationIcon].join(' ')}/>;
                     if (parcel.recipient.id === props.userId) {
                         buttonText = "I'll deliver";
                         buttonVariant = "contained";
                         buttonColor = "primary";
-                    }
-                    
-                    if (STATUS[parcel.status] === 'Open') {
-                        statusColumn = [classes.statusColumnBorder, classes.blueColor].join(' ');
-                        pointIcon = [classes.pointIcon, classes.blueColor].join(' ');
-                    }
-                    else if (STATUS[parcel.status] === 'On the way') {
-                        statusColumn = [classes.statusColumnBorder, classes.greenColor].join(' ');
-                        pointIcon = [classes.pointIcon, classes.greenColor].join(' ');
-                    }
-                    else {
-                        statusColumn = [classes.statusColumnBorder, classes.greyColor].join(' ');
-                        pointIcon = [classes.pointIcon, classes.greyColor].join(' ');
                     }
 
                     if ((parcel.startLocation === 'Vilnius' && parcel.endLocation === 'Kaunas') || 

@@ -57,8 +57,8 @@ class LoginForm extends Component {
         super(props);
 
         this.state = {
-            email: "",
-            password: "",
+            email: "test",
+            password: "test",
             redirectToReferrer: false,
         }
 

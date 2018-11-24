@@ -14,8 +14,9 @@ import ParcelStatus from '../../components/ParcelStatus/ParcelStatus';
 
 import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
-import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels } from '../../state-management/actions/parcels';
+import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels} from '../../state-management/actions/parcels';
 import { getParcelStatusHistory as getParcelStatusHistoryAction } from '../../state-management/actions/parcelStatusHistory';
+import { updateParcelStatus as updateParcelStatusAction } from '../../state-management/actions/parcelStatusHistory';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
 
 class ParcelList extends React.Component {
@@ -42,6 +43,10 @@ class ParcelList extends React.Component {
 
     deleteParcelFactory(id) {
         return () => this.props.deleteParcel(id);
+    }
+
+    updateParcelStatusFactory(parcel){
+        return() => this.props.updateParcelStatus(parcel);
     }
 
     handleRequestSort = (event, property) => {
@@ -116,7 +121,8 @@ class ParcelList extends React.Component {
                     onRequestClose={this.closeParcelStatus}
                     parcel={this.state.parcelToEdit}
                     parcelStatusHistory={this.props.parcelStatusHistory}
-                    isHistoryLoading={this.props.isHistoryLoading}/>
+                    isHistoryLoading={this.props.isHistoryLoading}
+                    updateParcelStatusFactory={this.updateParcelStatusFactory}/>
             </div>
         )
     }
@@ -127,6 +133,7 @@ const mapDispatchToProps = dispatch => ({
     deleteParcel: (id) => dispatch(deleteParcelAction(id)),
     sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
     getParcelStatusHistory: (id) => dispatch(getParcelStatusHistoryAction(id)),
+    updateParcelStatus: (parcel) => dispatch(updateParcelStatusAction(parcel))
 });
 
 const mapStateToProps = state => ({

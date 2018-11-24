@@ -7,10 +7,11 @@ import { getParcelsError, getParcelsSuccess,
 function* getParcels() {
     try {
         let parcels = [];
-        yield fetch("http://localhost:8080/api/parcels").then(response => {
-            return response.json();
-        }).then(data => {
-            parcels = Object.values(data);
+        yield fetch("http://localhost:8080/api/parcels")
+            .then(response => {
+                return response.json();})
+            .then(data => {
+                parcels = Object.values(data);
         });
 
         yield put(getParcelsSuccess(parcels));
@@ -43,11 +44,13 @@ function* updateParcel(action) {
 function* deleteParcel(action) {
     try {
         const { id } = action;
-        yield fetch("http://localhost:8080/api/parcels/" + id, {
-            method: 'delete',
-        }).then(response => {
-            if(response.status >= 400 && response.status < 600)
-                throw new Error("Bad response from server");
+        const options = {
+            method: 'DELETE'
+        }
+        yield fetch("http://localhost:8080/api/parcels/" + id, options,)
+            .then(response => {
+                if(response.status >= 400 && response.status < 600)
+                    throw new Error("Bad response from server");
         });
 
         yield put(deleteParcelSuccess(id));

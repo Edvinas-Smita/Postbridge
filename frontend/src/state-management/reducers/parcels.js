@@ -28,7 +28,7 @@ export default function parcelsReducer(state = initialState, action = {}){
         case GET_PARCELS_SUCCESS: return {
             ...state,
             isLoading: false,
-            parcels: action.parcels,
+            parcels: action.parcels || [],
         };
         case GET_PARCELS_ERROR: return {
             ...state,

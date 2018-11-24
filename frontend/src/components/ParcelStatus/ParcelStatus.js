@@ -49,14 +49,14 @@ const styles = theme => ({
     },
     connectorActive: {
         '& $connectorLine': {
-          borderColor: theme.palette.primary.dark,
+          borderColor: theme.palette.primary.main,
           borderStyle: "dashed",
           borderWidth: "0.5px"
         },
     },
     connectorCompleted: {
         '& $connectorLine': {
-          borderColor: theme.palette.primary.dark,
+          borderColor: theme.palette.primary.main,
           borderStyle: "solid",
           borderWidth: "0.5px"
         },
@@ -94,19 +94,22 @@ class ParcelStatus extends React.Component {
         super(props);
 
         this.state = {
-            activeStep: null
+            activeStep: null,
+            parcelStatusHistory: this.props.parcelStatusHistory
         }
     }
 
     componentWillReceiveProps(props) {
         this.setState({activeStep: props.parcel.status});
+        this.setState({parcelStatusHistory: props.parcelStatusHistory})
     }
 
     handleStatusChange = (pos) => {
         const { activeStep } = this.state;
         let parcel = this.props.parcel;
         parcel.status = activeStep + pos;
-        this.props.updateParcelFactory(parcel); 
+        this.props.updateParcelFactory(parcel);
+        console.log("finished"); 
     }
 
     render(){
@@ -180,7 +183,7 @@ class ParcelStatus extends React.Component {
                 <div className={classes.historyArea}>
                     <ParcelStatusHistory 
                         isHistoryLoading={this.props.isHistoryLoading}
-                        parcelStatusHistory={this.props.parcelStatusHistory}/>
+                        parcelStatusHistory={this.state.parcelStatusHistory}/>
                 </div>
             </Dialog>
 

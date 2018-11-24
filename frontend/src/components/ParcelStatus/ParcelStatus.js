@@ -5,18 +5,20 @@ import { withStyles } from "@material-ui/core/styles";
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import StepConnector from '@material-ui/core/StepConnector';
+
 import Button from '@material-ui/core/Button/Button';
 
 import ArrowLeft from '@material-ui/icons/ArrowLeftSharp';
 import ArrowRight from '@material-ui/icons/ArrowRightSharp';
 
 import { STATUS } from '../../helpers';
+import ParcelStatusHistory from '../../containers/ParcelStatusHistory/ParcelStatusHistory';
 
 const styles = theme => ({
     root: {
         minHeight: "150px",
-        minWidth: "600px",
-        width: '90%',
+        width: '100%'
     },
     button: {
         marginTop: theme.spacing.unit * 2,
@@ -28,11 +30,62 @@ const styles = theme => ({
         backgroundColor: theme.palette.common.secondary
 
     },
-    extendedIcon: {
-        marginRight: theme.spacing.unit,
+    extendedIconLeft: {
+        marginLeft: -theme.spacing.unit,
+    },
+    extendedIconRight: {
+        marginRight: -theme.spacing.unit,
     },
     greyColor: {
-        backgroundColor: theme.palette.grey[300]
+        backgroundColor: theme.palette.grey[200]
+    },
+    buttonsArea: {
+        marginLeft: theme.spacing.unit * 6,
+    },
+    historyArea: {
+        marginTop: theme.spacing.unit * 3,
+        marginLeft: theme.spacing.unit * 3,
+        marginRight: theme.spacing.unit * 3,   
+    },
+    connectorActive: {
+        '& $connectorLine': {
+          borderColor: theme.palette.primary.dark,
+          borderStyle: "dashed",
+          borderWidth: "0.5px"
+        },
+    },
+    connectorCompleted: {
+        '& $connectorLine': {
+          borderColor: theme.palette.primary.dark,
+          borderStyle: "solid",
+          borderWidth: "0.5px"
+        },
+    },
+    connectorDisabled: {
+        '& $connectorLine': {
+          borderColor: theme.palette.grey[300],
+          borderStyle: "solid",
+          borderWidth: "0.5px"
+        },
+    },
+    connectorLine: {
+        transition: theme.transitions.create('border-color'),
+    },
+    stepLabelActive: {
+       stroke: theme.palette.primary.dark,
+       strokeWidth: "1" ,
+       strokeDasharray: "2" ,
+       '& text': {
+           stroke: "none",
+           fill: theme.palette.primary.main,
+           fontWeight: "bold"
+       },
+       '& circle': {
+           color: "white"
+       }
+    },
+    stepLabelTextActive: {
+        color: theme.palette.primary.main + "!important"
     }
 })
 
@@ -67,6 +120,15 @@ class ParcelStatus extends React.Component {
         const { classes } = this.props;
         const { activeStep } = this.state;
         const statusCount = Object.keys(STATUS).length; 
+        const connector = (
+            <StepConnector
+              classes={{
+                active: classes.connectorActive,
+                completed: classes.connectorCompleted,
+                disabled: classes.connectorDisabled,
+                line: classes.connectorLine,
+              }}
+            />);
 
         return (
             <Dialog
@@ -74,24 +136,37 @@ class ParcelStatus extends React.Component {
                 onClose={() => this.props.onRequestClose()}
                 PaperProps={{classes: {root:classes.root} }}>
                 <DialogTitle>Parcel Status</DialogTitle>
-                <Stepper activeStep={activeStep} alternativeLabel>
-                    {Object.keys(STATUS).map((index) => {
-                        return (
-                            <Step key={index}>
-                                <StepLabel>{STATUS[index]}</StepLabel>
-                            </Step>
-                            );
-                        })
-                    }
-                </Stepper>
                 <div>
+                    <Stepper activeStep={activeStep} alternativeLabel className={classes.stepper} connector={connector}>
+                        {Object.keys(STATUS).map((index) => {
+                            return (
+                                <Step key={index}>
+                                    <StepLabel
+                                        classes={{
+                                            active:classes.stepLabelTextActive
+                                        }}
+                                        StepIconProps={{ 
+                                            classes: { 
+                                                active: classes.stepLabelActive,
+                                                completed: classes.stepLabelCompleted
+                                            } 
+                                        }}>
+                                        {STATUS[index]}
+                                    </StepLabel>
+                                </Step>
+                                );
+                            })
+                        }
+                    </Stepper>
+                </div>
+                <div className={classes.buttonsArea}>
                     {activeStep > 1 &&
                         <Button
                             variant="contained"
                             onClick={this.handlePrev}
                             className={[classes.button, classes.greyColor].join(' ')}
                             >
-                            <ArrowLeft className={classes.extendedIcon} />
+                            <ArrowLeft className={classes.extendedIconLeft} />
                             {STATUS[activeStep - 1]}
                             
                         </Button>
@@ -104,11 +179,16 @@ class ParcelStatus extends React.Component {
                             color="primary"
                             >
                             {STATUS[activeStep + 1]}
-                            <ArrowRight className={classes.extendedIcon} />
+                            <ArrowRight className={classes.extendedIconRight} />
                         </Button>
                     }
                 </div>
-
+                
+                <div className={classes.historyArea}>
+                    <ParcelStatusHistory 
+                        isHistoryLoading={this.props.isHistoryLoading}
+                        parcelStatusHistory={this.props.parcelStatusHistory}/>
+                </div>
             </Dialog>
 
         );

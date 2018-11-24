@@ -1,7 +1,8 @@
-import React from 'react';
-import { Dialog, DialogTitle } from '@material-ui/core';
+import React, { Fragment } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withStyles } from "@material-ui/core/styles";
+
+import { Typography } from '@material-ui/core';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,25 +14,24 @@ import { STATUS } from '../../helpers';
 
 const styles = theme => ({
     root: {
-        minHeight: "150px",
-        alignItems: "center"
+        marginLeft: theme.spacing.unit * 6,
+        marginRight: theme.spacing.unit * 6,
     }
 })
 
 class ParcelStatusHistory extends React.Component {
+    
     render(){
         const { classes } = this.props;
         let rows = this.props.parcelStatusHistory || [];
-        return (
-            <Dialog 
-                open={this.props.open} 
-                onClose={() => this.props.onRequestClose()}
-                PaperProps={{classes: {root:classes.root} }}>
-                
-                <DialogTitle>Parcel Status History</DialogTitle>
-                {this.props.isHistoryLoading ? (
-                    <CircularProgress/>) : (
-                        <Table>
+        return(
+            <Fragment>
+                <Typography variant="h6" className={classes.header}>Status History</Typography>
+
+                    {this.props.isHistoryLoading ? (
+                        <CircularProgress/> 
+                    ): (
+                        <Table className={classes.table}>
                         <TableHead>
                             <TableRow>
                                 <TableCell>Date</TableCell>
@@ -40,10 +40,6 @@ class ParcelStatusHistory extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-
-                            {this.props.isHistoryLoading === true && 
-                            <CircularProgress/>
-                            }
                             {rows.map((row, index) => {
                                 return (
                                     <TableRow key={index}>
@@ -56,7 +52,7 @@ class ParcelStatusHistory extends React.Component {
                         </TableBody>
                     </Table>
                     )}
-            </Dialog>
+            </Fragment>
         );
     }
 }

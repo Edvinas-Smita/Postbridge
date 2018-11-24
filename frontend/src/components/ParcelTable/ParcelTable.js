@@ -159,7 +159,7 @@ const parcelTable = (props) => {
                         </TableCell>
                         <TableCell className={classes.column} > 
                             <Button variant={buttonVariant} color={buttonColor} size="small" className={classes.button}
-                                onClick={() => {props.openParcelStatusHistory(parcel.id)}}>
+                                onClick={() => {props.openParcelStatus(parcel)}}>
                                 {buttonText}
                             </Button>
                             { (parcel.courier.id === props.userId)

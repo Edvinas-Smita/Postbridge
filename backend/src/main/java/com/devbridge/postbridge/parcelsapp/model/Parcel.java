@@ -1,6 +1,7 @@
 package com.devbridge.postbridge.parcelsapp.model;
 
 import java.util.Date;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -13,26 +14,31 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Parcel {
+    //leaving possible null because it is assigned on INSERT
+    private Long id;
 
-  private Integer id;
+    @NotNull
+    private String startLocation;
 
-  private String startLocation;
+    @NotNull
+    private String endLocation;
 
-  private String endLocation;
+    private Short status;
 
-  private Integer status;
+    @NotNull
+    private String description;
 
-  private String description;
+    @NotNull
+    private Integer weight;
 
-  private Integer weight;
+    //leaving possible null because it is assigned on INSERT
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") //TODO: how to get correct format?
+    private Date createdDate;
 
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") //TODO: how to get correct format?
-  private Date createdDate;
+    private Boolean delivered; //TODO: is it needed?
 
-  private Boolean delivered; //TODO: is it needed?
+    @NotNull
+    private User recipient;
 
-  private User recipient;
-
-  private User courier;
-
+    private User courier;
 }

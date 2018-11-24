@@ -38,6 +38,10 @@ const styles = theme => ({
         color: theme.palette.common.white,
         textTransform: "none",
         margin: theme.spacing.unit,
+        backgroundColor: theme.palette.secondary.light,
+        '&:hover': {
+            backgroundColor: theme.palette.secondary.main
+        }
     },
     addCircle: {
         marginRight: theme.spacing.unit,
@@ -46,6 +50,18 @@ const styles = theme => ({
 
 class parcelListDeco extends Component {
     render() {
+        const parcel = {
+            id: '',
+            recipient: {
+                firstName: '',
+                lastName: ''
+            },
+            startLocation: '',
+            endLocation: '',
+            status: 1,
+            description: '',
+            weight: ''
+        }
         const { classes } = this.props;
         return (
             <div className={classes.main}>
@@ -54,7 +70,7 @@ class parcelListDeco extends Component {
                         Deliveries
                     </Typography>
                     <div className={[classes.tableCell,classes.tableCellRight].join(' ')}>
-                        <Button variant="contained" color="secondary" className={classes.button}>
+                        <Button variant="contained" className={classes.button} onClick={this.props.onEditParcel(parcel)}>
                             <AddCircle className={classes.addCircle}/>
                             Request new delivery
                         </Button>

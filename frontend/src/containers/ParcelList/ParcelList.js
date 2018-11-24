@@ -84,7 +84,7 @@ class ParcelList extends React.Component {
         return (       
             <div className="ParcelListPage">
                 <Header/>
-                <Decoration/> 
+                <Decoration onEditParcel={this.editParcel.bind(this)}/> 
                 <Grid               
                     container
                     direction="column"

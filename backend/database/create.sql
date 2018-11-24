@@ -25,7 +25,7 @@ create table parcels (
   ref_user_courier bigint,
   status smallint not null,
   description character varying(256) not null,
-  weight smallint not null,
+  weight int not null,
   ref_location_start bigint not null,
   ref_location_end bigint not null,
   primary key (id),

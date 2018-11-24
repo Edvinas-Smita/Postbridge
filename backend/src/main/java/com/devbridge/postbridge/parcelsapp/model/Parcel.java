@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Parcel {
     //leaving possible null because it is assigned on INSERT
-    private Integer id;
+    private Long id;
 
     @NotNull
     private String startLocation;

@@ -34,18 +34,21 @@ public class ParcelsService {
         return parcelsMapper.getParcels();
     }
 
-    public boolean updateParcel(Parcel parcel) {
-        if (parcel.getStatus() != null) {   //if status is given, try push it to history
-            Parcel oldParcel = getParcel(parcel.getId());
-            if (parcel.getCourier() != null &&
-                        parcel.getCourier().getId() != null &&
-                        getUser(parcel.getCourier().getId()) != null && //referenced user must be valid (assuming that after creation status gets changed only by the courier)
-                        oldParcel != null &&  //referenced parcel must be valid
-                        !parcel.getStatus().equals(oldParcel.getStatus())) {    //update only if status changed
-                parcelsMapper.pushHistory(parcel.getCourier().getId(), parcel.getStatus(), parcel.getId()); //TODO: can recipient also update history?
-            } else {
-                parcel.setStatus(null); //don't update status if not possible to write it to history
+    public boolean replaceParcel(Parcel parcel) {
+        Parcel oldParcel = getParcel(parcel.getId());
+        if (oldParcel != null && !parcel.getStatus().equals(oldParcel.getStatus())) {
+            Long userIdWhoChanged = null;
+
+            if (parcel.getCourier() != null && parcel.getCourier().getId() != null) {
+                userIdWhoChanged = parcel.getCourier().getId();
             }
+            else if (oldParcel.getCourier() != null && oldParcel.getCourier().getId() != null) {
+                userIdWhoChanged = oldParcel.getCourier().getId();
+            }
+
+            parcelsMapper.pushHistory(userIdWhoChanged != null
+                                      ? userIdWhoChanged
+                                      : parcel.getRecipient().getId(), parcel.getStatus(), parcel.getId());
         }
         return parcelsMapper.updateParcel(parcel) == 1; //PSQL returns lines updated so if 0 lines are updated then update was not successful
     }
@@ -55,7 +58,7 @@ public class ParcelsService {
     }
     //</editor-fold>
 
-    public User getUser(int id) {
+    public User getUser(long id) {
         return parcelsMapper.getUser(id);
     }
 

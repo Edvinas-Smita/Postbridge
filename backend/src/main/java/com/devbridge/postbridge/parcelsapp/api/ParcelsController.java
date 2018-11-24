@@ -69,12 +69,12 @@ public class ParcelsController {
     }
 
     @PutMapping
-    public ResponseEntity updateParcel(@RequestBody Parcel parcel) {
+    public ResponseEntity updateParcel(@RequestBody @Valid Parcel parcel) {
         logger.debug("Updating parcel with id ({}) from POST body: {}", parcel.getId(), parcel);
         if (parcel.getId() == null) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        boolean modified = parcelsService.updateParcel(parcel);
+        boolean modified = parcelsService.replaceParcel(parcel);
         logger.debug(modified
                      ? "Parcel successfully updated"
                      : "Parcel was not updated (most likely there was no parcel with that id)");
@@ -84,10 +84,10 @@ public class ParcelsController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity updateParcel(@PathVariable("id") long id, @RequestBody Parcel parcel) {
+    public ResponseEntity updateParcel(@PathVariable("id") long id, @RequestBody @Valid Parcel parcel) {
         logger.debug("Updating parcel (id={}) with new attributes: {}", id, parcel);
-        parcel.setId((int) id); //if ID is also provided in request body it gets ignored
-        boolean modified = parcelsService.updateParcel(parcel);
+        parcel.setId(id); //if ID is also provided in request body it gets ignored
+        boolean modified = parcelsService.replaceParcel(parcel);
         logger.debug(modified
                      ? "Parcel successfully updated"
                      : "Parcel was not updated (most likely there was no parcel with that id)");

@@ -24,7 +24,7 @@ public interface ParcelsMapper {
     //<editor-fold desc="parcel CRUD" defaultstate="collapsed">
     @Insert("INSERT INTO parcels values(" +
                     "DEFAULT, " +
-                    "date_trunc('second', current_timestamp), " +    //should this also be read from given parcel?
+                    "current_timestamp, " +    //should this also be read from given parcel?
                     "#{recipient.id}, " +
                     "(SELECT id FROM users WHERE id = #{courier.id}), " +
                     "1, " + //creating status as open initially //TODO possibly should avoid hardcoding - maybe eventually DB table for statuses?
@@ -101,12 +101,12 @@ public interface ParcelsMapper {
     List<Parcel> getParcels();
 
     @Update("UPDATE parcels SET " +
-                    "ref_user_courier = COALESCE((SELECT id FROM users WHERE id = #{courier.id}), ref_user_courier), " +
-                    "status = COALESCE(#{status}, status), " +
-                    "description = COALESCE(#{description}, description), " +
-                    "weight = COALESCE(#{weight}, weight), " +
-                    "ref_location_start = COALESCE((select id from locations where name = #{startLocation}), ref_location_start), " +
-                    "ref_location_end = COALESCE((select id from locations where name = #{endLocation}), ref_location_end) " +
+                    "ref_user_courier = #{courier.id}, " +
+                    "status = #{status}, " +
+                    "description = #{description}, " +
+                    "weight = #{weight}, " +
+                    "ref_location_start = (select id from locations where name = #{startLocation}), " +
+                    "ref_location_end = (select id from locations where name = #{endLocation}) " +
                     "WHERE id = #{id};")
     int updateParcel(Parcel parcel);
 
@@ -120,7 +120,7 @@ public interface ParcelsMapper {
             @Result(property = "firstName", column = "FIRST_NAME"),
             @Result(property = "lastName", column = "LAST_NAME")
     })
-    User getUser(Integer user_id);
+    User getUser(long user_id);
 
     @Select("select * from parcel_status_history where ref_parcel = #{id} order by date_changed desc")
     @Results({
@@ -134,7 +134,7 @@ public interface ParcelsMapper {
                     "DEFAULT, " +
                     "#{parcelID}, " +
                     "#{status}, " +
-                    "date_trunc('second', current_timestamp), " +    //should this also be read from given history?
+                    "current_timestamp, " +
                     "#{userID}" +
                     ");")
     void pushHistory(@Param("userID") long userID, @Param("status") short status, @Param("parcelID") long parcelID);

@@ -94,7 +94,7 @@ class ParcelStatus extends React.Component {
         super(props);
 
         this.state = {
-            activeStep: 0
+            activeStep: null
         }
     }
 
@@ -102,18 +102,11 @@ class ParcelStatus extends React.Component {
         this.setState({activeStep: props.parcel.status});
     }
 
-    handleNext = () => {
+    handleStatusChange = (pos) => {
         const { activeStep } = this.state;
-        this.setState({
-            activeStep: activeStep + 1,
-        });
-    }
-
-    handlePrev = () => {
-        const { activeStep } = this.state;
-        this.setState({
-            activeStep: activeStep - 1,
-        });
+        let parcel = this.props.parcel;
+        parcel.status = activeStep + pos;
+        this.props.updateParcelFactory(parcel); 
     }
 
     render(){
@@ -163,22 +156,22 @@ class ParcelStatus extends React.Component {
                     {activeStep > 1 &&
                         <Button
                             variant="contained"
-                            onClick={this.handlePrev}
+                            onClick={() => this.handleStatusChange(-1)}
                             className={[classes.button, classes.greyColor].join(' ')}
                             >
                             <ArrowLeft className={classes.extendedIconLeft} />
-                            {STATUS[activeStep - 1]}
+                            Move back to {STATUS[activeStep - 1]}
                             
                         </Button>
                     }
                     {activeStep < statusCount &&
                         <Button
                             variant="contained"
-                            onClick={this.handleNext}
+                            onClick={() => this.handleStatusChange(1)}
                             className={classes.button}
                             color="primary"
                             >
-                            {STATUS[activeStep + 1]}
+                            Set to {STATUS[activeStep + 1]}
                             <ArrowRight className={classes.extendedIconRight} />
                         </Button>
                     }

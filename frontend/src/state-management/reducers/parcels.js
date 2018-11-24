@@ -2,6 +2,9 @@ import {
     GET_PARCELS,
     GET_PARCELS_SUCCESS,
     GET_PARCELS_ERROR, 
+    UPDATE_PARCEL,
+    UPDATE_PARCEL_SUCCESS,
+    UPDATE_PARCEL_ERROR, 
     DELETE_PARCEL,
     DELETE_PARCEL_SUCCESS,
     DELETE_PARCEL_ERROR, 
@@ -28,6 +31,21 @@ export default function parcelsReducer(state = initialState, action = {}){
             parcels: action.parcels,
         };
         case GET_PARCELS_ERROR: return {
+            ...state,
+            isLoading: false,
+            error: action.error,
+        };
+        case UPDATE_PARCEL: return {
+            ...state,
+            isLoading: true,
+        };
+        case UPDATE_PARCEL_SUCCESS: 
+            return {//TODO: not finished!!!
+                ...state,
+                isLoading: false,
+                parcels: [...state.parcels],
+            };
+        case UPDATE_PARCEL_ERROR: return {
             ...state,
             isLoading: false,
             error: action.error,

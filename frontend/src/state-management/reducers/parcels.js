@@ -2,6 +2,9 @@ import {
     GET_PARCELS,
     GET_PARCELS_SUCCESS,
     GET_PARCELS_ERROR, 
+    /*GET_PARCEL,
+    GET_PARCEL_SUCCESS,
+    GET_PARCEL_ERROR,*/
     UPDATE_PARCEL,
     UPDATE_PARCEL_SUCCESS,
     UPDATE_PARCEL_ERROR, 
@@ -17,6 +20,7 @@ const initialState = {
     parcels: [],
     sortBy: 'createdDate',
     sortOrder: 'desc',
+    parcel: {}
 };
 
 export default function parcelsReducer(state = initialState, action = {}){
@@ -34,7 +38,21 @@ export default function parcelsReducer(state = initialState, action = {}){
             ...state,
             isLoading: false,
             error: action.error,
+        };/*
+        case GET_PARCEL: return {
+            ...state,
+            isLoading: true,
         };
+        case GET_PARCEL_SUCCESS: return {
+            ...state,
+            isLoading: false,
+            parcel: action.parcel,
+        };
+        case GET_PARCEL_ERROR: return {
+            ...state,
+            isLoading: false,
+            error: action.error,
+        };*/
         case UPDATE_PARCEL: return {
             ...state,
             isLoading: true,
@@ -43,7 +61,7 @@ export default function parcelsReducer(state = initialState, action = {}){
             return {//TODO: not finished!!!
                 ...state,
                 isLoading: false,
-                parcels: [...state.parcels],
+                parcel: [action.parcel],
             };
         case UPDATE_PARCEL_ERROR: return {
             ...state,

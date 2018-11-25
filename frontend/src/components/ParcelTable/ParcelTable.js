@@ -101,7 +101,6 @@ const parcelTable = (props) => {
     const { classes } = props;
     const destinationColumnStyle = [classes.column, classes.boldText].join(' ');
     const otherColumnStyle = [classes.column, classes.greyTextColor].join(' ');
-    
     return (
             <TableBody >
                 {props.parcels.map((parcel, index) => {
@@ -159,7 +158,7 @@ const parcelTable = (props) => {
                         </TableCell>
                         <TableCell className={classes.column} > 
                             <Button variant={buttonVariant} color={buttonColor} size="small" className={classes.button}
-                                onClick={() => {props.openParcelStatus(parcel)}}>
+                                onClick={() => {props.openParcelStatus(parcel.id)}}>
                                 {buttonText}
                             </Button>
                             { (parcel.courier.id === props.userId)

@@ -80,7 +80,7 @@ class ParcelList extends React.Component {
         return (       
             <div className="ParcelListPage">
                 <Header/>
-                <Decoration/> 
+                <Decoration onEditParcel={this.editParcel.bind(this)}/> 
                 <Grid               
                     container
                     direction="column"
@@ -96,7 +96,11 @@ class ParcelList extends React.Component {
                         <ParcelTable
                             deleteParcelFactory={this.deleteParcelFactory}
                             parcels={this.props.parcels}
+<<<<<<< HEAD
                             userId={this.props.userid}
+=======
+                            userId={this.props.userId}
+>>>>>>> 60dec2f9fe061d7f74b6233862db84d2589af339
                             openParcelStatusHistory={this.openParcelStatusHistory}
                             onEditParcel={this.editParcel.bind(this)}
 

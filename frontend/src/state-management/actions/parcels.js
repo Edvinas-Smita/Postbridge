@@ -48,4 +48,3 @@ export const setParcelFilter = (filterBy, value) => ({
     filterBy,
     value
 })
-

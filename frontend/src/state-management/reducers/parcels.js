@@ -30,7 +30,8 @@ const initialState = {
     createdFrom: '',
     createdTo: '',
     courier: '',
-    userId: 1
+    userId: 1,
+    statusFilterCounter: 0
 };
 
 export default function parcelsReducer(state = initialState, action = {}){
@@ -80,12 +81,16 @@ export default function parcelsReducer(state = initialState, action = {}){
                 sortOrder: newOrder,
             }
         case SET_PARCEL_FILTER: 
+            
             if (action.filterBy === 'status') {
                 let updatedStatus = [...state.status];
-                updatedStatus[action.value] = !state.status[action.value]
+                let updatedFilterCouter = state.statusFilterCounter;
+                updatedStatus[action.value] = !state.status[action.value];
+                updatedStatus[action.value] ? updatedFilterCouter +=1  : updatedFilterCouter -=1
                 return {
                     ...state,
-                    status: updatedStatus
+                    status: updatedStatus,
+                    statusFilterCounter: updatedFilterCouter,
                 }; 
             }
             else {
@@ -94,6 +99,7 @@ export default function parcelsReducer(state = initialState, action = {}){
                     [action.filterBy]: action.value,
                 }; 
             }
-        default: return state;
+            default: return state;
+
     }
 }

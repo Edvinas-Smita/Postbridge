@@ -18,4 +18,9 @@ public class User {
     private String firstName;
     @NotNull
     private String lastName;
+
+    @NotNull
+    private String email;
+    @NotNull
+    private String password;    //this is only used during creation of the user account
 }

@@ -16,11 +16,13 @@ import ArrowRight from '@material-ui/icons/ArrowRightSharp';
 
 import { STATUS } from '../../helpers';
 import ParcelStatusHistory from '../../containers/ParcelStatusHistory/ParcelStatusHistory';
-import {closeParcelStatus} from '../../state-management/actions/parcel';
+
+import {closeParcelStatus, getParcelStatusHistory as getParcelStatusHistoryAction} from '../../state-management/actions/parcel';
 
 const styles = theme => ({
     root: {
         minHeight: "150px",
+        minWidth: "400px",
         width: '100%'
     },
     button: {
@@ -92,36 +94,25 @@ const styles = theme => ({
     }
 })
 
-/*
-function ParcelStatus ({open, closeParcelStatus, parcel}) {
-    return (
-        <Dialog
-            open={open}
-            onClose={closeParcelStatus}>
-            <DialogTitle>Parcel Status</DialogTitle>
-        </Dialog> 
-)};
-*/
-
 class ParcelStatus extends  React.Component {
 
-    /*
-    handleStatusChange = (pos) => {
-        const { activeStep } = this.state;
-        let parcel = Object.assign({}, this.props.parcel);
-        parcel.status = activeStep + pos;
-        this.props.updateParcelFactory(parcel);
-        //console.log("finished"); 
+    
+    handleStatusChange = (parcel, pos) => {
+        console.log(parcel);
+        let newPacel = Object.assign({}, this.props.parcel)
+        newPacel.status = newPacel.status + pos;
+        this.props.updateParcelFactory(newPacel);
+        console.log("finished"); 
     }
-    */
+    
     
     render() {
-        if (!this.props.open){
+        if (!this.props.open || !this.props.parcel){
             return null;
         }
-        else if (this.props.isLoading) {
-            return null;
-        }
+        //else if (this.props.isLoading) {
+        //    return null;
+        //}
         const activeStep  = this.props.parcel.status;
         const { classes } = this.props;
         const statusCount = Object.keys(STATUS).length; 
@@ -137,8 +128,14 @@ class ParcelStatus extends  React.Component {
         return (
             <Dialog
                 open={this.props.open}
-                onClose={this.props.closeParcelStatus}>
+                onClose={this.props.closeParcelStatus}
+                PaperProps={{
+                    classes: {
+                        root: classes.root
+                        }
+                    }}>
                 <div>
+                    <DialogTitle>Parcel Status</DialogTitle>
                     <Stepper activeStep={activeStep} alternativeLabel className={classes.stepper} connector={connector}>
                         {Object.keys(STATUS).map((index) => {
                             return (
@@ -165,20 +162,21 @@ class ParcelStatus extends  React.Component {
                     {activeStep > 1 &&
                         <Button
                             variant="contained"
-                            onClick={() => this.handleStatusChange(-1)}
+                            onClick={() => this.handleStatusChange(this.props.parcel, - 1)}
                             className={[classes.button, classes.greyColor].join(' ')}
+                            disabled={this.props.isLoading}
                             >
                             <ArrowLeft className={classes.extendedIconLeft} />
                             Move back to {STATUS[activeStep - 1]}
-                            
                         </Button>
                     }
                     {activeStep < statusCount &&
                         <Button
                             variant="contained"
-                            onClick={() => this.handleStatusChange(1)}
+                            onClick={() => this.handleStatusChange(this.props.parcel, 1)}
                             className={classes.button}
                             color="primary"
+                            disabled={this.props.isLoading}
                             >
                             Set to {STATUS[activeStep + 1]}
                             <ArrowRight className={classes.extendedIconRight} />
@@ -187,6 +185,8 @@ class ParcelStatus extends  React.Component {
                 </div>
                 
                 <div className={classes.historyArea}>
+                    <ParcelStatusHistory 
+                        parcelStatusHistory={this.props.parcelStatusHistory}/>
                 </div>
             </Dialog>     
         );
@@ -196,24 +196,14 @@ class ParcelStatus extends  React.Component {
 const mapStateToProps = state => ({
     open: state.parcel.isStatusOpen,
     parcel: state.parcel.parcel,
-    isLoading: state.parcel.isLoading
+    isLoading: state.parcel.isLoading,
+    parcelStatusHistory: state.parcel.statusHistory
 })
 
-function mapDispatchToProps (dispatch) {
-console.log("TEST mapDispatchToProps");
-    return {
-        closeParcelStatus: () => dispatch(closeParcelStatus()),
-    }
-};
+const mapDispatchToProps = dispatch => ({
+    closeParcelStatus: () => dispatch(closeParcelStatus())
+});
 
 const ParcelStatusSytled = withStyles(styles)(ParcelStatus);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelStatusSytled);
-
-
-/*
-
-                    <ParcelStatusHistory 
-                        isHistoryLoading={this.props.isHistoryLoading}
-                        parcelStatusHistory={this.state.parcelStatusHistory}/
-*/

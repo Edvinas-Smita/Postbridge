@@ -1,15 +1,9 @@
 import {
     GET_PARCELS,
     GET_PARCELS_SUCCESS,
-    GET_PARCELS_ERROR, /*
-    GET_PARCEL,
-    GET_PARCEL_SUCCESS,
-    GET_PARCEL_ERROR, */
+    GET_PARCELS_ERROR, 
     DELETE_PARCEL,
     DELETE_PARCEL_SUCCESS,
-    UPDATE_PARCEL_ERROR, 
-    UPDATE_PARCEL,
-    UPDATE_PARCEL_SUCCESS,
     DELETE_PARCEL_ERROR, 
     SORT_PARCELS,
 } from '../constants/parcels';
@@ -25,36 +19,6 @@ export const getParcelsSuccess = parcels => ({
 
 export const getParcelsError = error => ({
     type: GET_PARCELS_ERROR,
-    error,
-});
-/*
-export const getParcel = (id) => ({
-    type: GET_PARCEL,
-    id
-});
-
-export const getParcelSuccess = parcel => ({
-    type: GET_PARCEL_SUCCESS,
-    parcel,
-});
-
-export const getParcelError = error => ({
-    type: GET_PARCEL_ERROR,
-    error,
-});
-*/
-export const updateParcel = parcel => ({
-    type: UPDATE_PARCEL,
-    parcel,
-});
-
-export const updateParcelSuccess = parcel => ({
-    type: UPDATE_PARCEL_SUCCESS,
-    parcel,
-});
-
-export const updateParcelError = error => ({
-    type: UPDATE_PARCEL_ERROR,
     error,
 });
 

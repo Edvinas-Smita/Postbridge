@@ -17,12 +17,10 @@ import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 import { 
     getParcels as getParcelsAction, 
     sortParcels,
-    deleteParcel as deleteParcelAction,
-    updateParcel as updateParcelAction} from '../../state-management/actions/parcels';
+    deleteParcel as deleteParcelAction} from '../../state-management/actions/parcels';
 import {
+    updateParcelStatus as updateParcelStatusAction,
     openParcelStatus as openParcelStatusAction} from '../../state-management/actions/parcel';
-//import { getParcelStatusHistory as getParcelStatusHistoryAction } from '../../state-management/actions/parcelStatusHistory';
-//import { getParcel as getParcelAction} from '../../state-management/actions/parcels';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
 
 
@@ -39,7 +37,6 @@ class ParcelList extends React.Component {
         }
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
         this.updateParcelFactory = this.updateParcelFactory.bind(this);
-        //this.openParcelStatus = this.openParcelStatus.bind(this);
         this.closeParcelStatus = this.closeParcelStatus.bind(this);
     }
 
@@ -53,12 +50,10 @@ class ParcelList extends React.Component {
 
     updateParcelFactory(parcel){
         console.log("updateParcelFactory");
-        console.log(this.state.parcel);
-        let res = this.props.updateParcel(parcel);
+        console.log(parcel);
+        let res = this.props.updateParcelStatus(parcel);
         console.log(res.parcel);
-        this.setState({
-            parcel: parcel
-        })
+        console.log("updateParcelFactory finished");
     }
 
     handleRequestSort = (event, property) => {
@@ -67,22 +62,9 @@ class ParcelList extends React.Component {
 
     
     openParcelStatus(id){
-        console.log("ParcelList: openParcelStatus");
         this.props.openParcelStatus(id);
-        /*
-        console.log(parcel);
-        this.setState({
-            isOpenStatus: true,
-            //parcelId: id,
-            parcel: parcel
-            //parcelToEdit: parcel
-        },
-        //() => {this.props.getParcelStatusHistory(parcel.id);}
-        );
-        */
     }
     
-
     closeParcelStatus(id){
         this.setState({
             isOpenStatus: false,
@@ -108,7 +90,6 @@ class ParcelList extends React.Component {
     };
 
     render() {
-        //console.log("ParcelList");
         return (       
             <div className="ParcelListPage">
                 <Header/>
@@ -143,9 +124,6 @@ class ParcelList extends React.Component {
                     open={this.state.isOpenStatus} 
                     onRequestClose={this.closeParcelStatus}
                     parcelId={this.state.parcelId}
-                    //parcel={this.state.parcel}
-                    //parcelStatusHistory={this.props.parcelStatusHistory}
-                    //isHistoryLoading={this.props.isHistoryLoading}
                     updateParcelFactory={this.updateParcelFactory}/>
             </div>
         )
@@ -154,12 +132,10 @@ class ParcelList extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     getParcels: () => dispatch(getParcelsAction()),
-    updateParcel: (parcel) => dispatch(updateParcelAction(parcel)),
+    updateParcelStatus: (parcel) => dispatch(updateParcelStatusAction(parcel)),
     deleteParcel: (id) => dispatch(deleteParcelAction(id)),
     sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
     openParcelStatus: (id) => dispatch(openParcelStatusAction(id))
-    //getParcel: (id) => dispatch(getParcelAction(id)),
-    //getParcelStatusHistory: (id) => dispatch(getParcelStatusHistoryAction(id)),
 });
 
 const mapStateToProps = state => ({
@@ -167,9 +143,6 @@ const mapStateToProps = state => ({
     sortBy: state.parcels.sortBy,
     sortOrder: state.parcels.sortOrder,
     parcels: getSortedParcels(state),
-    //parcelStatusHistory: state.parcelStatusHistory.history,
-    //isHistoryLoading: state.parcelStatusHistory.isLoading,
-    //parcel: state.parcels.parcel,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelList);

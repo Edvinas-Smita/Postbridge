@@ -11,7 +11,6 @@ import Grid from '@material-ui/core/Grid/Grid';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowIcon from '@material-ui/icons/ArrowDropDown';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
 import Select from '@material-ui/core/Select';
@@ -23,13 +22,10 @@ import SelectedIcon from '@material-ui/icons/Done';
 import ListItemText from '@material-ui/core/ListItemText';
 import PlaneIcon from '@material-ui/icons/AirplanemodeActive';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuList from '@material-ui/core/MenuList';
-import Grow from '@material-ui/core/Grow';
-import Popper from '@material-ui/core/Popper';
 
 import Chip from '@material-ui/core/Chip';
 import { STATUS } from '../../helpers';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+
 
 
 
@@ -88,8 +84,6 @@ class ParcelTableHeader extends Component {
     createdFromValue: '',
     createdToValue: '',
     courierValue: '',
-
-    open:false
   };
 
     
@@ -396,8 +390,10 @@ class ParcelTableHeader extends Component {
                                 <Grid container alignItems="center">
                                     <div style={{marginRight: '20px'}}>Filtered by:</div>
                                     { this.props.startLocation && this.props.endLocation ? <Chip key="destination" onDelete={() => this.handleFilterChange('startLocation', 'endLocation', '', '')} label={this.props.startLocation + '-'+ this.props.endLocation} className={classes.chip} color="secondary" /> : null}
-                                    { this.props.status.map((selected, index) => { if(selected) return <Chip key={'status'+index+1} onDelete={() => this.props.setParcelFilter('status', index)} label={STATUS[index+1]} className={classes.chip} color="secondary" /> })  }
-                                    { this.props.weightFrom && this.props.weightTo ? <Chip key="weight" onDelete={() => this.handleFilterChange('weightFrom', 'weightTo', '', '')} label={this.props.weightFrom + " kg" + '-'+ this.props.weightTo + " kg"} className={classes.chip}  color="secondary"/> : null}
+                                    { this.props.status.map((selected, index) => { 
+                                        if(selected) return <Chip key={'status'+index+1} onDelete={() => this.props.setParcelFilter('status', index)} label={STATUS[index+1]} className={classes.chip} color="secondary" /> 
+                                        else return null}) }
+                                    { this.props.weightFrom && this.props.weightTo ? <Chip key="weight" onDelete={() => this.handleFilterChange('weightFrom', 'weightTo', '', '')} label={this.props.weightFrom + ' kg -'+ this.props.weightTo + ' kg'} className={classes.chip}  color="secondary"/> : null}
                                     { this.props.createdFrom && this.props.createdTo ? <Chip key="created" onDelete={() => this.handleFilterChange('createdFrom', 'createdTo', '', '')} label={this.props.createdFrom + '-'+ this.props.createdTo } className={classes.chip}  color="secondary"/> : null}
                                     { this.props.courier  ? <Chip key="courier" onDelete={() => this.props.setParcelFilter('courier','')}label={this.props.courier } className={classes.chip} color="secondary"/> : null}
                                 </Grid>

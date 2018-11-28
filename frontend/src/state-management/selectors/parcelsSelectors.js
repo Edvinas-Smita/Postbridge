@@ -52,7 +52,7 @@ export const getFilteredParcels = createSelector(
             
             filteredParcels = weightFrom!== '' && weightTo !== '' 
             ? filteredParcels.filter(
-                parcel => parseInt(weightFrom)*1000 <= parcel['weight'] && parcel['weight'] <= parseInt(weightTo)*1000
+                parcel => parseInt(weightFrom, 10)*1000 <= parcel['weight'] && parcel['weight'] <= parseInt(weightTo, 10)*1000
             )
             : filteredParcels;
             

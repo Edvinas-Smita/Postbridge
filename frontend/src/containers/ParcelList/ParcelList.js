@@ -30,8 +30,7 @@ class ParcelList extends React.Component {
         super(props);
         this.state = {
             sortOrder: 'asc',
-            sortBy: 'createdDate',
-            parcelToEdit: {}
+            sortBy: 'createdDate'
         }
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
         this.updateParcelStatusFactory = this.updateParcelStatusFactory.bind(this);

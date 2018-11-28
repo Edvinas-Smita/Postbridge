@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+
 import NumberFormat from 'react-number-format';
 
 import Grid from '@material-ui/core/Grid';
@@ -306,11 +308,12 @@ class ParcelEdit extends Component {
                                         value={parcel.startLocation}
                                         onChange={this.handleParcelChange('startLocation')}
                                     >
-                                        <MenuItem
-                                            value={parcel.startLocation}    //TODO: get list of locations from backend and map them to array of MenuItem
-                                        >
-                                            {parcel.startLocation}
-                                        </MenuItem>
+                                        {this.props.locations.map((location, index) => {
+                                            return (
+                                                <MenuItem key={index} value={location.name} selected={location.name===parcel.startLocation}>
+                                                    {location.name}
+                                                </MenuItem>);
+                                        })}
                                     </Select>
                                 </FormControl>
                                 <FormControl className={classes.fullWidth}>
@@ -320,11 +323,12 @@ class ParcelEdit extends Component {
                                         value={parcel.endLocation}
                                         onChange={this.handleParcelChange('endLocation')}
                                     >
-                                        <MenuItem
-                                            value={parcel.endLocation}
-                                        >
-                                            {parcel.endLocation}
-                                        </MenuItem>
+                                        {this.props.locations.map((location, index) => {
+                                            return (
+                                                <MenuItem key={index} value={location.name} selected={location.name===parcel.endLocation}>
+                                                    {location.name}
+                                                </MenuItem>);
+                                        })}
                                     </Select>
                                 </FormControl>
                             </div>
@@ -448,4 +452,10 @@ class ParcelEdit extends Component {
     }
 }
 
-export default withStyles(styles)(ParcelEdit);
+const mapStateToProps = state => ({
+    locations: state.others.locations,
+});
+
+const StyledParcelEdit = withStyles(styles)(ParcelEdit);
+
+export default connect(mapStateToProps, null)(StyledParcelEdit);

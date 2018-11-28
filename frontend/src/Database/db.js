@@ -192,7 +192,7 @@ module.exports = function() {
         "status": 2,
         "date": "2018-08-08T20:06:13.000Z",
         "parcelId": 2
-      },
+      }
     ],
     "users": [
       {

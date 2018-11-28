@@ -4,7 +4,7 @@ import {
     GET_PARCELS_ERROR,  
     DELETE_PARCEL,
     DELETE_PARCEL_SUCCESS,
-    DELETE_PARCEL_ERROR, 
+    DELETE_PARCEL_ERROR,
     UPDATE_PARCELS,
     SORT_PARCELS,
 } from '../constants/parcels';

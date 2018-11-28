@@ -15,6 +15,7 @@ import ParcelStatusHistory from '../../containers/ParcelStatusHistory/ParcelStat
 import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
 import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels } from '../../state-management/actions/parcels';
+import { getLocations as getLocationsAction } from '../../state-management/actions/others';
 import { getParcelStatusHistory as getParcelStatusHistoryAction } from '../../state-management/actions/parcelStatusHistory';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
 
@@ -36,6 +37,7 @@ class ParcelList extends React.Component {
 
     componentWillMount() {
         this.props.getParcels();
+        this.props.getLocations();
     }
 
     deleteParcelFactory(id) {
@@ -121,6 +123,7 @@ class ParcelList extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     getParcels: () => dispatch(getParcelsAction()),
+    getLocations: () => dispatch(getLocationsAction()),
     deleteParcel: (id) => dispatch(deleteParcelAction(id)),
     sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
     getParcelStatusHistory: (id) => dispatch(getParcelStatusHistoryAction(id)),

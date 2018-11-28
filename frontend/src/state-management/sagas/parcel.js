@@ -1,17 +1,27 @@
 import { put, all, takeLatest, takeEvery, take } from 'redux-saga/effects';
-import { GET_PARCEL, 
+import { GET_PARCEL, GET_PARCEL_SUCCESS,
         UPDATE_PARCEL, UPDATE_PARCEL_SUCCESS, UPDATE_PARCEL_STATUS, 
-        OPEN_PARCEL_STATUS, 
+        OPEN_PARCEL_STATUS, CLOSE_PARCEL_STATUS,
         GET_PARCEL_STATUS_HISTORY } from '../constants/parcel';
 import { getParcelSuccess, getParcelError, getParcel as getParcelAction,
         updateParcel as updateParcelAction,
         updateParcelSuccess, updateParcelError, 
         getParcelStatusHistory as getParcelStatusHistoryAction,
         getParcelStatusHistoryError, getParcelStatusHistorySuccess } from '../actions/parcel';
+import { updateParcels as updateParcelsAction} from '../actions/parcels';
+
+
+function* openParcelStatus(action){
+    yield put(getParcelAction(action.id));
+    yield take(GET_PARCEL_SUCCESS);
+    yield put(getParcelStatusHistoryAction(action.id));
+}
+
+function* closeParcelStatus(action){
+    yield put(updateParcelsAction(action.parcel));
+}
 
 function* getParcel(action) {
-    console.log("saga: getParcel");
-    console.log(action);
     try {
         let parcel = {};
         yield fetch("http://localhost:8080/api/parcels/" + action.id)
@@ -54,10 +64,6 @@ function* updateParcel(action) {
     }
 }
 
-function* openParcelStatus(action){
-    yield put(getParcelAction(action.id));
-}
-
 function* getParcelStatusHistory(action) {
     try {
 
@@ -79,6 +85,7 @@ function* parcelsSaga() {
         takeLatest(GET_PARCEL, getParcel),
         takeEvery(UPDATE_PARCEL, updateParcel),
         takeLatest(OPEN_PARCEL_STATUS, openParcelStatus),
+        takeLatest(CLOSE_PARCEL_STATUS, closeParcelStatus),
         takeLatest(GET_PARCEL_STATUS_HISTORY, getParcelStatusHistory),
         takeLatest(UPDATE_PARCEL_STATUS, updateParcelStatus)
     ]);

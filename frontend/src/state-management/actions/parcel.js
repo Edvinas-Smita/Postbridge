@@ -53,8 +53,9 @@ export const openParcelStatus = (id) => ({
     id
 });
 
-export const closeParcelStatus = () => ({
-    type: CLOSE_PARCEL_STATUS
+export const closeParcelStatus = (parcel) => ({
+    type: CLOSE_PARCEL_STATUS,
+    parcel
 });
 
 export const getParcelStatusHistory = id => ({

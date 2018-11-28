@@ -5,6 +5,7 @@ import {
     DELETE_PARCEL,
     DELETE_PARCEL_SUCCESS,
     DELETE_PARCEL_ERROR, 
+    UPDATE_PARCELS,
     SORT_PARCELS,
 } from '../constants/parcels';
 
@@ -20,6 +21,11 @@ export const getParcelsSuccess = parcels => ({
 export const getParcelsError = error => ({
     type: GET_PARCELS_ERROR,
     error,
+});
+
+export const updateParcels = parcel => ({
+    type: UPDATE_PARCELS,
+    parcel,
 });
 
 export const deleteParcel = id => ({

@@ -17,13 +17,12 @@ import ArrowRight from '@material-ui/icons/ArrowRightSharp';
 import { STATUS } from '../../helpers';
 import ParcelStatusHistory from '../../containers/ParcelStatusHistory/ParcelStatusHistory';
 
-import {closeParcelStatus, getParcelStatusHistory as getParcelStatusHistoryAction} from '../../state-management/actions/parcel';
+import {closeParcelStatus} from '../../state-management/actions/parcel';
 
 const styles = theme => ({
     root: {
-        minHeight: "150px",
-        minWidth: "400px",
-        width: '100%'
+        width: "600px",
+        height: "600px"
     },
     button: {
         marginTop: theme.spacing.unit * 2,
@@ -96,23 +95,19 @@ const styles = theme => ({
 
 class ParcelStatus extends  React.Component {
 
-    
     handleStatusChange = (parcel, pos) => {
-        console.log(parcel);
-        let newPacel = Object.assign({}, this.props.parcel)
-        newPacel.status = newPacel.status + pos;
-        this.props.updateParcelFactory(newPacel);
-        console.log("finished"); 
+        parcel.status = parcel.status + pos;
+        this.props.updateParcelFactory(parcel);
     }
-    
+
+    handleClose = (parcel) => {
+        this.props.closeParcelStatus(parcel);
+    }
     
     render() {
         if (!this.props.open || !this.props.parcel){
             return null;
         }
-        //else if (this.props.isLoading) {
-        //    return null;
-        //}
         const activeStep  = this.props.parcel.status;
         const { classes } = this.props;
         const statusCount = Object.keys(STATUS).length; 
@@ -128,7 +123,7 @@ class ParcelStatus extends  React.Component {
         return (
             <Dialog
                 open={this.props.open}
-                onClose={this.props.closeParcelStatus}
+                onClose={() => this.handleClose(this.props.parcel)}
                 PaperProps={{
                     classes: {
                         root: classes.root
@@ -201,7 +196,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    closeParcelStatus: () => dispatch(closeParcelStatus())
+    closeParcelStatus: (parcel) => dispatch(closeParcelStatus(parcel))
 });
 
 const ParcelStatusSytled = withStyles(styles)(ParcelStatus);

@@ -37,7 +37,6 @@ class ParcelList extends React.Component {
         }
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
         this.updateParcelFactory = this.updateParcelFactory.bind(this);
-        this.closeParcelStatus = this.closeParcelStatus.bind(this);
     }
 
     componentWillMount() {
@@ -49,27 +48,15 @@ class ParcelList extends React.Component {
     }
 
     updateParcelFactory(parcel){
-        console.log("updateParcelFactory");
-        console.log(parcel);
-        let res = this.props.updateParcelStatus(parcel);
-        console.log(res.parcel);
-        console.log("updateParcelFactory finished");
+        this.props.updateParcelStatus(parcel);
     }
 
     handleRequestSort = (event, property) => {
         this.props.sortParcels(property);
     }
-
     
-    openParcelStatus(id){
+    openParcelStatus(id) {
         this.props.openParcelStatus(id);
-    }
-    
-    closeParcelStatus(id){
-        this.setState({
-            isOpenStatus: false,
-            parcel: []
-        });
     }
 
     editParcel(parcel) {
@@ -122,7 +109,6 @@ class ParcelList extends React.Component {
                 />
                 <ParcelStatus
                     open={this.state.isOpenStatus} 
-                    onRequestClose={this.closeParcelStatus}
                     parcelId={this.state.parcelId}
                     updateParcelFactory={this.updateParcelFactory}/>
             </div>

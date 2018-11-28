@@ -5,6 +5,7 @@ import {
     DELETE_PARCEL,
     DELETE_PARCEL_SUCCESS,
     DELETE_PARCEL_ERROR, 
+    UPDATE_PARCELS,
     SORT_PARCELS,
 } from '../constants/parcels';
 
@@ -17,7 +18,14 @@ const initialState = {
     parcel: {}
 };
 
+function findParcelIndex(parcels, id) {
+    let index = parcels.length;
+    if(id !== undefined) index = parcels.findIndex(x => x.id === id);
+    return index;
+}
+
 export default function parcelsReducer(state = initialState, action = {}){
+    let index;
     switch(action.type){
         case GET_PARCELS: return {
             ...state,
@@ -38,8 +46,7 @@ export default function parcelsReducer(state = initialState, action = {}){
             isLoading: true,
         };
         case DELETE_PARCEL_SUCCESS: 
-            let index = state.parcels.length;
-            if(action.id !== undefined) index = state.parcels.findIndex(x => x.id === action.id);
+            index = findParcelIndex(state.parcels, action.id);
             return {
                 ...state,
                 isLoading: false,
@@ -53,6 +60,16 @@ export default function parcelsReducer(state = initialState, action = {}){
             isLoading: false,
             error: action.error,
         }
+        case UPDATE_PARCELS:
+            index = findParcelIndex(state.parcels, action.parcel.id);
+            return {
+                ...state,
+                parcels: [
+                    ...state.parcels.slice(0, index),
+                    action.parcel,
+                    ...state.parcels.slice(index + 1),
+                ]
+            }
         case SORT_PARCELS: 
             let newOrder = 'asc';
             if(action.sortBy === state.sortBy) newOrder = state.sortOrder === 'asc' ? 'desc' : 'asc';

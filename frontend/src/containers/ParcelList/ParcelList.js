@@ -105,8 +105,6 @@ class ParcelList extends React.Component {
                     onClose={this.finishEdit}
                 />
                 <ParcelStatus
-                    open={this.state.isOpenStatus} 
-                    parcelId={this.state.parcelId}
                     updateParcelStatusFactory={this.updateParcelStatusFactory}/>
             </div>
         )

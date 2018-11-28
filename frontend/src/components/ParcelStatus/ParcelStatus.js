@@ -97,7 +97,7 @@ class ParcelStatus extends  React.Component {
 
     handleStatusChange = (parcel, pos) => {
         parcel.status = parcel.status + pos;
-        this.props.updateParcelFactory(parcel);
+        this.props.updateParcelStatusFactory(parcel);
     }
 
     handleClose = (parcel) => {

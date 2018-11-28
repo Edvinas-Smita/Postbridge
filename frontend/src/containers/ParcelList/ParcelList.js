@@ -31,12 +31,10 @@ class ParcelList extends React.Component {
         this.state = {
             sortOrder: 'asc',
             sortBy: 'createdDate',
-            isOpenHist: false,
-            parcelToEdit: {},
-            parcel: {}
+            parcelToEdit: {}
         }
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
-        this.updateParcelFactory = this.updateParcelFactory.bind(this);
+        this.updateParcelStatusFactory = this.updateParcelStatusFactory.bind(this);
     }
 
     componentWillMount() {
@@ -47,7 +45,7 @@ class ParcelList extends React.Component {
         return () => this.props.deleteParcel(id);
     }
 
-    updateParcelFactory(parcel){
+    updateParcelStatusFactory(parcel){
         this.props.updateParcelStatus(parcel);
     }
 
@@ -72,7 +70,7 @@ class ParcelList extends React.Component {
         console.log("Changed values:", newValues);
         this.setState({
             editingParcel: false,
-            parcelToEdit: []
+            parcelToEdit: null
         });
     };
 
@@ -110,7 +108,7 @@ class ParcelList extends React.Component {
                 <ParcelStatus
                     open={this.state.isOpenStatus} 
                     parcelId={this.state.parcelId}
-                    updateParcelFactory={this.updateParcelFactory}/>
+                    updateParcelStatusFactory={this.updateParcelStatusFactory}/>
             </div>
         )
     }

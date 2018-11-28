@@ -6,7 +6,9 @@ import {
     DELETE_PARCEL_SUCCESS,
     DELETE_PARCEL_ERROR, 
     SORT_PARCELS,
+    SET_PARCEL_FILTER,
 } from '../constants/parcels';
+// import { number } from 'prop-types';
 
 const initialState = {
     isLoading: false,
@@ -14,6 +16,22 @@ const initialState = {
     parcels: [],
     sortBy: 'createdDate',
     sortOrder: 'desc',
+    filterBy: '',
+
+    filteredParcels: [],
+    startLocation: '',
+    endLocation: '',
+    status: [ false, 
+        false,
+        false,
+        false],
+    weightFrom: '',
+    weightTo: '',
+    createdFrom: '',
+    createdTo: '',
+    courier: '',
+    userId: 1,
+    statusFilterCounter: 0
 };
 
 export default function parcelsReducer(state = initialState, action = {}){
@@ -62,6 +80,26 @@ export default function parcelsReducer(state = initialState, action = {}){
                 sortBy: action.sortBy,
                 sortOrder: newOrder,
             }
-        default: return state;
+        case SET_PARCEL_FILTER: 
+            
+            if (action.filterBy === 'status') {
+                let updatedStatus = [...state.status];
+                let updatedFilterCouter = state.statusFilterCounter;
+                updatedStatus[action.value] = !state.status[action.value];
+                updatedStatus[action.value] ? updatedFilterCouter +=1  : updatedFilterCouter -=1
+                return {
+                    ...state,
+                    status: updatedStatus,
+                    statusFilterCounter: updatedFilterCouter,
+                }; 
+            }
+            else {
+                return {
+                    ...state,
+                    [action.filterBy]: action.value,
+                }; 
+            }
+            default: return state;
+
     }
 }

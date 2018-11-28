@@ -96,11 +96,10 @@ class ParcelList extends React.Component {
                         <ParcelTable
                             deleteParcelFactory={this.deleteParcelFactory}
                             parcels={this.props.parcels}
-                            userId={this.props.userId}
+                            userId={this.props.userid}
                             openParcelStatusHistory={this.openParcelStatusHistory}
                             onEditParcel={this.editParcel.bind(this)}
-                            
-                            
+
                             />
                     </Table>
                 </Grid>
@@ -132,7 +131,8 @@ const mapStateToProps = state => ({
     sortOrder: state.parcels.sortOrder,
     parcels: getSortedParcels(state),
     parcelStatusHistory: state.parcelStatusHistory.history,
-    isHistoryLoading: state.parcelStatusHistory.isLoading
+    isHistoryLoading: state.parcelStatusHistory.isLoading,
+    userid: state.parcels.userId
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelList);

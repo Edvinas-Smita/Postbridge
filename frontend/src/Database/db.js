@@ -19,7 +19,7 @@ module.exports = function() {
               "id": 4,
               "firstName": "Osvaldas",
               "lastName": "Kisielius"
-            },
+            }
           },
           {
             "id": 2,
@@ -39,7 +39,7 @@ module.exports = function() {
               "id": 1,
               "firstName": "Johna",
               "lastName": "Bill"
-            },
+            }
           },
           {
             "id": 3,

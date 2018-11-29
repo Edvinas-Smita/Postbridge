@@ -21,7 +21,7 @@ import {
 import {
     updateParcelStatus as updateParcelStatusAction,
     openParcelStatus as openParcelStatusAction} from '../../state-management/actions/parcel';
-    import { getLocations as getLocationsAction} from '../../state-management/actions/other';
+    import { getLocations as getLocationsAction} from '../../state-management/actions/others';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
 
 

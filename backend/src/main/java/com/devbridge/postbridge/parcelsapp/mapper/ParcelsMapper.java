@@ -35,7 +35,6 @@ public interface ParcelsMapper {
     @Options(useGeneratedKeys = true)
     void insertParcel(Parcel parcel);
 
-    @SuppressWarnings("CPD-START")
     @Select("select " +
                     "  p.id, " +
                     "  start_loc.name as start_location, " +
@@ -100,7 +99,6 @@ public interface ParcelsMapper {
                     one = @One(select = "getUser"))
     })
     List<Parcel> getParcels();
-    @SuppressWarnings("CPD-END")
 
     @Update("UPDATE parcels SET " +
                     "ref_user_courier = #{courier.id}, " +

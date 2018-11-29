@@ -11,16 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    //leaving possible null because it is assigned on INSERT
+public class Location {
     private Long id;
-    @NotNull
-    private String firstName;
-    @NotNull
-    private String lastName;
 
     @NotNull
-    private String email;
-    @NotNull
-    private String password;    //this is only used during creation of the user account
+    private String name;
 }

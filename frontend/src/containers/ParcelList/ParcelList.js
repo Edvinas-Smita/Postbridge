@@ -126,6 +126,7 @@ const mapStateToProps = state => ({
     sortBy: state.parcels.sortBy,
     sortOrder: state.parcels.sortOrder,
     parcels: getSortedParcels(state),
+    userid: state.parcels.userId,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelList);

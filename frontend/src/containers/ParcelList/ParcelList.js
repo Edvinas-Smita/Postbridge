@@ -21,8 +21,8 @@ import {
 import {
     updateParcelStatus as updateParcelStatusAction,
     openParcelStatus as openParcelStatusAction} from '../../state-management/actions/parcel';
+    import { getLocations as getLocationsAction} from '../../state-management/actions/other';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
-
 
 
 class ParcelList extends React.Component {
@@ -38,6 +38,7 @@ class ParcelList extends React.Component {
 
     componentWillMount() {
         this.props.getParcels();
+        this.props.getLocations();
     }
 
     deleteParcelFactory(id) {
@@ -114,6 +115,7 @@ class ParcelList extends React.Component {
 const mapDispatchToProps = dispatch => ({
     getParcels: () => dispatch(getParcelsAction()),
     updateParcelStatus: (parcel) => dispatch(updateParcelStatusAction(parcel)),
+    getLocations: () => dispatch(getLocationsAction()),
     deleteParcel: (id) => dispatch(deleteParcelAction(id)),
     sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
     openParcelStatus: (id) => dispatch(openParcelStatusAction(id))

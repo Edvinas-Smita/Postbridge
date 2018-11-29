@@ -1,0 +1,3 @@
+export const GET_LOCATIONS = 'parcels/GET_LOCATIONS';
+export const GET_LOCATIONS_SUCCESS = 'parcels/GET_LOCATIONS_SUCCESS';
+export const GET_LOCATIONS_ERROR = 'parcels/GET_LOCATIONS_ERROR';

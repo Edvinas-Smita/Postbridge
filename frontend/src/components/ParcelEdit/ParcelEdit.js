@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { connect } from 'react-redux';
 
 import NumberFormat from 'react-number-format';
 
@@ -446,10 +445,5 @@ class ParcelEdit extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    locations: state.others.locations,
-});
 
-const StyledParcelEdit = withStyles(styles)(ParcelEdit);
-
-export default connect(mapStateToProps, null)(StyledParcelEdit);
+export default withStyles(styles)(ParcelEdit);

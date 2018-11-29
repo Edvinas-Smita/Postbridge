@@ -1,14 +1,14 @@
 import {
     GET_PARCELS,
     GET_PARCELS_SUCCESS,
-    GET_PARCELS_ERROR, 
+    GET_PARCELS_ERROR,  
     DELETE_PARCEL,
     DELETE_PARCEL_SUCCESS,
-    DELETE_PARCEL_ERROR, 
+    DELETE_PARCEL_ERROR,
+    UPDATE_PARCELS,
     SORT_PARCELS,
     SET_PARCEL_FILTER,
 } from '../constants/parcels';
-// import { number } from 'prop-types';
 
 const initialState = {
     isLoading: false,
@@ -16,8 +16,8 @@ const initialState = {
     parcels: [],
     sortBy: 'createdDate',
     sortOrder: 'desc',
+    parcel: {},
     filterBy: '',
-
     filteredParcels: [],
     startLocation: '',
     endLocation: '',
@@ -34,7 +34,14 @@ const initialState = {
     statusFilterCounter: 0
 };
 
+function findParcelIndex(parcels, id) {
+    let index = parcels.length;
+    if(id !== undefined) index = parcels.findIndex(x => x.id === id);
+    return index;
+}
+
 export default function parcelsReducer(state = initialState, action = {}){
+    let index;
     switch(action.type){
         case GET_PARCELS: return {
             ...state,
@@ -43,7 +50,7 @@ export default function parcelsReducer(state = initialState, action = {}){
         case GET_PARCELS_SUCCESS: return {
             ...state,
             isLoading: false,
-            parcels: action.parcels,
+            parcels: action.parcels || [],
         };
         case GET_PARCELS_ERROR: return {
             ...state,
@@ -55,8 +62,7 @@ export default function parcelsReducer(state = initialState, action = {}){
             isLoading: true,
         };
         case DELETE_PARCEL_SUCCESS: 
-            let index = state.parcels.length;
-            if(action.id !== undefined) index = state.parcels.findIndex(x => x.id === action.id);
+            index = findParcelIndex(state.parcels, action.id);
             return {
                 ...state,
                 isLoading: false,
@@ -70,6 +76,16 @@ export default function parcelsReducer(state = initialState, action = {}){
             isLoading: false,
             error: action.error,
         }
+        case UPDATE_PARCELS:
+            index = findParcelIndex(state.parcels, action.parcel.id);
+            return {
+                ...state,
+                parcels: [
+                    ...state.parcels.slice(0, index),
+                    action.parcel,
+                    ...state.parcels.slice(index + 1),
+                ]
+            }
         case SORT_PARCELS: 
             let newOrder = 'asc';
             if(action.sortBy === state.sortBy) newOrder = state.sortOrder === 'asc' ? 'desc' : 'asc';
@@ -99,7 +115,6 @@ export default function parcelsReducer(state = initialState, action = {}){
                     [action.filterBy]: action.value,
                 }; 
             }
-            default: return state;
-
+        default: return state;
     }
 }

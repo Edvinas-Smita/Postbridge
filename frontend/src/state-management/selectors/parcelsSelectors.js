@@ -98,14 +98,3 @@ export const getSortedParcels = createSelector(
         }
     }
 );
-
-
-
-
-
-
-
-    
-
-
-

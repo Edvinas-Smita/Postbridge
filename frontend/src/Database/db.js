@@ -145,9 +145,9 @@ module.exports = function() {
     "statusHistory":[
       {
         "user": {
-        "id": 1,
-        "firstName": "Johna",
-        "lastName": "Bill"
+          "id": 1,
+          "firstName": "Johna",
+          "lastName": "Bill"
         },
         "status": 1,
         "date": "2018-08-05T23:15:30.000Z",

@@ -9,6 +9,9 @@ create table users (
   id bigserial not null,
   first_name character varying(256) not null,
   last_name character varying(256) not null,
+  email character varying(256) not null,
+  salt character varying(64) not null,
+  hash character varying(128) not null,
   primary key (id));
 
 create table locations (

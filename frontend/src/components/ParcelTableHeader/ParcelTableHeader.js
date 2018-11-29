@@ -13,7 +13,6 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowIcon from '@material-ui/icons/ArrowDropDown';
 import Button from '@material-ui/core/Button';
 
-import Select from '@material-ui/core/Select';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state/index';
@@ -26,8 +25,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Chip from '@material-ui/core/Chip';
 import { STATUS } from '../../helpers';
 
-
-
+import LocationSelect from '../../components/LocationSelect/LocationSelect'; 
 
 const styles = theme => ({
     iconButton: {
@@ -56,8 +54,9 @@ const styles = theme => ({
         float: 'right',
         marginTop:  theme.spacing.unit
     },
+
     menuMargin: {
-        padding: theme.spacing.unit,
+        padding: theme.spacing.unit * 3,
     },
     textField: {
         marginRight: theme.spacing.unit,
@@ -67,26 +66,36 @@ const styles = theme => ({
 const MenuProps = {
     PaperProps: {
       style: {
-        maxHeight: 200,
-        width: 150,
+        maxHeight: 300,
       },
     },
   };
 
 
 class ParcelTableHeader extends Component {
-    
-  state = {
-    startLocationValue: '',
-    endLocationValue: '',
-    weightFromValue: '',
-    weightToValue: '',
-    createdFromValue: '',
-    createdToValue: '',
-    courierValue: '',
-  };
 
-    
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            startLocationValue: '',
+            endLocationValue: '',
+            weightFromValue: '',
+            weightToValue: '',
+            createdFromValue: '',
+            createdToValue: '',
+            courierValue: '',
+        };
+        
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(value, prop) {
+        this.setState({
+            [prop]: value
+        });
+    }
+
     createSortHandler = property => event => {
         this.props.onRequestSort(event, property);
     }
@@ -100,73 +109,52 @@ class ParcelTableHeader extends Component {
         this.props.setParcelFilter(filterBy2, value2);
     };
 
-
-    
-
-
     render () {
         const { classes } = this.props;
-
 
         return (
             <TableHead >
                 <TableRow style={{marginBottom: '10px'}}>
-                <TableCell style={{width: '7%', fontWeight:'bold', padding: '0px'}}>
+                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '0px'}}>
                         <Grid container alignItems="center">
                             DESTINATION 
                             <PopupState variant="popover" state={{width: '200px'}}>
                                 {popupState => (
                                     <React.Fragment>
-                                    <IconButton className={classes.iconButton} {...bindTrigger(popupState)}> <ArrowIcon fontSize="small"/> </IconButton>  
+                                    <IconButton className={classes.iconButton} {...bindTrigger(popupState)}>
+                                        <ArrowIcon fontSize="small"/> 
+                                    </IconButton>  
                                     <Menu  
                                         {...bindMenu(popupState)} 
                                         anchorOrigin={{
                                             vertical: 'bottom',
                                             horizontal: 'center',
                                             }}
-                                            transformOrigin={{
-                                                vertical: 'top',
-                                                horizontal: 'center',
-                                              }}
-                                              getContentAnchorEl={null}
-                                              disableAutoFocusItem>
-                                          
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'center',
+                                            }}
+                                        getContentAnchorEl={null}
+                                        disableAutoFocusItem>
                                     <Grid container direction="column" alignItems="flex-end"  className={classes.menuMargin}>
                                         <Grid container direction="row">
-                                            <Select 
-                                                style={{width: '100px'}}
-                                                value={this.state.startLocationValue}
-                                                onChange={(e) => this.handleMenuValues('startLocationValue', e.target.value)}
-                                                MenuProps={MenuProps}
-                                            >
-                                                <MenuItem value="">
-                                                <em>None</em>
-                                                </MenuItem>
-                                                <MenuItem value='Vilnius'>Vilnius</MenuItem>
-                                                <MenuItem value='Kaunas'>Kaunas</MenuItem>
-                                                <MenuItem value='London'>London</MenuItem>
-                                                <MenuItem value='Toronto'>Toronto</MenuItem>
-                                                <MenuItem value='Chicago'>Chicago</MenuItem>
-                                            </Select>
-       
+                                        <LocationSelect
+                                            value={this.state.startLocationValue}
+                                            onChange={this.handleChange}
+                                            name={'startLocationValue'}
+                                            MenuProps={MenuProps}
+                                            emptyMenuItem={true}
+                                            style={{width: '100px'}}/>
                                         <PlaneIcon className={classes.planeIcon}/>
-                                        <Select 
-                                                style={{width: '100px'}}
-                                                value={this.state.endLocationValue}
-                                                onChange={(e) => this.handleMenuValues('endLocationValue', e.target.value)}
-                                                MenuProps={MenuProps}
-                                            >
-                                                <MenuItem value="">
-                                                <em>None</em>
-                                                </MenuItem>
-                                                <MenuItem value='Vilnius'>Vilnius</MenuItem>
-                                                <MenuItem value='Kaunas'>Kaunas</MenuItem>
-                                                <MenuItem value='London'>London</MenuItem>
-                                                <MenuItem value='Toronto'>Toronto</MenuItem>
-                                                <MenuItem value='Chicago'>Chicago</MenuItem>
-                                            </Select>
-                                            </Grid>
-                                            <Button size="small"  variant="contained" color="primary" className={classes.button} onClick={() => {this.handleFilterChange('startLocation', 'endLocation', this.state.startLocationValue, this.state.endLocationValue); popupState.close();}}>Filter</Button>
+                                        <LocationSelect
+                                            value={this.state.endLocationValue}
+                                            onChange={this.handleChange}
+                                            name={'endLocationValue'}
+                                            MenuProps={MenuProps}
+                                            emptyMenuItem={true}
+                                            style={{width: '100px'}}/>
+                                        </Grid>
+                                        <Button size="small"  variant="contained" color="primary" className={classes.button} onClick={() => {this.handleFilterChange('startLocation', 'endLocation', this.state.startLocationValue, this.state.endLocationValue); popupState.close();}}>Filter</Button>
                                     </Grid>
                                     </Menu>
                                     </React.Fragment>
@@ -421,7 +409,8 @@ const mapStateToProps = state => ({
     createdTo: state.parcels.createdTo,
     courier: state.parcels.courier,
     userId: state.parcels.userId,
-    statusFilterCounter: state.parcels.statusFilterCounter
+    statusFilterCounter: state.parcels.statusFilterCounter,
+    locations: state.others.locations,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ParcelTableHeader));

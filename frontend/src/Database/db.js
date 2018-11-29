@@ -216,6 +216,28 @@ module.exports = function() {
         "username": "test3",
         "password": "test"
       }
+    ],
+    "locations": [
+      {
+        "id": 1,
+        "name": "Vilnius"
+      },
+      {
+        "id": 2,
+        "name": "Kaunas"
+      },
+      {
+        "id": 3,
+        "name": "Toronto"
+      },
+      {
+        "id": 4,
+        "name": "Chicago"
+      },
+      {
+        "id": 5,
+        "name": "London"
+      }
     ]
   }
 }

@@ -36,7 +36,7 @@ public interface UserMapper {
             @Result(property = "id", column = "ID"),
             @Result(property = "firstName", column = "FIRST_NAME"),
             @Result(property = "lastName", column = "LAST_NAME"),
-            @Result(property = "email", column = "email"),
+            @Result(property = "email", column = "email")
     })
     User getUser(LoginData login);
 }

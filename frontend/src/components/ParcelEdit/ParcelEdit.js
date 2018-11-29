@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import NumberFormat from 'react-number-format';
 
 import Grid from '@material-ui/core/Grid';
@@ -6,8 +7,6 @@ import Button from '@material-ui/core/Button/Button';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import TextField from '@material-ui/core/TextField/TextField';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import {withStyles} from "@material-ui/core/styles";
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -20,6 +19,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import {STATUS, deepDiff} from '../../helpers';
 import Box from './Box.svg';
 import { Typography } from '@material-ui/core';
+
+import LocationSelect from '../../components/LocationSelect/LocationSelect'; 
 
 const styles = theme => ({
     setWidth: {
@@ -114,6 +115,7 @@ class ParcelEdit extends Component {
         this.state = {
             changesPending: false
         }
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -134,6 +136,15 @@ class ParcelEdit extends Component {
                 changesPending: false
             });
         }
+    }
+
+    handleChange(value, prop) {
+        this.setState({
+            parcel: {
+                ...this.state.parcel,
+                [prop]: value
+            } 
+        });
     }
 
     handleParcelRecipientChange = prop => event => {    //for changing parcels' nested recipient properties
@@ -300,32 +311,18 @@ class ParcelEdit extends Component {
                         <Grid item className={classes.setWidth}>
                             <div className={classes.toAndFrom}>
                                 <FormControl className={classes.fullWidth}>
-                                    <FormLabel className={classes.label}>FROM *</FormLabel>
-                                    <Select
-                                        variant="outlined"
+                                    <FormLabel className={classes.label} required>FROM</FormLabel>
+                                    <LocationSelect
                                         value={parcel.startLocation}
-                                        onChange={this.handleParcelChange('startLocation')}
-                                    >
-                                        <MenuItem
-                                            value={parcel.startLocation}    //TODO: get list of locations from backend and map them to array of MenuItem
-                                        >
-                                            {parcel.startLocation}
-                                        </MenuItem>
-                                    </Select>
+                                        onChange={this.handleChange}
+                                        name={'startLocation'}/>
                                 </FormControl>
                                 <FormControl className={classes.fullWidth}>
-                                    <FormLabel className={classes.label}>TO *</FormLabel>
-                                    <Select
-                                        variant="outlined"
+                                    <FormLabel className={classes.label} required>TO</FormLabel>
+                                    <LocationSelect
                                         value={parcel.endLocation}
-                                        onChange={this.handleParcelChange('endLocation')}
-                                    >
-                                        <MenuItem
-                                            value={parcel.endLocation}
-                                        >
-                                            {parcel.endLocation}
-                                        </MenuItem>
-                                    </Select>
+                                        onChange={this.handleChange}
+                                        name={'endLocation'}/>
                                 </FormControl>
                             </div>
                         </Grid>
@@ -383,7 +380,7 @@ class ParcelEdit extends Component {
 
                         <Grid item className={classes.setWidth}>
                             <FormControl className={classes.fullWidth}>
-                                <FormLabel className={classes.label}>DESCRIPTION *</FormLabel>
+                                <FormLabel className={classes.label} required>DESCRIPTION</FormLabel>
                                 <TextField
                                     variant="outlined"
                                     multiline
@@ -447,5 +444,6 @@ class ParcelEdit extends Component {
         )
     }
 }
+
 
 export default withStyles(styles)(ParcelEdit);

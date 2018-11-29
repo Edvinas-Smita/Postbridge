@@ -10,13 +10,20 @@ import Header from '../../components/Header/Header';
 import Decoration from '../../components/Decoration/Decoration';
 import ParcelTable from '../../components/ParcelTable/ParcelTable';
 import ParcelTableHeader from '../../components/ParcelTableHeader/ParcelTableHeader';
-import ParcelStatusHistory from '../../containers/ParcelStatusHistory/ParcelStatusHistory';
+import ParcelStatus from '../../components/ParcelStatus/ParcelStatus';
 
 import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
-import { getParcels as getParcelsAction, deleteParcel as deleteParcelAction, sortParcels } from '../../state-management/actions/parcels';
-import { getParcelStatusHistory as getParcelStatusHistoryAction } from '../../state-management/actions/parcelStatusHistory';
+import { 
+    getParcels as getParcelsAction, 
+    sortParcels,
+    deleteParcel as deleteParcelAction} from '../../state-management/actions/parcels';
+import {
+    updateParcelStatus as updateParcelStatusAction,
+    openParcelStatus as openParcelStatusAction} from '../../state-management/actions/parcel';
+    import { getLocations as getLocationsAction} from '../../state-management/actions/others';
 import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
+
 
 class ParcelList extends React.Component {
     constructor(props){
@@ -26,37 +33,28 @@ class ParcelList extends React.Component {
             sortBy: 'createdDate'
         }
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
-        this.openParcelStatusHistory = this.openParcelStatusHistory.bind(this);
-        this.closeParcelStatusHistory = this.closeParcelStatusHistory.bind(this);
-
-        this.state = {
-            isOpenHist: false
-        }
+        this.updateParcelStatusFactory = this.updateParcelStatusFactory.bind(this);
     }
 
     componentWillMount() {
         this.props.getParcels();
+        this.props.getLocations();
     }
 
     deleteParcelFactory(id) {
         return () => this.props.deleteParcel(id);
     }
 
+    updateParcelStatusFactory(parcel){
+        this.props.updateParcelStatus(parcel);
+    }
+
     handleRequestSort = (event, property) => {
         this.props.sortParcels(property);
     }
     
-    openParcelStatusHistory(id){
-        this.setState({
-                isOpenHist: true,
-            },
-            () => {this.props.getParcelStatusHistory(id);});
-    }
-
-    closeParcelStatusHistory(id){
-        this.setState({
-                isOpenHist: false,
-            });
+    openParcelStatus(id) {
+        this.props.openParcelStatus(id);
     }
 
     editParcel(parcel) {
@@ -97,23 +95,18 @@ class ParcelList extends React.Component {
                             deleteParcelFactory={this.deleteParcelFactory}
                             parcels={this.props.parcels}
                             userId={this.props.userId}
-                            openParcelStatusHistory={this.openParcelStatusHistory}
                             onEditParcel={this.editParcel.bind(this)}
-                            
-                            
+                            openParcelStatus={this.openParcelStatus.bind(this)}
                             />
                     </Table>
                 </Grid>
-                <ParcelStatusHistory 
-                    open={this.state.isOpenHist} 
-                    onRequestClose={this.closeParcelStatusHistory}
-                    parcelStatusHistory={this.props.parcelStatusHistory}
-                    isHistoryLoading={this.props.isHistoryLoading}/>           
                 <ParcelEdit
                     parcel={this.state.parcelToEdit}
                     open={this.state.editingParcel}
                     onClose={this.finishEdit}
                 />
+                <ParcelStatus
+                    updateParcelStatusFactory={this.updateParcelStatusFactory}/>
             </div>
         )
     }
@@ -121,9 +114,11 @@ class ParcelList extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
     getParcels: () => dispatch(getParcelsAction()),
+    updateParcelStatus: (parcel) => dispatch(updateParcelStatusAction(parcel)),
+    getLocations: () => dispatch(getLocationsAction()),
     deleteParcel: (id) => dispatch(deleteParcelAction(id)),
     sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
-    getParcelStatusHistory: (id) => dispatch(getParcelStatusHistoryAction(id)),
+    openParcelStatus: (id) => dispatch(openParcelStatusAction(id))
 });
 
 const mapStateToProps = state => ({
@@ -131,8 +126,7 @@ const mapStateToProps = state => ({
     sortBy: state.parcels.sortBy,
     sortOrder: state.parcels.sortOrder,
     parcels: getSortedParcels(state),
-    parcelStatusHistory: state.parcelStatusHistory.history,
-    isHistoryLoading: state.parcelStatusHistory.isLoading
+    userId: state.parcels.userId,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelList);

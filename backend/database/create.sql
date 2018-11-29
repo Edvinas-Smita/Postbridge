@@ -5,8 +5,6 @@ drop table if exists parcels;
 drop table if exists users;
 drop table if exists locations;
 
-CREATE EXTENSION pgcrypto;
-
 create table users (
   id bigserial not null,
   first_name character varying(256) not null,
@@ -14,8 +12,7 @@ create table users (
   email character varying(256) not null,
   salt character varying(64) not null,
   hash character varying(128) not null,
-  primary key (id)
-);
+  primary key (id));
 
 create table locations (
   id bigserial not null,

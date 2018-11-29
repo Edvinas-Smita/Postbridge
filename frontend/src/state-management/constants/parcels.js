@@ -6,3 +6,4 @@ export const DELETE_PARCEL_SUCCESS = 'parcels/DELETE_PARCEL_SUCCESS';
 export const DELETE_PARCEL_ERROR = 'parcels/DELETE_PARCEL_ERROR';
 export const UPDATE_PARCELS = 'parcels/UPDATE_PARCELS';
 export const SORT_PARCELS = 'parcels/SORT_PARCELS';
+export const SET_PARCEL_FILTER = 'parcels/SET_PARCEL_FILTER';

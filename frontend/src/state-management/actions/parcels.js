@@ -2,11 +2,12 @@ import {
     GET_PARCELS,
     GET_PARCELS_SUCCESS,
     GET_PARCELS_ERROR, 
+    UPDATE_PARCELS,
     DELETE_PARCEL,
     DELETE_PARCEL_SUCCESS,
     DELETE_PARCEL_ERROR, 
-    UPDATE_PARCELS,
     SORT_PARCELS,
+    SET_PARCEL_FILTER,
 } from '../constants/parcels';
 
 export const getParcels = () => ({
@@ -46,4 +47,10 @@ export const deleteParcelError = error => ({
 export const sortParcels = sortBy => ({
     type: SORT_PARCELS,
     sortBy,
+});
+
+export const setParcelFilter = (filterBy, value) => ({
+    type: SET_PARCEL_FILTER,
+    filterBy,
+    value
 })

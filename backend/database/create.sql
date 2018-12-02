@@ -4,6 +4,7 @@ drop table if exists parcel_status_history;
 drop table if exists parcels;
 drop table if exists users;
 drop table if exists locations;
+create extension if not exists pgcrypto;
 
 create table users (
   id bigserial not null,

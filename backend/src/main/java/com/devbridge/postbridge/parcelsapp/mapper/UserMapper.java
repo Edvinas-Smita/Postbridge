@@ -19,8 +19,8 @@ public interface UserMapper {
                     "#{user.firstName}, " +
                     "#{user.lastName}, " +
                     "#{user.email}, " +
-                    "#{salt}, " +
-                    "crypt(#{user.password}, #{salt})" +
+                    "#{salt}, " +//TODO: should salt be stored on DB?
+                    "crypt(#{user.password}, #{salt})" +//TODO: is that ok, or should java BCryptPasswordEncoder used?
                     ");")
     @Options(useGeneratedKeys = true)
     void insertUser(@Param("user") User user, @Param("salt") String salt);
@@ -28,7 +28,7 @@ public interface UserMapper {
     @Select("SELECT gen_salt('bf');")
     String gen_salt();
 
-    @Select("SELECT id, first_name, last_name, email " +
+    @Select("SELECT id, first_name, last_name, email " +//TODO: it seems like it is not needed, on auth not used
                     "FROM users " +
                     "WHERE email = #{email} " +
                     "AND hash = crypt(#{password}, salt);")

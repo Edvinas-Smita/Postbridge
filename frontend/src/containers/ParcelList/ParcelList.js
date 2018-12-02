@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
 import './ParcelList.css';
 
@@ -14,24 +14,27 @@ import ParcelStatus from '../../components/ParcelStatus/ParcelStatus';
 
 import ParcelEdit from '../../components/ParcelEdit/ParcelEdit';
 
-import { 
-    getParcels as getParcelsAction, 
-    sortParcels,
-    deleteParcel as deleteParcelAction} from '../../state-management/actions/parcels';
 import {
-    updateParcelStatus as updateParcelStatusAction,
-    openParcelStatus as openParcelStatusAction} from '../../state-management/actions/parcel';
-    import { getLocations as getLocationsAction} from '../../state-management/actions/others';
-import { getSortedParcels } from '../../state-management/selectors/parcelsSelectors';
+    deleteParcel as deleteParcelAction,
+    getParcels as getParcelsAction,
+    sortParcels
+} from '../../state-management/actions/parcels';
+import {
+    openParcelStatus as openParcelStatusAction,
+    updateParcelStatus as updateParcelStatusAction
+} from '../../state-management/actions/parcel';
+import {editParcelOpen as editParcelOpenAction} from "../../state-management/actions/parcelEdit";
+import {getLocations as getLocationsAction} from '../../state-management/actions/others';
+import {getSortedParcels} from '../../state-management/selectors/parcelsSelectors';
 
 
 class ParcelList extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             sortOrder: 'asc',
             sortBy: 'createdDate'
-        }
+        };
         this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
         this.updateParcelStatusFactory = this.updateParcelStatusFactory.bind(this);
     }
@@ -45,41 +48,28 @@ class ParcelList extends React.Component {
         return () => this.props.deleteParcel(id);
     }
 
-    updateParcelStatusFactory(parcel){
+    updateParcelStatusFactory(parcel) {
         this.props.updateParcelStatus(parcel);
     }
 
     handleRequestSort = (event, property) => {
         this.props.sortParcels(property);
+    };
+
+    openEditParcel(parcel) {
+        this.props.editParcelOpen(parcel);
     }
-    
+
     openParcelStatus(id) {
         this.props.openParcelStatus(id);
     }
 
-    editParcel(parcel) {
-        return () => {
-            this.setState({
-                editingParcel: true,
-                parcelToEdit: parcel
-            });
-        }
-    };
-
-    finishEdit = newValues => {
-        console.log("Changed values:", newValues);
-        this.setState({
-            editingParcel: false,
-            parcelToEdit: null
-        });
-    };
-
     render() {
-        return (       
+        return (
             <div className="ParcelListPage">
                 <Header/>
-                <Decoration onEditParcel={this.editParcel.bind(this)}/> 
-                <Grid               
+                <Decoration onEditParcel={this.openEditParcel.bind(this)}/>
+                <Grid
                     container
                     direction="column"
                     alignItems="center"
@@ -87,7 +77,7 @@ class ParcelList extends React.Component {
                     className="ParcelTable"
                 >
                     <Table style={{width: '85%', marginLeft: '4%', marginRight: '4%', tableLayout: 'fixed',}}>
-                        <ParcelTableHeader 
+                        <ParcelTableHeader
                             onRequestSort={this.handleRequestSort}
                             sortOrder={this.props.sortOrder}
                             sortBy={this.props.sortBy}/>
@@ -95,16 +85,12 @@ class ParcelList extends React.Component {
                             deleteParcelFactory={this.deleteParcelFactory}
                             parcels={this.props.parcels}
                             userId={this.props.userId}
-                            onEditParcel={this.editParcel.bind(this)}
+                            onEditParcel={this.openEditParcel.bind(this)}
                             openParcelStatus={this.openParcelStatus.bind(this)}
-                            />
+                        />
                     </Table>
                 </Grid>
-                <ParcelEdit
-                    parcel={this.state.parcelToEdit}
-                    open={this.state.editingParcel}
-                    onClose={this.finishEdit}
-                />
+                <ParcelEdit />
                 <ParcelStatus
                     updateParcelStatusFactory={this.updateParcelStatusFactory}/>
             </div>
@@ -118,7 +104,8 @@ const mapDispatchToProps = dispatch => ({
     getLocations: () => dispatch(getLocationsAction()),
     deleteParcel: (id) => dispatch(deleteParcelAction(id)),
     sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
-    openParcelStatus: (id) => dispatch(openParcelStatusAction(id))
+    openParcelStatus: (id) => dispatch(openParcelStatusAction(id)),
+    editParcelOpen: (parcel) => dispatch(editParcelOpenAction(parcel))
 });
 
 const mapStateToProps = state => ({

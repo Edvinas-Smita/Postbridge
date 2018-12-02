@@ -20,7 +20,9 @@ import {STATUS, deepDiff} from '../../helpers';
 import Box from './Box.svg';
 import { Typography } from '@material-ui/core';
 
-import LocationSelect from '../../components/LocationSelect/LocationSelect'; 
+import LocationSelect from '../../components/LocationSelect/LocationSelect';
+import {connect} from "react-redux";
+import {editParcelClose, editParcelSave} from "../../state-management/actions/parcelEdit";
 
 const styles = theme => ({
     setWidth: {
@@ -114,25 +116,14 @@ class ParcelEdit extends Component {
 
         this.state = {
             changesPending: false
-        }
+        };
         this.handleChange = this.handleChange.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.open && (!this.state.parcel || nextProps.parcel !== this.state.parcel)) {
+        if (nextProps.isOpen && (!this.state.parcel || nextProps.parcel !== this.state.parcel)) {
             this.setState({
-                parcel: {   //getting a custom copy to store only the information that is relevant in state
-                    id: nextProps.parcel.id,
-                    recipient: {
-                        firstName: nextProps.parcel.recipient.firstName,
-                        lastName: nextProps.parcel.recipient.lastName
-                    },
-                    startLocation: nextProps.parcel.startLocation,
-                    endLocation: nextProps.parcel.endLocation,
-                    status: nextProps.parcel.status,
-                    description: nextProps.parcel.description,
-                    weight: nextProps.parcel.weight
-                },
+                parcel: nextProps.parcel,
                 changesPending: false
             });
         }
@@ -177,10 +168,17 @@ class ParcelEdit extends Component {
 
     closeModal = () => {
         //return the fields that were changed after edit (for convenient UPDATE)
-        this.props.onClose(deepDiff(this.state.parcel, this.props.parcel));
+        //this.props.onClose(deepDiff(this.state.parcel, this.props.parcel));
+        if (this.state.parcel.id) {
+            this.props.editSave(this.state.parcel);
+        } else {
+            //on request new save
+        }
+
+        this.props.close(this.state.parcel);
     };
     closeAndDiscard = () => {
-        this.props.onClose({});   //return an empty object representing that no fields have been changed
+        this.props.close(this.props.parcel);
     };
 
     changesPendingPrompt = () => {
@@ -212,8 +210,8 @@ class ParcelEdit extends Component {
 
     render() {
         const {classes} = this.props;
-        const isEmpty = !this.props.open || !this.state.parcel;
-        const isConfirmation = this.props.open && this.state.changesPending;
+        const isEmpty = !this.props.isOpen || !this.state.parcel;
+        const isConfirmation = this.props.isOpen && this.state.changesPending;
 
         if (isEmpty) {
             return null;    //since there is nothing to render - don't render it
@@ -259,7 +257,7 @@ class ParcelEdit extends Component {
         const {parcel} = this.state;
         return (
             <Dialog
-                open={this.props.open === true}
+                open={this.props.isOpen === true}
                 onBackdropClick={this.changesPendingPrompt}
                 onEscapeKeyDown={this.changesPendingPrompt}
                 scroll='body'
@@ -446,4 +444,17 @@ class ParcelEdit extends Component {
 }
 
 
-export default withStyles(styles)(ParcelEdit);
+const mapStateToProps = state => ({
+    isLoading: state.parcelEdit.isLoading,
+    isOpen: state.parcelEdit.isOpen,
+    parcel: state.parcelEdit.parcel
+});
+
+const mapDispatchToProps = dispatch => ({
+    editSave: (parcel) => dispatch(editParcelSave(parcel)),
+    close: (parcel) => dispatch(editParcelClose(parcel))
+});
+
+const styled = withStyles(styles)(ParcelEdit);
+
+export default connect(mapStateToProps, mapDispatchToProps)(styled);

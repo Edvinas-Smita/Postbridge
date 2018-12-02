@@ -70,7 +70,7 @@ class parcelListDeco extends Component {
                         Deliveries
                     </Typography>
                     <div className={[classes.tableCell,classes.tableCellRight].join(' ')}>
-                        <Button variant="contained" className={classes.button} onClick={this.props.onEditParcel(parcel)}>
+                        <Button variant="contained" className={classes.button} onClick={() => this.props.onEditParcel(parcel)}>
                             <AddCircle className={classes.addCircle}/>
                             Request new delivery
                         </Button>

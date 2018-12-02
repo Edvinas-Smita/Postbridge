@@ -162,7 +162,7 @@ const parcelTable = (props) => {
                                 {buttonText}
                             </Button>
                             { (parcel.courier.id === props.userId)
-                            ? <IconButton className={classes.iconButton} onClick={props.onEditParcel(parcel)}> <EditIcon fontSize="small"/> </IconButton>
+                            ? <IconButton className={classes.iconButton} onClick={() => props.onEditParcel(parcel)}> <EditIcon fontSize="small"/> </IconButton>
                             : null }
                             { (STATUS[parcel.status] === 'Open')
                             ? <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}> <CloseIcon fontSize="small"/> </IconButton> 

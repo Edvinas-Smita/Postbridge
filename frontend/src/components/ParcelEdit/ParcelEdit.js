@@ -16,13 +16,18 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import InfoOutlined from '@material-ui/icons/InfoOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import {STATUS, deepDiff} from '../../helpers';
+import {deepDiff, STATUS} from '../../helpers';
 import Box from './Box.svg';
-import { Typography } from '@material-ui/core';
+import {Typography} from '@material-ui/core';
 
 import LocationSelect from '../../components/LocationSelect/LocationSelect';
 import {connect} from "react-redux";
-import {editParcelClose, editParcelSave} from "../../state-management/actions/parcelEdit";
+import {
+    editParcelCloseDiscard,
+    editParcelCloseEdit, editParcelCloseRequest,
+    editParcelSaveEdit,
+    editParcelSaveRequest
+} from "../../state-management/actions/parcelEdit";
 
 const styles = theme => ({
     setWidth: {
@@ -121,11 +126,31 @@ class ParcelEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.isOpen && (!this.state.parcel || nextProps.parcel !== this.state.parcel)) {
-            this.setState({
-                parcel: nextProps.parcel,
-                changesPending: false
-            });
+        if (nextProps.isOpen) {
+            if (nextProps.parcel !== null) {
+                this.setState({
+                    isRequestForm: false,
+                    parcel: nextProps.parcel,
+                    changesPending: false
+                });
+            } else {
+                const emptyParcel = {
+                    id: '',
+                    recipient: nextProps.currentUser,
+                    courier: {},
+                    startLocation: '',
+                    endLocation: '',
+                    status: 1,
+                    description: '',
+                    weight: '',
+                    createdDate: new Date().toLocaleString()
+                };
+                this.setState({
+                    isRequestForm: true,
+                    parcel: emptyParcel,
+                    changesPending: false
+                });
+            }
         }
     }
 
@@ -166,19 +191,12 @@ class ParcelEdit extends Component {
         })
     };
 
-    closeModal = () => {
-        //return the fields that were changed after edit (for convenient UPDATE)
-        //this.props.onClose(deepDiff(this.state.parcel, this.props.parcel));
-        if (this.state.parcel.id) {
-            this.props.editSave(this.state.parcel);
-        } else {
-            //on request new save
-        }
-
-        this.props.close(this.state.parcel);
+    closeAndDiscard() {
+        this.props.discardAny();
     };
-    closeAndDiscard = () => {
-        this.props.close(this.props.parcel);
+    onCancelClick = () => {
+        //discard changes   //TODO: should cancel instantly discard all changes or should it also ask for confirmation?
+        this.closeAndDiscard();
     };
 
     changesPendingPrompt = () => {
@@ -192,15 +210,22 @@ class ParcelEdit extends Component {
             this.closeAndDiscard();
         }
     };
+
     exitPendingPrompt = () => {
         //switch back to edit dialog
         this.setState({changesPending: false});
     };
 
-    onCancelClick = () => {
-        //discard changes   //TODO: should cancel instantly discard all changes or should it also ask for confirmation?
-        this.closeAndDiscard();
+    closeModal() {
+        if (!this.state.isRequestForm) {
+            this.props.saveEdit(this.state.parcel);
+            this.props.closeEdit(this.state.parcel);
+        } else {
+            this.props.saveRequest(this.state.parcel);
+            this.props.closeRequest(this.state.parcel);
+        }
     };
+
     onSaveClick = () => {
         //check if changes are valid?
 
@@ -210,11 +235,10 @@ class ParcelEdit extends Component {
 
     render() {
         const {classes} = this.props;
-        const isEmpty = !this.props.isOpen || !this.state.parcel;
         const isConfirmation = this.props.isOpen && this.state.changesPending;
 
-        if (isEmpty) {
-            return null;    //since there is nothing to render - don't render it
+        if (!this.props.isOpen) {
+            return null;
         }
         else if (isConfirmation) {
             return (
@@ -254,7 +278,7 @@ class ParcelEdit extends Component {
             )
         }
 
-        const {parcel} = this.state;
+        const {parcel, isRequestForm} = this.state;
         return (
             <Dialog
                 open={this.props.isOpen === true}
@@ -266,7 +290,7 @@ class ParcelEdit extends Component {
                     <div style={{display: 'flex', alignItems: 'center'}}>
                         <img className={classes.icon} src={Box} alt=''/>
                         <Typography variant="h5" style={{fontWeight: 'bold'}}>
-                            {parcel.id === '' ? 'Request new delivery' : 'Edit order'}
+                            {isRequestForm ? 'Request new delivery' : 'Edit order'}
                         </Typography>
                     </div>
                 </DialogTitle>
@@ -279,7 +303,7 @@ class ParcelEdit extends Component {
                         alignItems="center"
                         justify="flex-start"
                     >
-                        <Grid item className={classes.setWidth}>
+                        {/*<Grid item className={classes.setWidth}>
                             <FormControl className={classes.fullWidth}>
                                 <FormLabel className={classes.label}>FIRST NAME</FormLabel>
                                 <TextField  //TODO: possibly validate inputs as last line of defence from SQL injection
@@ -304,7 +328,7 @@ class ParcelEdit extends Component {
                                     onChange={this.handleParcelRecipientChange('lastName')}
                                 />
                             </FormControl>
-                        </Grid>
+                        </Grid>*/}
 
                         <Grid item className={classes.setWidth}>
                             <div className={classes.toAndFrom}>
@@ -325,7 +349,7 @@ class ParcelEdit extends Component {
                             </div>
                         </Grid>
 
-                        {parcel.id !== '' &&
+                        {!isRequestForm &&
                         <Grid item className={classes.setWidth}>
                             <FormLabel className={classes.label}>STATUS</FormLabel>
                             <Grid
@@ -335,35 +359,18 @@ class ParcelEdit extends Component {
                                 justify="center"
                                 className={classes.gridStatus}
                             >
-                                {Object.keys(STATUS).map(key => {                                    
+                                {Object.keys(STATUS).map(key => {
                                     let statusStyle = [
                                         classes.statusButton,
-                                        (this.props.parcel.status === Number(key)) ? classes.statusButtonActive : classes.statusButtonNotActive].join(' ')
+                                        (this.props.parcel.status === Number(key))
+                                            ? classes.statusButtonActive
+                                            : classes.statusButtonNotActive
+                                    ].join(' ');
                                     return (
                                         <Grid item key={key} xs={3}>
                                             <Button
-                                                /*disabled={true}*/
-                                                /*value={key}
-                                                onClick={() => this.setState({    //if we were to allow editing state from this form
-                                                    parcel: {
-                                                        ...parcel,
-                                                        status: Number(key)
-                                                    }
-                                                })}*/
                                                 variant='outlined'
                                                 className={statusStyle}
-                                                /*
-                                                style={this.props.parcel.status === Number(key)
-                                                    ? {
-                                                        backgroundColor: '#00C770', //currently active button is highlighted green
-                                                        borderWidth: '0',
-                                                        color: 'white'
-                                                    } :
-                                                    {
-                                                        borderStyle: 'dashed'
-                                                    }
-                                                    
-                                                }*/
                                             >
                                                 {STATUS[key]}
                                             </Button>
@@ -447,12 +454,16 @@ class ParcelEdit extends Component {
 const mapStateToProps = state => ({
     isLoading: state.parcelEdit.isLoading,
     isOpen: state.parcelEdit.isOpen,
-    parcel: state.parcelEdit.parcel
+    parcel: state.parcelEdit.parcel,
+    currentUser: {id: 1, firstName: 'TODO', lastName: 'TODO'}    //TODO
 });
 
 const mapDispatchToProps = dispatch => ({
-    editSave: (parcel) => dispatch(editParcelSave(parcel)),
-    close: (parcel) => dispatch(editParcelClose(parcel))
+    saveEdit: (parcel) => dispatch(editParcelSaveEdit(parcel)),
+    closeEdit: (parcel) => dispatch(editParcelCloseEdit(parcel)),
+    saveRequest: (parcel) => dispatch(editParcelSaveRequest(parcel)),
+    closeRequest: () => dispatch(editParcelCloseRequest()),
+    discardAny: () => dispatch(editParcelCloseDiscard())
 });
 
 const styled = withStyles(styles)(ParcelEdit);

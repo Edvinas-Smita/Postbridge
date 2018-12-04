@@ -161,7 +161,7 @@ const parcelTable = (props) => {
                                 onClick={() => {props.openParcelStatus(parcel.id)}}>
                                 {buttonText}
                             </Button>
-                            { (parcel.courier.id === props.userId)
+                            { (parcel.recipient.id === props.userId)
                             ? <IconButton className={classes.iconButton} onClick={() => props.onEditParcel(parcel)}> <EditIcon fontSize="small"/> </IconButton>
                             : null }
                             { (STATUS[parcel.status] === 'Open')

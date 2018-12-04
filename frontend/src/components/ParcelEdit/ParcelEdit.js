@@ -126,6 +126,13 @@ class ParcelEdit extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+  emptyParcel = {
+    startLocation: '',
+    endLocation: '',
+    status: 1,
+    createdDate: new Date().toLocaleString("lt")
+  };
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.isOpen) {
       if (nextProps.parcel !== null) {
@@ -135,15 +142,9 @@ class ParcelEdit extends Component {
           changesPending: false
         });
       } else {
-        const emptyParcel = {
-          startLocation: '',
-          endLocation: '',
-          status: 1,
-          createdDate: new Date().toLocaleString("lt")
-        };
         this.setState({
           isRequestForm: true,
-          parcel: emptyParcel,
+          parcel: this.emptyParcel,
           changesPending: false
         });
       }
@@ -188,7 +189,10 @@ class ParcelEdit extends Component {
 
   changesPendingPrompt = () => {
     //if changed then open a confirmation dialog
-    if (Object.keys(deepDiff(this.state.parcel, this.props.parcel)).length) {   //if there are changed values
+    const parcelToCompareAgainst = this.state.isRequestForm
+      ? this.emptyParcel
+      : this.props.parcel;
+    if (Object.keys(deepDiff(this.state.parcel, parcelToCompareAgainst)).length) {   //if there are changed values
       this.setState({
         changesPending: true
       });

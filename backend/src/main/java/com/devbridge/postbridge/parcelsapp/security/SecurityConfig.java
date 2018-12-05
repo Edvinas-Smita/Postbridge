@@ -1,6 +1,8 @@
 package com.devbridge.postbridge.parcelsapp.security;
 
+import com.devbridge.postbridge.parcelsapp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -23,13 +27,43 @@ import org.springframework.web.filter.CorsFilter;
 import javax.annotation.Resource;
 
 @Configuration
+@EnableResourceServer
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends ResourceServerConfigurerAdapter {
 
   @Bean
   public BCryptPasswordEncoder encoder(){
     return new BCryptPasswordEncoder();
   }
+
+  @Bean
+  public PrincipalExtractor customPrincipalExtractor() {
+    return new CustomPrincipalExtractor();
+  }
+/*
+  @Bean
+  public PrincipalExtractor principalExtractor(User user) {
+    return map -> {
+      String principalId = (String) map.get("id");
+      User user = userRepository.findByPrincipalId(principalId);
+      if (user == null) {
+        LOGGER.info("No user found, generating profile for {}", principalId);
+        user = new User();
+        user.setPrincipalId(principalId);
+        user.setCreated(LocalDateTime.now());
+        user.setEmail((String) map.get("email"));
+        user.setFullName((String) map.get("name"));
+        user.setPhoto((String) map.get("picture"));
+        user.setLoginType(UserLoginType.GOOGLE);
+        user.setLastLogin(LocalDateTime.now());
+      } else {
+        user.setLastLogin(LocalDateTime.now());
+      }
+      userRepository.save(user);
+      return user;
+    };
+  }
+  */
 
   @Autowired
   private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -37,49 +71,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private CustomUserDetailsService userDetailsService;
 
-
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http
-            .authorizeRequests()
-              .anyRequest().authenticated().and()
-            .sessionManagement()
-              .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-            .csrf().disable();
-    /*
-            .authorizeRequests()
-            .antMatchers("/**").authenticated()
-            .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
-
-
-    */
-            /*
-            .cors().and().csrf().disable() //TODO: what is it?
-            .antMatcher("/**")
-            .authorizeRequests()
-            .antMatchers("/*")
-            .permitAll()
-            //;
-            .anyRequest()
-            .authenticated()
-            .and().httpBasic()
-            ;
-    */
-    //.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
-            //.and()//TODO: change to oAuth2 or JWT...
-            //.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-            //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-  }
-
-  @Override
-  public void configure(AuthenticationManagerBuilder auth) throws Exception {
+  @Autowired
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     auth
             .userDetailsService(userDetailsService)
             .passwordEncoder(bCryptPasswordEncoder);
   }
 
-
+  @Override
+  public void configure(HttpSecurity http) throws Exception {
+    http
+            .authorizeRequests()
+            .anyRequest().authenticated().and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .csrf().disable();
+  }
 }
-
 
 

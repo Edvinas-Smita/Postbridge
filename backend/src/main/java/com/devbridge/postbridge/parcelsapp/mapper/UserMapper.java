@@ -39,4 +39,13 @@ public interface UserMapper {
             @Result(property = "email", column = "email")
     })
     User getUser(LoginData login);
+
+    @Select("SELECT email, hash " +
+            "FROM users " +
+            "WHERE email = #{email} ")
+    @Results({
+            @Result(property = "email", column = "EMAIL"),
+            @Result(property = "password", column = "hash"),
+    })
+    User findUserByEmail(String email);
 }

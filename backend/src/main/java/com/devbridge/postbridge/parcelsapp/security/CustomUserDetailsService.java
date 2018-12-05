@@ -1,32 +1,40 @@
 package com.devbridge.postbridge.parcelsapp.security;
 
-import com.devbridge.postbridge.parcelsapp.mapper.ApplicationUserMapper;
-import com.devbridge.postbridge.parcelsapp.model.ApplicationUser;
-import org.springframework.security.core.userdetails.User;
+import com.devbridge.postbridge.parcelsapp.mapper.UserMapper;
+import com.devbridge.postbridge.parcelsapp.model.User;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.List;
 
 import static java.util.Collections.emptyList;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-  private ApplicationUserMapper mapper; //TODO: is it needed?
+  private UserMapper mapper;
 
-  public CustomUserDetailsService(ApplicationUserMapper mapper) { //TODO: is it needed?
+  public CustomUserDetailsService(UserMapper mapper) { //TODO: is it needed?
     this.mapper = mapper;
   }
 
   @Override
   public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-    ApplicationUser applicationUser = mapper.findApplicationUserByEmail(email);
+    User user = mapper.findUserByEmail(email);
 
-    if (applicationUser == null) {
+    if (user == null) {
       throw new UsernameNotFoundException(email);
     }
-    return new User(applicationUser.getEmail(), applicationUser.getPassword(), emptyList());
+
+    return new org.springframework.security.core.userdetails.User(
+            user.getEmail(),
+            user.getPassword(),
+            emptyList());
   }
+
 }

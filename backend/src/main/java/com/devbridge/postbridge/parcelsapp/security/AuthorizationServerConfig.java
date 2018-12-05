@@ -11,7 +11,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 
-
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -37,9 +36,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
   private AuthenticationManager authenticationManager;
 
   @Override
-  public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
-
-    configurer
+  public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
+    clients
             .inMemory()
             .withClient(CLIEN_ID)
             .secret(CLIENT_SECRET)
@@ -50,8 +48,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
   }
 
   @Override
-  public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-    endpoints.tokenStore(tokenStore())
+  public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
+    endpoints
+            .tokenStore(tokenStore())
             .authenticationManager(authenticationManager);
   }
+
 }

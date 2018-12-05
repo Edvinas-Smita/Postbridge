@@ -1,4 +1,4 @@
-package com.devbridge.postbridge.parcelsapp.service;
+package com.devbridge.postbridge.parcelsapp.security;
 
 import com.devbridge.postbridge.parcelsapp.mapper.ApplicationUserMapper;
 import com.devbridge.postbridge.parcelsapp.model.ApplicationUser;
@@ -30,40 +30,3 @@ public class CustomUserDetailsService implements UserDetailsService {
     return new User(applicationUser.getEmail(), applicationUser.getPassword(), emptyList());
   }
 }
-
-
-
-/*
-@Service
-public class CustomUserDetailsService implements UserDetailsService {
-
-  @Autowired
-  UserService userService = new UserService();
-
-  public User getUserByEmail(String email) {
-    return userService.getUserByEmail(email);
-  }
-
-  @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
-
-    User user = getUserByEmail(email);
-    //String username = "homer@the.simpsons";
-    //String username = user.getEmail();
-    //String password = "HomerPassword123";
-
-
-    List<GrantedAuthority> authList = null;
-    authList = new ArrayList<GrantedAuthority>();
-    SimpleGrantedAuthority sGA = new SimpleGrantedAuthority(new String("ROLE_USER"));
-    authList.add(sGA);
-
-    return new org.springframework.security.core.userdetails.User(
-            user.getEmail(),
-            "HomerPassword123",
-            //user.getPassword(),
-            authList);
-  }
-}
-*/

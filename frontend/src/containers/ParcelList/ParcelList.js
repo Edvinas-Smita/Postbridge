@@ -94,7 +94,7 @@ class ParcelList extends React.Component {
                         <ParcelTable
                             deleteParcelFactory={this.deleteParcelFactory}
                             parcels={this.props.parcels}
-                            userId={this.props.userId}
+                            user={this.props.user}
                             onEditParcel={this.editParcel.bind(this)}
                             openParcelStatus={this.openParcelStatus.bind(this)}
                             />
@@ -126,7 +126,7 @@ const mapStateToProps = state => ({
     sortBy: state.parcels.sortBy,
     sortOrder: state.parcels.sortOrder,
     parcels: getSortedParcels(state),
-    userId: state.parcels.userId,
+    user: state.others.currentUser
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelList);

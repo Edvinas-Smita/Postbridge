@@ -122,7 +122,7 @@ const parcelTable = (props) => {
                     let statusColumn = [statusColor, classes.statusColumnBorder].join(' ');
                     let pointIcon = [statusColor, classes.pointIcon].join(' ');;
                     let icon = <PlaneIcon className={[classes.planeIcon, classes.endLocationIcon].join(' ')}/>;
-                    if (parcel.recipient.id === props.userId) {
+                    if (parcel.recipient.id === props.user.id) {
                         buttonText = "I'll deliver";
                         buttonVariant = "contained";
                         buttonColor = "primary";
@@ -152,16 +152,14 @@ const parcelTable = (props) => {
                         <TableCell className={otherColumnStyle} >{formatWeight(parcel.weight)}</TableCell>
                         <TableCell className={otherColumnStyle} >{parcel.createdDate.slice(0, 10)}</TableCell>
                         <TableCell className={otherColumnStyle} >
-                        { (parcel.courier.id === props.userId)
-                            ? "Me"
-                            : parcel.courier.firstName + " " + parcel.courier.lastName }
+                        {parcel.courier.firstName + " " + parcel.courier.lastName + (parcel.courier.id === props.user.id ? " (Me)" : "")}
                         </TableCell>
                         <TableCell className={classes.column} > 
                             <Button variant={buttonVariant} color={buttonColor} size="small" className={classes.button}
                                 onClick={() => {props.openParcelStatus(parcel.id)}}>
                                 {buttonText}
                             </Button>
-                            { (parcel.courier.id === props.userId)
+                            { (parcel.courier.id === props.user.id)
                             ? <IconButton className={classes.iconButton} onClick={props.onEditParcel(parcel)}> <EditIcon fontSize="small"/> </IconButton>
                             : null }
                             { (STATUS[parcel.status] === 'Open')

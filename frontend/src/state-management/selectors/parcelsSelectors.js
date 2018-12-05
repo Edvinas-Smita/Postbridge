@@ -37,7 +37,6 @@ export const getFilteredParcels = createSelector(
     filterSelector,
     (startLocation, endLocation, status, weightFrom, weightTo, createdFrom,  createdTo, courier, parcels, userId, filter) => {
     let filteredParcels = [...parcels];
-    const courierName = 'me';
             filteredParcels = startLocation !== '' && endLocation!== ''
             ? filteredParcels.filter(
                 parcel => parcel['startLocation'].includes(startLocation) && parcel['endLocation'].includes(endLocation)
@@ -62,9 +61,10 @@ export const getFilteredParcels = createSelector(
             )
             : filteredParcels;
         
-            filteredParcels = courier !== '' 
+            filteredParcels = courier.length > 0
             ? filteredParcels.filter(
-                parcel =>  userId === parcel.courier.id ? courierName.includes(courier.toLowerCase()) :((parcel.courier.firstName).toLowerCase() + " " + (parcel.courier.lastName).toLowerCase()).includes(courier.toLowerCase()) 
+                //parcel =>  userId === parcel.courier.id ? courierName.includes(courier.toLowerCase()) :((parcel.courier.firstName).toLowerCase() + " " + (parcel.courier.lastName).toLowerCase()).includes(courier.toLowerCase())
+                parcel => courier.findIndex(userOption => userOption.value === parcel.courier.id) !== -1
             )
             : filteredParcels;
         return filteredParcels

@@ -49,15 +49,15 @@ function populateWithAllReferencedUsers(intermediateState) {  //pass the state o
     allParcelRecipients: intermediateState.parcels
       .map(parcel => parcel.recipient)  //get all recipients of existing parcels...
       .filter((value, index, self) =>   //...and remove the duplicates
-        index === self.findIndex(existingValue =>
-        value.id === existingValue.id
+        value && index === self.findIndex(existingValue =>
+        existingValue && value.id === existingValue.id
         )
       ),
     allParcelCouriers: intermediateState.parcels
       .map(parcel => parcel.courier)
       .filter((value, index, self) =>
-        index === self.findIndex(existingValue =>
-        value.id === existingValue.id
+        value && index === self.findIndex(existingValue =>
+        existingValue && value.id === existingValue.id
         )
       )
   }

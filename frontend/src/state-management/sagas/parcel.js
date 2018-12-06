@@ -1,14 +1,26 @@
-import { put, all, takeLatest, takeEvery, take } from 'redux-saga/effects';
-import { GET_PARCEL, GET_PARCEL_SUCCESS,
-        UPDATE_PARCEL, UPDATE_PARCEL_SUCCESS, UPDATE_PARCEL_STATUS, 
-        OPEN_PARCEL_STATUS, CLOSE_PARCEL_STATUS,
-        GET_PARCEL_STATUS_HISTORY } from '../constants/parcel';
-import { getParcelSuccess, getParcelError, getParcel as getParcelAction,
-        updateParcel as updateParcelAction,
-        updateParcelSuccess, updateParcelError, 
-        getParcelStatusHistory as getParcelStatusHistoryAction,
-        getParcelStatusHistoryError, getParcelStatusHistorySuccess } from '../actions/parcel';
-import { updateParcels as updateParcelsAction} from '../actions/parcels';
+import {all, put, take, select, takeEvery, takeLatest} from 'redux-saga/effects';
+import {
+  CLOSE_PARCEL_STATUS,
+  GET_PARCEL,
+  GET_PARCEL_STATUS_HISTORY,
+  GET_PARCEL_SUCCESS,
+  OPEN_PARCEL_STATUS,
+  UPDATE_PARCEL,
+  UPDATE_PARCEL_STATUS,
+  UPDATE_PARCEL_SUCCESS
+} from '../constants/parcel';
+import {
+  getParcel as getParcelAction,
+  getParcelError,
+  getParcelStatusHistory as getParcelStatusHistoryAction,
+  getParcelStatusHistoryError,
+  getParcelStatusHistorySuccess,
+  getParcelSuccess,
+  updateParcel as updateParcelAction,
+  updateParcelError,
+  updateParcelSuccess
+} from '../actions/parcel';
+import {updateParcels as updateParcelsAction} from '../actions/parcels';
 
 
 function* openParcelStatus(action){
@@ -43,25 +55,34 @@ function* updateParcelStatus(action) {
 }
 
 function* updateParcel(action) {
-    try {
-        const options = {
-            method: 'PUT',
-            body: JSON.stringify(action.parcel),
-            headers: new Headers ({
-                'Content-Type': 'application/json'
-            })
-        }
-
-        yield fetch("http://localhost:8080/api/parcels/" + action.parcel.id, options)
-            .then(response => {
-                if(response.status >= 400 && response.status < 600)
-                    throw new Error("Bad response from server");
-        });
-        
-        yield put(updateParcelSuccess(action.parcel));
-    } catch(e) {
-        yield put(updateParcelError(e));
+  const newParcel = action.parcel;
+  if (newParcel.status === 1 && newParcel.courier) { //if it status is open then there shouldn't be a courier
+    newParcel.courier = null;
+  } else {
+    const oldParcel = yield select(state => state.parcels.parcels.find(parcel => parcel.id === newParcel.id));
+    if (oldParcel.status === 1) { //if the status changed from open then assign the current user to be the courier
+      newParcel.courier = yield select(state => state.others.currentUser);
     }
+  }
+  try {
+    const options = {
+      method: 'PUT',
+      body: JSON.stringify(newParcel),
+      headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    };
+
+    yield fetch("http://localhost:8080/api/parcels/" + newParcel.id, options)
+      .then(response => {
+        if (response.status >= 400 && response.status < 600)
+          throw new Error("Bad response from server");
+      });
+
+    yield put(updateParcelSuccess(newParcel));
+  } catch (e) {
+    yield put(updateParcelError(e));
+  }
 }
 
 function* getParcelStatusHistory(action) {

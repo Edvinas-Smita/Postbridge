@@ -36,10 +36,6 @@ public class SecurityConfig extends ResourceServerConfigurerAdapter {
     return new BCryptPasswordEncoder();
   }
 
-  @Bean
-  public PrincipalExtractor customPrincipalExtractor() {
-    return new CustomPrincipalExtractor();
-  }
 /*
   @Bean
   public PrincipalExtractor principalExtractor(User user) {
@@ -82,7 +78,8 @@ public class SecurityConfig extends ResourceServerConfigurerAdapter {
   public void configure(HttpSecurity http) throws Exception {
     http
             .authorizeRequests()
-            .anyRequest().authenticated().and()
+            .antMatchers("/**").permitAll().and()
+            //.anyRequest().authenticated().and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .csrf().disable();

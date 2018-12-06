@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button/Button'
@@ -9,6 +10,8 @@ import { Typography } from '@material-ui/core'
 import { withStyles } from "@material-ui/core/styles";
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+
+import {signIn} from '../../state-management/actions/auth';
 
 const gridStyles = {
     minHeight: '100vh',
@@ -56,10 +59,9 @@ class LoginForm extends Component {
     constructor(props){
         super(props);
 
-        this.state = {
+        this.state = {//TODO: remove
             email: "test",
             password: "test",
-            redirectToReferrer: false,
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -72,21 +74,16 @@ class LoginForm extends Component {
       };
 
     handleSubmit() {
-        this.props.authenticate(() => {
-            if (this.props.error === false){
-                this.setState(() => ({redirectToReferrer: true}))
-            }}, 
-            this.state.email, 
-            this.state.password
-        )
+        this.props.signIn({
+            email: this.state.email, 
+            password: this.state.password
+        });
     }
     
     render() {
         const { classes } = this.props;
         const { from } = this.props.location.state || { from: { pathname: '/parcels' } }
-        const { redirectToReferrer } = this.state
-
-        if (redirectToReferrer === true) {
+        if (this.props.redirectToReferrer && this.props.isLoggingIn) {
             return <Redirect to={from} />
         }
 
@@ -160,5 +157,15 @@ class LoginForm extends Component {
     }
 }
 
-export default withStyles(styles)(LoginForm)
+const mapStateToProps = state => ({
+    redirectToReferrer: state.auth.accessToken !== "",
+    isLoggingIn: state.auth.isLoggingIn
+});
+
+const mapDispatchToProps = dispatch => ({
+    signIn: (email, password) => dispatch(signIn(email, password))
+});
+
+const LoginFromStyled = withStyles(styles)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginFromStyled);
 

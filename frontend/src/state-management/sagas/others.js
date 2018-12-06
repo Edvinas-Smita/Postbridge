@@ -17,10 +17,10 @@ function* getLocations() {
     }
 }
 
-function* parcelsSaga() {
+function* othersSaga() {
     yield all([
         takeLatest(GET_LOCATIONS, getLocations)
     ]);
 }
 
-export default parcelsSaga;
+export default othersSaga;

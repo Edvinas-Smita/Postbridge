@@ -93,17 +93,17 @@ const styles = theme => ({
 class Header extends Component {
   state = {
     logout: false,
-    clicked: false
+    redirectToLogin: false
   }
 
   handleClick = () => {
-    this.setState({clicked: true})
+    this.setState({redirectToLogin: true})
   }
 
 
     render() {
         const { classes } = this.props;
-        if(this.state.clicked) {
+        if(this.state.redirectToLogin) {
           return <Redirect to="/"/>
         }
         return (

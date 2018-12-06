@@ -1,6 +1,5 @@
 import {
-  EDIT_PARCEL_CLOSE_EDIT,
-  EDIT_PARCEL_CLOSE_REQUEST,
+  EDIT_PARCEL_CLOSE,
   EDIT_PARCEL_DISCARD,
   EDIT_PARCEL_OPEN,
   EDIT_PARCEL_SAVE_EDIT,
@@ -31,7 +30,7 @@ export default function parcelEditReducer(state = initialState, action = {}) {
         isLoading: true,
         parcel: action.parcel
       };
-    case EDIT_PARCEL_CLOSE_EDIT:
+    case EDIT_PARCEL_CLOSE:
       return {
         ...state,
         isLoading: false,
@@ -42,12 +41,6 @@ export default function parcelEditReducer(state = initialState, action = {}) {
         ...state,
         isLoading: true,
         parcel: action.parcel
-      };
-    case EDIT_PARCEL_CLOSE_REQUEST:
-      return {
-        ...state,
-        isLoading: false,
-        isOpen: false
       };
     case EDIT_PARCEL_DISCARD:
       return {

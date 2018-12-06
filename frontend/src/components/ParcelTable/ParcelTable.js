@@ -152,9 +152,12 @@ const parcelTable = (props) => {
                         <TableCell className={otherColumnStyle} >{formatWeight(parcel.weight)}</TableCell>
                         <TableCell className={otherColumnStyle} >{parcel.createdDate.slice(0, 10)}</TableCell>
                         <TableCell className={otherColumnStyle} >
-                        { (parcel.courier.id === props.userId)
+                        {(parcel.courier
+                          ? (parcel.courier.id === props.userId
                             ? "Me"
-                            : parcel.courier.firstName + " " + parcel.courier.lastName }
+                            : parcel.courier.firstName + " " + parcel.courier.lastName)
+                          : "---")
+                        }
                         </TableCell>
                         <TableCell className={classes.column} > 
                             <Button variant={buttonVariant} color={buttonColor} size="small" className={classes.button}

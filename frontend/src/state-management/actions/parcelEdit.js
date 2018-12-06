@@ -1,6 +1,5 @@
 import {
-  EDIT_PARCEL_CLOSE_EDIT,
-  EDIT_PARCEL_CLOSE_REQUEST,
+  EDIT_PARCEL_CLOSE,
   EDIT_PARCEL_DISCARD,
   EDIT_PARCEL_OPEN,
   EDIT_PARCEL_SAVE_EDIT,
@@ -20,17 +19,13 @@ export const editParcelSaveEdit = (parcel) => ({
   parcel
 });
 
-export const editParcelCloseEdit = () => ({
-  type: EDIT_PARCEL_CLOSE_EDIT
+export const editParcelClose = () => ({
+  type: EDIT_PARCEL_CLOSE
 });
 
 export const editParcelSaveRequest = (parcel) => ({
   type: EDIT_PARCEL_SAVE_REQUEST,
   parcel
-});
-
-export const editParcelCloseRequest = () => ({
-  type: EDIT_PARCEL_CLOSE_REQUEST
 });
 
 export const editParcelCloseDiscard = () => ({

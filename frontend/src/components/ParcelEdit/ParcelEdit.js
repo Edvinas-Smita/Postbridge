@@ -15,6 +15,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import InfoOutlined from '@material-ui/icons/InfoOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Error from '@material-ui/icons/Error'
 
 import {deepDiff, STATUS} from '../../helpers';
 import Box from './Box.svg';
@@ -24,8 +26,6 @@ import LocationSelect from '../../components/LocationSelect/LocationSelect';
 import {connect} from "react-redux";
 import {
   editParcelCloseDiscard,
-  editParcelCloseEdit,
-  editParcelCloseRequest,
   editParcelSaveEdit,
   editParcelSaveRequest
 } from "../../state-management/actions/parcelEdit";
@@ -35,7 +35,7 @@ const styles = theme => ({
     marginLeft: '2.5%',
     marginRight: '2.5%',
     width: '95%',
-    padding: '8px'
+    padding: theme.spacing.unit * 2
   },
   whiteField: {
     backgroundColor: theme.palette.common.white,
@@ -53,13 +53,13 @@ const styles = theme => ({
   weightAndInfo: {
     display: 'grid',
     gridTemplateColumns: '92% 8%',
-    columnGap: '12px',
+    columnGap: theme.spacing.unit
   },
   icon: {
     height: '32px',
     width: '32px',
-    marginRight: '12px',
-    marginLeft: '2.5%',
+    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing.unit * 2
   },
   label: {
     fontWeight: 'bold',
@@ -90,6 +90,20 @@ const styles = theme => ({
     border: 'none',
     color: theme.palette.common.white,
     backgroundColor: theme.palette.secondary.dark
+  },
+  roundedButton: {
+    borderRadius: 24,
+    marginLeft: theme.spacing.unit
+  },
+  errorIcon: {
+    height: 48,
+    width: 48,
+    fill: "orangered",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -24,
+    marginLeft: -24
   }
 });
 
@@ -188,6 +202,13 @@ class ParcelEdit extends Component {
   };
 
   changesPendingPrompt = () => {
+    if (this.props.error) {
+      this.closeAndDiscard();
+    }
+    if (this.props.isLoading) {
+      return;
+    }
+
     //if changed then open a confirmation dialog
     const parcelToCompareAgainst = this.state.isRequestForm
       ? this.emptyParcel
@@ -214,10 +235,8 @@ class ParcelEdit extends Component {
     }
     if (!this.state.isRequestForm) {
       this.props.saveEdit(parcel);
-      this.props.closeEdit();
     } else {
       this.props.saveRequest(parcel);
-      this.props.closeRequest();
     }
   };
 
@@ -225,13 +244,13 @@ class ParcelEdit extends Component {
     //check if changes are valid?
     const {parcel} = this.state;
     if (!parcel.startLocation || !parcel.endLocation || !parcel.description) {
-        this.setState({
-          changesPending: false,
-          startLocationError: !parcel.startLocation,
-          endLocationError: !parcel.endLocation,
-          descriptionError: !parcel.description
-        });
-        return;
+      this.setState({
+        changesPending: false,
+        startLocationError: !parcel.startLocation,
+        endLocationError: !parcel.endLocation,
+        descriptionError: !parcel.description
+      });
+      return;
     }
 
     //update parcel database in backend
@@ -406,21 +425,45 @@ class ParcelEdit extends Component {
           </Grid>
         </DialogContent>
 
-        <DialogActions>
+        <DialogActions style={{position: 'relative'}}>
+          {this.props.error &&
+          <Tooltip title={"An error has occurred: " + this.props.error}>
+            <Error
+              className={classes.errorIcon}
+            />
+          </Tooltip>
+          }
           <Button
-            variant="extendedFab"
+            variant="contained"
+            className={classes.roundedButton}
             onClick={this.onCancelClick}
+            disabled={this.props.isLoading}
           >
             Cancel
           </Button>
-          <Button
-            style={{marginLeft: '12px'}}
-            variant="extendedFab"
-            color="primary"
-            onClick={this.onSaveClick}
-          >
-            Save
-          </Button>
+          <div style={{position: 'relative'}}>
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.roundedButton}
+              style={{marginRight: 24}}
+              onClick={this.onSaveClick}
+              disabled={this.props.isLoading || !!this.props.error}
+            >
+              Save
+            </Button>
+            {this.props.isLoading &&
+            <CircularProgress
+              size={24}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginTop: -12,
+                marginLeft: -12
+              }}
+            />}
+          </div>
         </DialogActions>
       </Dialog>
     )
@@ -430,15 +473,14 @@ class ParcelEdit extends Component {
 
 const mapStateToProps = state => ({
   isLoading: state.parcelEdit.isLoading,
+  error: state.parcelEdit.error,
   isOpen: state.parcelEdit.isOpen,
   parcel: state.parcelEdit.parcel
 });
 
 const mapDispatchToProps = dispatch => ({
   saveEdit: (parcel) => dispatch(editParcelSaveEdit(parcel)),
-  closeEdit: () => dispatch(editParcelCloseEdit()),
   saveRequest: (parcel) => dispatch(editParcelSaveRequest(parcel)),
-  closeRequest: () => dispatch(editParcelCloseRequest()),
   discardAny: () => dispatch(editParcelCloseDiscard())
 });
 

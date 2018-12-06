@@ -3,22 +3,22 @@ import {UPDATE_PARCEL_SUCCESS} from "../constants/parcel";
 import {updateParcel as PUTParcel} from "../actions/parcel";
 import {newParcel, updateParcels as refreshParcels} from '../actions/parcels';
 import {
-  EDIT_PARCEL_CLOSE_EDIT,
-  EDIT_PARCEL_CLOSE_REQUEST,
   EDIT_PARCEL_SAVE_EDIT,
   EDIT_PARCEL_SAVE_REQUEST,
   EDIT_PARCEL_SAVE_REQUEST_SUCCESS
 } from "../constants/parcelEdit";
-import {editParcelSaveError, editParcelSaveSuccess} from "../actions/parcelEdit";
+import {
+  editParcelClose,
+  editParcelSaveError,
+  editParcelSaveSuccess
+} from "../actions/parcelEdit";
 
 function* editParcelSaveEdit(action) {
   yield put(PUTParcel(action.parcel));
-}
-
-function* editParcelCloseEdit() {
   yield take(UPDATE_PARCEL_SUCCESS);
   const updatedParcel = yield select(state => state.parcelEdit.parcel);
   yield put(refreshParcels(updatedParcel));
+  yield put(editParcelClose());
 }
 
 function* editParcelSaveRequest(action) {
@@ -59,20 +59,22 @@ function* editParcelSaveRequest(action) {
   } catch (e) {
     yield put(editParcelSaveError(e));
   }
+  console.log("PUTTEN");
 }
 
-function* editParcelCloseRequest() {
-  yield take(EDIT_PARCEL_SAVE_REQUEST_SUCCESS);
+function *editParcelFinalizeRequest() {
+  console.log("TAKEN");
   const createdParcel = yield select(state => state.parcelEdit.parcel);
+  console.log(createdParcel);
   yield put(newParcel(createdParcel));
+  yield put(editParcelClose());
 }
 
 function* parcelEditSaga() {
   yield all([
     takeLatest(EDIT_PARCEL_SAVE_EDIT, editParcelSaveEdit),
-    takeLatest(EDIT_PARCEL_CLOSE_EDIT, editParcelCloseEdit),
     takeLatest(EDIT_PARCEL_SAVE_REQUEST, editParcelSaveRequest),
-    takeLatest(EDIT_PARCEL_CLOSE_REQUEST, editParcelCloseRequest)
+    takeLatest(EDIT_PARCEL_SAVE_REQUEST_SUCCESS, editParcelFinalizeRequest)
   ]);
 }
 

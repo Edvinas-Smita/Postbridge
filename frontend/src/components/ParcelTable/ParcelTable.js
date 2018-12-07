@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {withStyles} from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -19,9 +19,9 @@ import {formatWeight, STATUS} from '../../helpers';
 
 const styles = theme => ({
   table: {
-    width: '85%',
-    marginLeft: '4%',
-    marginRight: '4%',
+    width: '90%',
+    marginLeft: '3%',
+    marginRight: '3%',
     tableLayout: 'fixed',
   },
   tableRow: {
@@ -33,7 +33,7 @@ const styles = theme => ({
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
-    padding: '12px',
+    padding: '5px',
     backgroundColor: 'white',
     verticalAlign: 'middle'
   },
@@ -65,10 +65,12 @@ const styles = theme => ({
   pointIcon: {
     width: '10px',
     height: '10px',
-    marginRight: '14px'
+        marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit *2
   },
   planeIcon: {
     transform: 'rotate(90deg)',
+        marginRight: theme.spacing.unit *2
   },
   endLocationIcon: {
     color: theme.palette.grey[500],
@@ -149,6 +151,17 @@ const parcelTable = (props) => {
             <TableCell className={otherColumnStyle}>{parcel.description}</TableCell>
             <TableCell className={otherColumnStyle}>{formatWeight(parcel.weight)}</TableCell>
             <TableCell className={otherColumnStyle}>{parcel.createdDate.slice(0, 10)}</TableCell>
+            <TableCell className={otherColumnStyle}>
+              {parcel.recipient
+                ? (parcel.recipient.firstName +
+                  " " +
+                  parcel.recipient.lastName +
+                  (parcel.recipient.id === props.user.id
+                    ? " (Me)"
+                    : "")
+                )
+                : "---"}
+            </TableCell>
             <TableCell className={otherColumnStyle}>
               {parcel.courier
                 ? (parcel.courier.firstName +

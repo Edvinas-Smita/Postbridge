@@ -86,7 +86,7 @@ class ParcelList extends React.Component {
                     justify="center"
                     className="ParcelTable"
                 >
-                    <Table style={{width: '85%', marginLeft: '4%', marginRight: '4%', tableLayout: 'fixed',}}>
+                    <Table style={{width: '90%', marginLeft: '4%', marginRight: '4%', tableLayout: 'fixed',}}>
                         <ParcelTableHeader 
                             onRequestSort={this.handleRequestSort}
                             sortOrder={this.props.sortOrder}

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
 
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -35,19 +36,33 @@ const styles = theme => ({
 });
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      logout: false,
+      redirectToLogin: false
+    };
+  }
+
+  handleClick = () => {
+    this.setState({redirectToLogin: true})
+  };
+
   render() {
     const {classes} = this.props;
+    if (this.state.redirectToLogin) {
+      return <Redirect to="/"/>
+    }
     return (
       <React.Fragment>
         <AppBar className={classes.appbar} position="fixed">
           <Toolbar className={classes.toolbar}>
             <Logo/>
             <div className={classes.gridRight}>
-              <Grid spacing={24} container justify='center' alignItems='center'>
+              <Grid spacing={24} containerjustify='center' alignItems='center'>
                 <Grid item>
-                  <Avatar>
-                    {this.props.user.firstName.slice(0, 1) + this.props.user.lastName.slice(0, 1)}
-                  </Avatar>
+                  <Avatar>{this.props.user.firstName.slice(0, 1) + this.props.user.lastName.slice(0, 1)}</Avatar>
                 </Grid>
                 <Grid item>
                   <Typography variant="subtitle1" className={classes.userName}>
@@ -56,7 +71,7 @@ class Header extends Component {
                 </Grid>
 
                 <Grid item>
-                  <IconButton aria-label="ExitToApp">
+                  <IconButton aria-label="ExitToApp" onClick={() => this.handleClick()}>
                     <ExitToApp/>
                   </IconButton>
                 </Grid>

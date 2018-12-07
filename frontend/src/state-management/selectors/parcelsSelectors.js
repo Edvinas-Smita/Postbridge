@@ -11,8 +11,8 @@ const weightFromSelector = state => state.parcels.weightFrom;
 const weightToSelector  = state => state.parcels.weightTo;
 const createdFromSelector = state => state.parcels.createdFrom;
 const createdToSelector = state => state.parcels.createdTo;
+const recipientSelector = state => state.parcels.recipient;
 const courierSelector = state => state.parcels.courier;
-const filterSelector = state => state.parcels.filter;
 const userIdSelector = state => state.parcels.userId;
 
 const compareStrings = (a, b) =>{
@@ -20,8 +20,6 @@ const compareStrings = (a, b) =>{
     if(a === b) return 0;
     return -1;
 }
-
-
 
 export const getFilteredParcels = createSelector(
     startLocationSelector,
@@ -31,13 +29,13 @@ export const getFilteredParcels = createSelector(
     weightToSelector,
     createdFromSelector,
     createdToSelector,
+    recipientSelector,
     courierSelector,
     parcelsSelector,
     userIdSelector,
-    filterSelector,
-    (startLocation, endLocation, status, weightFrom, weightTo, createdFrom,  createdTo, courier, parcels, userId, filter) => {
+    (startLocation, endLocation, status, weightFrom, weightTo, createdFrom,  createdTo, recipient, courier, parcels, userId) => {
     let filteredParcels = [...parcels];
-    const courierName = 'me';
+    const me = 'me';
             filteredParcels = startLocation !== '' && endLocation!== ''
             ? filteredParcels.filter(
                 parcel => parcel['startLocation'].includes(startLocation) && parcel['endLocation'].includes(endLocation)
@@ -61,10 +59,16 @@ export const getFilteredParcels = createSelector(
                 parcel => new Date(createdFrom).getTime() <= new Date(parcel['createdDate']).getTime() && new Date(parcel['createdDate']).getTime() <= new Date(createdTo).getTime()
             )
             : filteredParcels;
+
+            filteredParcels = recipient !== '' 
+            ? filteredParcels.filter(
+                parcel =>  userId === parcel.recipient.id ? me.includes(recipient.toLowerCase()) :((parcel.recipient.firstName).toLowerCase() + " " + (parcel.recipient.lastName).toLowerCase()).includes(recipient.toLowerCase()) 
+            )
+            : filteredParcels;
         
             filteredParcels = courier !== '' 
             ? filteredParcels.filter(
-                parcel =>  userId === parcel.courier.id ? courierName.includes(courier.toLowerCase()) :((parcel.courier.firstName).toLowerCase() + " " + (parcel.courier.lastName).toLowerCase()).includes(courier.toLowerCase()) 
+                parcel =>  userId === parcel.courier.id ? me.includes(courier.toLowerCase()) :((parcel.courier.firstName).toLowerCase() + " " + (parcel.courier.lastName).toLowerCase()).includes(courier.toLowerCase()) 
             )
             : filteredParcels;
         return filteredParcels

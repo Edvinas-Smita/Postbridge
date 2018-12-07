@@ -16,7 +16,6 @@ const styles = theme => ({
     flexGrow: 1,
     height: 250,
     width: 280,
-    marginBottom: 72,
     marginRight: theme.spacing.unit * 3
   },
   input: {

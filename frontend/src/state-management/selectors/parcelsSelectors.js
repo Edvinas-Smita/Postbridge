@@ -61,7 +61,7 @@ export const getFilteredParcels = createSelector(
 
     filteredParcels = recipient.length > 0
       ? filteredParcels.filter(
-        parcel => recipient.findIndex(userOption => userOption.value === parcel.courier.id) !== -1
+        parcel => recipient.findIndex(userOption => userOption.value === parcel.recipient.id) !== -1
       )
       : filteredParcels;
 

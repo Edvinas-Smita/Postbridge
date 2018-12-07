@@ -406,7 +406,7 @@ class ParcelTableHeader extends Component {
                               onEnter={this.state.selectedCourierOptions !== this.props.courier ? () => this.handleMenuValues('courierValue', []) : null}
                               anchorOrigin={{
                                 vertical: 'bottom',
-                                horizontal: 'center',s
+                                horizontal: 'center',
                               }}
                               transformOrigin={{
                                 vertical: 'top',

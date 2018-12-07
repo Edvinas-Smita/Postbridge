@@ -60,7 +60,7 @@ class Header extends Component {
           <Toolbar className={classes.toolbar}>
             <Logo/>
             <div className={classes.gridRight}>
-              <Grid spacing={24} containerjustify='center' alignItems='center'>
+              <Grid spacing={24} container justify='center' alignItems='center'>
                 <Grid item>
                   <Avatar>{this.props.user.firstName.slice(0, 1) + this.props.user.lastName.slice(0, 1)}</Avatar>
                 </Grid>

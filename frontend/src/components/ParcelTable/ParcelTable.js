@@ -20,9 +20,9 @@ import { STATUS } from '../../helpers';
 
 const styles = theme => ({
       table: {
-        width: '85%',
-        marginLeft: '4%',
-        marginRight: '4%',
+        width: '90%',
+        marginLeft: '3%',
+        marginRight: '3%',
         tableLayout: 'fixed',
       },
       tableRow: {
@@ -34,7 +34,7 @@ const styles = theme => ({
         overflow: "hidden",
         textOverflow: "ellipsis",
         whiteSpace: "nowrap",
-        padding: '12px',
+        padding: '5px',
         backgroundColor: 'white',
         verticalAlign: 'middle'
       },
@@ -66,10 +66,12 @@ const styles = theme => ({
       pointIcon: {
         width: '10px',
         height: '10px',
-        marginRight: '14px'
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit *2
       },
       planeIcon: {
         transform: 'rotate(90deg)',
+        marginRight: theme.spacing.unit *2
       },
       endLocationIcon: {
         color: theme.palette.grey[500],
@@ -152,6 +154,11 @@ const parcelTable = (props) => {
                         <TableCell className={otherColumnStyle} >{formatWeight(parcel.weight)}</TableCell>
                         <TableCell className={otherColumnStyle} >{parcel.createdDate.slice(0, 10)}</TableCell>
                         <TableCell className={otherColumnStyle} >
+                        { (parcel.recipient.id === props.userId)
+                            ? "Me"
+                            : parcel.recipient.firstName + " " + parcel.recipient.lastName }
+                        </TableCell>
+                        <TableCell className={otherColumnStyle} >
                         { (parcel.courier.id !== null) 
                             ? (parcel.courier.id === props.userId)
                                 ? "Me"
@@ -159,7 +166,7 @@ const parcelTable = (props) => {
                             : ""}
                         </TableCell>
                         <TableCell className={classes.column} > 
-                            <Grid container direction="row">
+                            <div style={{display:'flex'}}>
                             <Button variant={buttonVariant} color={buttonColor} size="small" className={classes.button}
                                 onClick={() => {props.openParcelStatus(parcel.id)}}>
                                 {buttonText}
@@ -167,10 +174,10 @@ const parcelTable = (props) => {
                             { (parcel.recipient.id === props.userId && STATUS[parcel.status] === 'Open')
                             ? <div>
                                 <IconButton className={classes.iconButton} onClick={props.onEditParcel(parcel)}> <EditIcon fontSize="small"/> </IconButton>
-                                <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}> <CloseIcon fontSize="small"/> </IconButton> 
+                                <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}> <CloseIcon fontSize="small"/> </IconButton>  
                             </div> 
                             : null }
-                            </Grid>
+                            </div>
                         </TableCell>
                     </TableRow>
                     );

@@ -53,7 +53,7 @@ do $$
 begin
   insert into parcels values (nextval('parcels_id_seq'),
     to_timestamp('2018-05-13 06:14:12', 'YYYY-MM-DD HH24:MI:SS'),
-    2, 1, 1, 'Laptop', 3000,
+    2, null, 1, 'Laptop', 3000,
     (select id from locations where name = 'Kaunas'),
     (select id from locations where name = 'Vilnius')) returning id into ref_parcel;
   insert into parcel_status_history values (nextval('parcel_status_history_id_seq'),
@@ -62,7 +62,7 @@ end $$;
 
 insert into parcels values (nextval('parcels_id_seq'),
   to_timestamp('2018-07-14 09:37:14', 'YYYY-MM-DD HH24:MI:SS'),
-  3, 1, 1, 'Laptop', 3000,
+  3, null, 1, 'Laptop', 3000,
   (select id from locations where name = 'Chicago'),
   (select id from locations where name = 'Vilnius'));
 

@@ -31,10 +31,8 @@ import {
 } from "../../state-management/actions/parcelEdit";
 
 const styles = theme => ({
-  setWidth: {
-    marginLeft: '2.5%',
-    marginRight: '2.5%',
-    width: '95%',
+  paddedFullWidth: {
+    width: '100%',
     padding: theme.spacing.unit * 2
   },
   whiteField: {
@@ -42,8 +40,7 @@ const styles = theme => ({
     borderRadius: "4px"
   },
   fullWidth: {
-    width: '100%',
-    padding: '4px'
+    width: '100%'
   },
   toAndFrom: {
     display: 'grid',
@@ -58,8 +55,7 @@ const styles = theme => ({
   icon: {
     height: '32px',
     width: '32px',
-    marginRight: theme.spacing.unit,
-    marginLeft: theme.spacing.unit * 2
+    marginRight: theme.spacing.unit
   },
   label: {
     fontWeight: 'bold',
@@ -107,8 +103,11 @@ const styles = theme => ({
   },
   actionPadding: {
     paddingBottom: theme.spacing.unit * 3,
-    paddingRight: theme.spacing.unit * 4,
+    paddingRight: theme.spacing.unit * 3,
     margin: 0
+  },
+  titlePadding: {
+    paddingLeft: theme.spacing.unit * 3
   }
 });
 
@@ -322,12 +321,18 @@ class ParcelEdit extends Component {
         onEscapeKeyDown={this.changesPendingPrompt}
         scroll='body'
       >
-        <DialogTitle>
-          <div style={{display: 'flex', alignItems: 'center'}}>
-            <img className={classes.icon} src={Box} alt=''/>
-            <Typography variant="h5" style={{fontWeight: 'bold'}}>
-              {isRequestForm ? 'Request new delivery' : 'Edit order'}
-            </Typography>
+        <DialogTitle classes={{root: classes.titlePadding}}>
+          <div>
+            <div style={{display: 'flex', alignItems: 'center'}}>
+              <img className={classes.icon} src={Box} alt=''/>
+              <Typography variant="h5" style={{fontWeight: 'bold'}}>
+                {isRequestForm ? 'Request new delivery' : 'Edit order'}
+              </Typography>
+            </div>
+            {!isRequestForm &&
+            <Typography variant="subtitle1">
+              {"Created: " + parcel.createdDate.slice(0, 10)}
+            </Typography>}
           </div>
         </DialogTitle>
 
@@ -339,7 +344,7 @@ class ParcelEdit extends Component {
             alignItems="center"
             justify="flex-start"
           >
-            <Grid item className={classes.setWidth}>
+            <Grid item className={classes.paddedFullWidth}>
               <div className={classes.toAndFrom}>
                 <FormControl className={classes.fullWidth} error={this.state.startLocationError}>
                   <FormLabel className={classes.label} required>FROM</FormLabel>
@@ -359,7 +364,7 @@ class ParcelEdit extends Component {
             </Grid>
 
             {!isRequestForm &&
-            <Grid item className={classes.setWidth}>
+            <Grid item className={classes.paddedFullWidth}>
               <FormLabel className={classes.label}>STATUS</FormLabel>
               <Grid
                 container
@@ -391,7 +396,7 @@ class ParcelEdit extends Component {
             </Grid>
             }
 
-            <Grid item className={classes.setWidth}>
+            <Grid item className={classes.paddedFullWidth}>
               <FormControl className={classes.fullWidth} error={this.state.descriptionError}>
                 <FormLabel className={classes.label} required>DESCRIPTION</FormLabel>
                 <TextField
@@ -407,7 +412,7 @@ class ParcelEdit extends Component {
               </FormControl>
             </Grid>
 
-            <Grid item className={classes.setWidth}>
+            <Grid item className={classes.paddedFullWidth}>
               <FormControl className={classes.fullWidth}>
                 <FormLabel className={classes.label}>PARCEL WEIGHT</FormLabel>
                 <div className={classes.weightAndInfo}>

@@ -1,4 +1,4 @@
-import { put, all, takeLatest  } from 'redux-saga/effects';
+import { put, all, takeLatest } from 'redux-saga/effects';
 import { LOGIN, LOGOUT } from '../constants/auth';
 import { loginSuccess, loginError, logoutSuccess, logoutError } from '../actions/auth';
 

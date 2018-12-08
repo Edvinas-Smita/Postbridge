@@ -2,16 +2,15 @@ import { put, all, takeLatest, takeEvery, select } from 'redux-saga/effects';
 import { GET_PARCELS, DELETE_PARCEL } from '../constants/parcels';
 import { getParcelsSuccess, getParcelsError, 
         deleteParcelSuccess, deleteParcelError } from '../actions/parcels';
+import { getAuthHeader } from '../../helpers.js'
 
 function* getParcels() {
-    const state = yield select();
     try {
+        const state = yield select();
         let parcels = [];
         let options = {
             method: 'GET',
-            headers: new Headers ({
-                'Authorization': `Bearer ${state.auth.accessToken}`
-            })
+            headers: getAuthHeader(state)
         }
         yield fetch("http://localhost:8080/api/parcels", options)
             .then(response => {
@@ -28,9 +27,11 @@ function* getParcels() {
 
 function* deleteParcel(action) {
     try {
+        const state = yield select();
         const { id } = action;
         const options = {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeader(state)
         }
         yield fetch("http://localhost:8080/api/parcels/" + id, options,)
             .then(response => {

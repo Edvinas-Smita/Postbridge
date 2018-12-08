@@ -241,12 +241,7 @@ module.exports = function() {
     ],
     "auth":[
       {
-        "id": 1,
-        "access_token": "test-access-token",
-        "token_type": "bearer",
-        "refresh_token": "test-refresh-token",
-        "expires_in": 3599,
-        "scope": "read write trust"
+        "id": 1
       }
     ]
   }

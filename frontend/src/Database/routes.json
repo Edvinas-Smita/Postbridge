@@ -1,4 +1,5 @@
 {
     "/api/*": "/$1",
-    "/oauth/token": "/auth"
+    "/oauth/token": "/auth",
+    "/oauth/revoke-token": "/auth"
 }

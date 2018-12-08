@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button/Button'
 import TextField from '@material-ui/core/TextField/TextField'
@@ -10,8 +9,6 @@ import { Typography } from '@material-ui/core'
 import { withStyles } from "@material-ui/core/styles";
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-
-import {login} from '../../state-management/actions/auth';
 
 const gridStyles = {
     minHeight: '100vh',
@@ -59,9 +56,9 @@ class LoginForm extends Component {
     constructor(props){
         super(props);
 
-        this.state = {//TODO: remove
-            email: "test",
-            password: "test",
+        this.state = {
+            email: "",
+            password: ""
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -73,20 +70,15 @@ class LoginForm extends Component {
         });
       };
 
-    handleSubmit() {
-        this.props.login({
-            email: this.state.email, 
-            password: this.state.password
+    handleSubmit = (email, password) => {
+        this.props.authorize({
+            email: email, 
+            password: password
         });
     }
     
     render() {
         const { classes } = this.props;
-        const { from } = this.props.location.state || { from: { pathname: '/parcels' } }
-        if (/*this.props.redirectToReferrer &&*/ this.props.isAuthenticated) {
-            return <Redirect to={from} />
-        }
-
         return (
             <Grid
                 container
@@ -147,7 +139,8 @@ class LoginForm extends Component {
                     variant = "contained" 
                     color="primary"
                     style={{textTransform: "none", width:"400px"}}
-                    onClick={this.handleSubmit}
+                    onClick={() => this.handleSubmit(this.state.email, this.state.password)}
+                    disabled={this.props.isFetching}
                 >
                     Sign In
                 </Button>
@@ -158,13 +151,11 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-const mapDispatchToProps = dispatch => ({
-    login: (email, password) => dispatch(login(email, password))
+    isAuthenticated: state.auth.isAuthenticated,
+    isFetching: state.auth.isFetching,
+    error: state.auth.badCredentials,
 });
 
 const LoginFromStyled = withStyles(styles)(LoginForm);
-export default connect(mapStateToProps, mapDispatchToProps)(LoginFromStyled);
+export default connect(mapStateToProps, null)(LoginFromStyled);
 

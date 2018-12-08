@@ -1,23 +1,18 @@
-import { put, all, takeLatest } from 'redux-saga/effects';
+import { put, all, takeLatest, select } from 'redux-saga/effects';
 import { GET_LOCATIONS } from '../constants/others';
 import { getLocationsError, getLocationsSuccess } from '../actions/others';
+import { getAuthHeader } from '../../helpers.js'
 
 function* getLocations() {
-    //console.log("getLocations.start");
     try {
+        const state = yield select();
         let locations = [];
-        /*
         let options = {
             method: 'GET',
-            headers: new Headers ({
-                'Authorization': `Bearer ${this.state.auth.accessToken}`
-            })
+            headers: getAuthHeader(state)
         }
-        */
-        yield fetch("http://localhost:8080/api/locations")
+        yield fetch("http://localhost:8080/api/locations", options)
             .then(response => {
-                //console.log(response);
-                //console.log(response.json());
                 return response.json();})
             .then(data => {
                 locations = Object.values(data);

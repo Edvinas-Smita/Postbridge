@@ -30,7 +30,8 @@ sagaMiddleware.run(rootSaga);
 store.subscribe(thottle(() => {
     saveState({
         auth: {
-            accessToken: store.getState().auth.accessToken
+            accessToken: store.getState().auth.accessToken,
+            isAuthenticated: store.getState().auth.isAuthenticated
         }
     });
   }, 1000));

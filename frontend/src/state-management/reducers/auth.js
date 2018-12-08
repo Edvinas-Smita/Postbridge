@@ -10,7 +10,8 @@ import {
 const initialState = {
     isFetching: false,
     isAuthenticated: false,
-    accessToken: ""
+    accessToken: "",
+    badCredentials: false
 };
 
 const AuthReducer = (state = initialState, action = {}) => {
@@ -18,19 +19,22 @@ const AuthReducer = (state = initialState, action = {}) => {
         case LOGIN: return {
             ...state,
             isFetching: true,
-            isAuthenticated: false
+            isAuthenticated: false,
+            badCredentials: false
         }
         case LOGIN_SUCCESS: return {
             ...state,
             accessToken: action.accessToken,
             isFetching: false,
-            isAuthenticated: true
+            isAuthenticated: true,
+            badCredentials: false
         }
         case LOGIN_ERROR: return {
             ...state,
             error: action.error,
             isFetching: false,
             isAuthenticated: false,
+            badCredentials: true,
             accessToken: ""
         }
         case LOGOUT: return {

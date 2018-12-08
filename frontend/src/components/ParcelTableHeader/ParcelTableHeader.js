@@ -62,6 +62,9 @@ const styles = theme => ({
     },
     textField: {
         marginRight: theme.spacing.unit,
+    },
+    menuOverflow: {
+        overflow: 'visible'
     }
 });
 
@@ -362,30 +365,17 @@ class ParcelTableHeader extends Component {
                               }}
                               getContentAnchorEl={null}
                               disableAutoFocusItem
+                              PopoverClasses={{paper: classes.menuOverflow}}
                             >
-                              <Grid
-                                container
-                                direction="row"
-                                alignItems="flex-start"
-                                className={classes.menuMargin}
-                              >
-                                <UserAutoFill
-                                  onChange={(selectedOptions) => this.setState({selectedRecipientOptions: selectedOptions})}
-                                  options={recipientOptions}
-                                  label={"Select recipients to filter by:"}/>
-                                <Button
-                                  size="small"
-                                  variant="contained"
-                                  color="primary"
-                                  className={classes.button}
-                                  onClick={() => {
-                                    this.props.setParcelFilter('recipient', this.state.selectedRecipientOptions);
-                                    popupState.close();
-                                  }}
-                                >
-                                  Filter
-                                </Button>
-                              </Grid>
+                              <UserAutoFill
+                                onChange={(selectedOptions) => this.setState({selectedRecipientOptions: selectedOptions})}
+                                options={recipientOptions}
+                                label={"Select recipients to filter by:"}
+                                onFilter={() => {
+                                  this.props.setParcelFilter('recipient', this.state.selectedRecipientOptions);
+                                  popupState.close();
+                                }}
+                              />
                             </Menu>
                           </React.Fragment>
                         )}
@@ -414,30 +404,17 @@ class ParcelTableHeader extends Component {
                               }}
                               getContentAnchorEl={null}
                               disableAutoFocusItem
+                              PopoverClasses={{paper: classes.menuOverflow}}
                             >
-                              <Grid
-                                container
-                                direction="row"
-                                alignItems="flex-start"
-                                className={classes.menuMargin}
-                              >
-                                <UserAutoFill
-                                  onChange={(selectedOptions) => this.setState({selectedCourierOptions: selectedOptions})}
-                                  options={courierOptions}
-                                  label={"Select couriers to filter by:"}/>
-                                <Button
-                                  size="small"
-                                  variant="contained"
-                                  color="primary"
-                                  className={classes.button}
-                                  onClick={() => {
-                                    this.props.setParcelFilter('courier', this.state.selectedCourierOptions);
-                                    popupState.close();
-                                  }}
-                                >
-                                  Filter
-                                </Button>
-                              </Grid>
+                              <UserAutoFill
+                                onChange={(selectedOptions) => this.setState({selectedCourierOptions: selectedOptions})}
+                                options={courierOptions}
+                                label={"Select couriers to filter by:"}
+                                onFilter={() => {
+                                  this.props.setParcelFilter('courier', this.state.selectedCourierOptions);
+                                  popupState.close();
+                                }}
+                              />
                             </Menu>
                           </React.Fragment>
                         )}

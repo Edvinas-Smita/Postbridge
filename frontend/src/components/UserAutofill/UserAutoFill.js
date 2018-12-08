@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import Select from 'react-select';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import TextField from '@material-ui/core/TextField';
@@ -9,14 +9,16 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
+import {emphasize} from '@material-ui/core/styles/colorManipulator';
+import Tooltip from '@material-ui/core/Tooltip';
+import Button from '@material-ui/core/Button';
+import Forward from '@material-ui/icons/Forward'
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    height: 250,
-    width: 280,
-    marginRight: theme.spacing.unit * 3
+    width: 300,
+    margin: 24
   },
   input: {
     display: 'flex',
@@ -57,7 +59,11 @@ const styles = theme => ({
     right: 0,
   },
   divider: {
-    height: theme.spacing.unit * 2,
+    display: 'grid',
+    gridTemplateColumns: '88% 12%',
+    gridColumnGap: '1px',
+    alignItems: 'center',
+    //backgroundColor: 'lightgray'
   },
 });
 
@@ -73,27 +79,56 @@ function NoOptionsMessage(props) {
   );
 }
 
-function inputComponent({ inputRef, ...props }) {
+function inputComponent({inputRef, ...props}) {
   return <div ref={inputRef} {...props} />;
 }
 
-function Control(props) {
+const Control = onClick => props => {
   return (
-    <TextField
-      fullWidth
-      InputProps={{
-        inputComponent,
-        inputProps: {
-          className: props.selectProps.classes.input,
-          inputRef: props.innerRef,
-          children: props.children,
-          ...props.innerProps,
-        },
-      }}
-      {...props.selectProps.textFieldProps}
-    />
+    <div className={props.selectProps.classes.divider}>
+      <div style={{backgroundColor: 'white'}}>
+        <TextField
+          fullWidth
+          InputProps={{
+            inputComponent,
+            inputProps: {
+              className: props.selectProps.classes.input,
+              inputRef: props.innerRef,
+              children: [
+                ...props.children,
+              ],
+              ...props.innerProps,
+            },
+          }}
+          {...props.selectProps.textFieldProps}
+        />
+      </div>
+      <div style={{backgroundColor: 'white', display: 'grid', height: '100%'}}>
+        <Tooltip title="Filter">
+          <Button
+            style={{minWidth: 0, marginTop: 16}}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (typeof onClick === 'function') {
+                onClick(e);
+              }
+            }}
+          >
+            <Forward style={{fill: 'lightgray'}}/>
+          </Button>
+        </Tooltip>
+      </div>
+      <div style={{ //makes-shift divider that looks similar to the built-in one - the divs with white background color are needed to mask the overflow of this
+        position: 'absolute',
+        width: '100%',
+        backgroundColor: 'lightgray',
+        height: 'calc(100% - 32px)',
+        top: '24px',
+        zIndex: -1
+      }}/>
+    </div>
   );
-}
+};
 
 function Option(props) {
   return (
@@ -157,8 +192,8 @@ function Menu(props) {
   );
 }
 
-const components = {
-  Control,
+const components = onClick => ({
+  Control: Control(onClick),
   Menu,
   MultiValue,
   NoOptionsMessage,
@@ -166,11 +201,11 @@ const components = {
   Placeholder,
   SingleValue,
   ValueContainer,
-};
+});
 
 class IntegrationReactSelect extends React.Component {
   render() {
-    const { classes, theme } = this.props;
+    const {classes, theme} = this.props;
 
     const selectStyles = {
       input: base => ({
@@ -183,7 +218,7 @@ class IntegrationReactSelect extends React.Component {
     };
 
     return (
-      <div className={classes.root}>
+      <div className={classes.root} style={this.props.style}>
         <NoSsr>
           <Select
             classes={classes}
@@ -194,7 +229,7 @@ class IntegrationReactSelect extends React.Component {
                 shrink: true,
               },
             }}
-            components={components}
+            components={components(this.props.onFilter)}
             options={this.props.options}
             value={this.props.value}
             onChange={(selectedOptions) => this.props.onChange(selectedOptions)}
@@ -207,4 +242,4 @@ class IntegrationReactSelect extends React.Component {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);
+export default withStyles(styles, {withTheme: true})(IntegrationReactSelect);

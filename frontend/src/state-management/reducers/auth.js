@@ -1,40 +1,54 @@
 import {
-    SIGN_IN,
-    SIGN_IN_SUCCESS,
-    LOGGED_IN,
-    SIGN_IN_ERROR, 
-    SIGN_OUT
+    LOGIN,
+    LOGIN_SUCCESS,
+    LOGIN_ERROR, 
+    LOGOUT,
+    LOGOUT_SUCCESS,
+    LOGOUT_ERROR
 } from '../constants/auth';
 
 const initialState = {
-    isLoggingIn: false,
+    isFetching: false,
+    isAuthenticated: false,
     accessToken: ""
 };
 
 const AuthReducer = (state = initialState, action = {}) => {
     switch (action.type) {
-        case SIGN_IN: return {
+        case LOGIN: return {
             ...state,
-            isLoggingIn: true
+            isFetching: true,
+            isAuthenticated: false
         }
-        case SIGN_IN_SUCCESS: return {
+        case LOGIN_SUCCESS: return {
             ...state,
-            accessToken: action.accessToken
+            accessToken: action.accessToken,
+            isFetching: false,
+            isAuthenticated: true
         }
-        case LOGGED_IN: return {
-            ...state,
-            isLoggingIn: false
-        }
-        case SIGN_IN_ERROR: return {
+        case LOGIN_ERROR: return {
             ...state,
             error: action.error,
-            isLoggingIn: false,
+            isFetching: false,
+            isAuthenticated: false,
             accessToken: ""
         }
-        case SIGN_OUT: return {
+        case LOGOUT: return {
             ...state,
-            isLoggingIn: false,
-            accessToken: ""
+            isFetching: true
+        }
+        case LOGOUT_SUCCESS: return {
+            ...state,
+            isFetching: false,
+            isAuthenticated: false,
+            accessToken: "",
+        }
+        case LOGOUT_ERROR: return {
+            ...state,
+            error: action.error,
+            isFetching: false,
+            isAuthenticated: false,
+            accessToken: "",
         }
         default: return state;
     }

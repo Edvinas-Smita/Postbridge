@@ -238,6 +238,16 @@ module.exports = function() {
         "id": 5,
         "name": "London"
       }
+    ],
+    "auth":[
+      {
+        "id": 1,
+        "access_token": "test-access-token",
+        "token_type": "bearer",
+        "refresh_token": "test-refresh-token",
+        "expires_in": 3599,
+        "scope": "read write trust"
+      }
     ]
   }
 }

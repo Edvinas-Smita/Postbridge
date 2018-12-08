@@ -1,17 +1,25 @@
-import { put, all, takeLatest, takeEvery } from 'redux-saga/effects';
+import { put, all, takeLatest, takeEvery, select } from 'redux-saga/effects';
 import { GET_PARCELS, DELETE_PARCEL } from '../constants/parcels';
 import { getParcelsSuccess, getParcelsError, 
         deleteParcelSuccess, deleteParcelError } from '../actions/parcels';
 
 function* getParcels() {
+    const state = yield select();
     try {
         let parcels = [];
-        yield fetch("http://localhost:8080/api/parcels")
+        let options = {
+            method: 'GET',
+            headers: new Headers ({
+                'Authorization': `Bearer ${state.auth.accessToken}`
+            })
+        }
+        yield fetch("http://localhost:8080/api/parcels", options)
             .then(response => {
                 return response.json();})
             .then(data => {
                 parcels = Object.values(data);
         });
+        
         yield put(getParcelsSuccess(parcels));
     } catch (e){
         yield put(getParcelsError(e));

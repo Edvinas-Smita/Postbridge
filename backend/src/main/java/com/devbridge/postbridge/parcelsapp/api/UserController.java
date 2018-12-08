@@ -4,15 +4,12 @@ import javax.validation.Valid;
 
 import com.devbridge.postbridge.parcelsapp.model.LoginData;
 import com.devbridge.postbridge.parcelsapp.model.User;
-import com.devbridge.postbridge.parcelsapp.security.UserPrincipal;
 import com.devbridge.postbridge.parcelsapp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +44,7 @@ public class UserController {
                ? new ResponseEntity<>(user, HttpStatus.OK)
                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-/*
+    /*
     @GetMapping(path = "/current")
     public ResponseEntity<User> getCurrentUser(Model model, Authentication authentication) {
         User user = ((UserPrincipal)authentication.getPrincipal()).getUser();
@@ -57,5 +54,5 @@ public class UserController {
                 ? new ResponseEntity<>(user, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-*/
+    */
 }

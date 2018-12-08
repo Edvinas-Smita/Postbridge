@@ -11,7 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
-import {signIn} from '../../state-management/actions/auth';
+import {login} from '../../state-management/actions/auth';
 
 const gridStyles = {
     minHeight: '100vh',
@@ -74,7 +74,7 @@ class LoginForm extends Component {
       };
 
     handleSubmit() {
-        this.props.signIn({
+        this.props.login({
             email: this.state.email, 
             password: this.state.password
         });
@@ -83,7 +83,7 @@ class LoginForm extends Component {
     render() {
         const { classes } = this.props;
         const { from } = this.props.location.state || { from: { pathname: '/parcels' } }
-        if (this.props.redirectToReferrer && this.props.isLoggingIn) {
+        if (/*this.props.redirectToReferrer &&*/ this.props.isAuthenticated) {
             return <Redirect to={from} />
         }
 
@@ -158,12 +158,11 @@ class LoginForm extends Component {
 }
 
 const mapStateToProps = state => ({
-    redirectToReferrer: state.auth.accessToken !== "",
-    isLoggingIn: state.auth.isLoggingIn
+    isAuthenticated: state.auth.isAuthenticated
 });
 
 const mapDispatchToProps = dispatch => ({
-    signIn: (email, password) => dispatch(signIn(email, password))
+    login: (email, password) => dispatch(login(email, password))
 });
 
 const LoginFromStyled = withStyles(styles)(LoginForm);

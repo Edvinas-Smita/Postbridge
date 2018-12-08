@@ -1,30 +1,35 @@
 import {
-    SIGN_IN,
-    SIGN_IN_SUCCESS,
-    LOGGED_IN,
-    SIGN_IN_ERROR, 
-    SIGN_OUT
+    LOGIN,
+    LOGIN_SUCCESS,
+    LOGIN_ERROR, 
+    LOGOUT,
+    LOGOUT_SUCCESS,
+    LOGOUT_ERROR
 } from '../constants/auth';
 
-export const signIn = credentials => ({
-    type: SIGN_IN,
+export const login = credentials => ({
+    type: LOGIN,
     credentials
 });
 
-export const signInSuccess = accessToken => ({
-    type: SIGN_IN_SUCCESS,
+export const loginSuccess = accessToken => ({
+    type: LOGIN_SUCCESS,
     accessToken,
 });
 
-export const loggedIn = () => ({
-    type: LOGGED_IN,
-})
-
-export const signInError = error => ({
-    type: SIGN_IN_ERROR,
+export const loginError = error => ({
+    type: LOGIN_ERROR,
     error,
 });
 
-export const signOut = () => ({
-    type: SIGN_OUT,
+export const logout = () => ({
+    type: LOGOUT,
+});
+
+export const logoutSuccess = () => ({
+    type: LOGOUT_SUCCESS,
+});
+
+export const logoutError = () => ({
+    type: LOGOUT_ERROR,
 });

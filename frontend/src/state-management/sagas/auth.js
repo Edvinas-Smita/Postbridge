@@ -1,12 +1,13 @@
-import { put, all, takeLatest, take } from 'redux-saga/effects';
-import { SIGN_IN, SIGN_IN_SUCCESS } from '../constants/auth';
-import { signInSuccess, signInError, loggedIn } from '../actions/auth';
+import { put, all, takeLatest  } from 'redux-saga/effects';
+import { LOGIN, LOGOUT } from '../constants/auth';
+import { loginSuccess, loginError, logoutSuccess, logoutError } from '../actions/auth';
 
-function* signIn(action) {
+function* login(action) {
+    let credentials = action.credentials;
     try {
         const body = 
-            "username=" + action.credentials.email + "&" +
-            "password=" + action.credentials.password + "&" +
+            "username=" + credentials.email + "&" +
+            "password=" + credentials.password + "&" +
             "client_id=parcel-app-client&" +
             "grant_type=password";
 
@@ -34,18 +35,33 @@ function* signIn(action) {
                 accessToken = data.access_token;
         });
 
-        yield put(signInSuccess(accessToken));
-        yield take(SIGN_IN_SUCCESS);
-        yield put(loggedIn());
+        yield put(loginSuccess(accessToken));
     }
     catch(e) {
-        yield put(signInError(e));
+        yield put(loginError(e));
+    }
+}
+
+function* logout(action) {
+    try {
+        yield fetch("http://localhost:8080/oauth/revoke-token")
+        .then(response => {
+            if(response.status >= 400 && response.status < 600) {
+                throw new Error("Bad response from server");
+            }
+        });
+
+    yield put(logoutSuccess());
+    }
+    catch(e) {
+        yield put(logoutError(e));
     }
 }
 
 function* authSaga() {
     yield all([
-        takeLatest(SIGN_IN, signIn)
+        takeLatest(LOGIN, login),
+        takeLatest(LOGOUT, logout)
     ]);
 }
 

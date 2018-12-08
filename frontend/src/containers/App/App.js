@@ -22,7 +22,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isAuthorised: false,
+      isAuthorised: true,
       error: false,
       user: {
         id: "",
@@ -45,6 +45,7 @@ class App extends Component {
 
   render() {
     return (
+
         <Switch>
           <Route 
             exact 
@@ -57,6 +58,7 @@ class App extends Component {
             authed={this.state.isAuthorised}
             user={this.state.user}/>
         </Switch>
+
     );
   }
 }

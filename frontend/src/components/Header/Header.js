@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import SearchIcon from '@material-ui/icons/Search'
@@ -11,6 +12,8 @@ import ExitToApp from '@material-ui/icons/ExitToApp';
 import { Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+
+import {logout} from '../../state-management/actions/auth';
 
 const styles = theme => ({
     root: {
@@ -89,6 +92,11 @@ const styles = theme => ({
   
 
 class Header extends Component {
+
+    handleLogout() {
+      this.props.logout();
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -125,7 +133,7 @@ class Header extends Component {
                     </Typography>
                     </Grid>
                     <Grid item>
-                      <IconButton aria-label="ExitToApp">
+                      <IconButton aria-label="ExitToApp" onClick={() => this.handleLogout()}>
                         <ExitToApp/>
                       </IconButton>
                     </Grid>
@@ -139,4 +147,9 @@ class Header extends Component {
     }
 };
 
-export default withStyles(styles)(Header);
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout())
+});
+
+const HeaderStyled = withStyles(styles)(Header);
+export default connect(null, mapDispatchToProps)(HeaderStyled);

@@ -93,7 +93,7 @@ const styles = theme => ({
   },
   roundedButton: {
     borderRadius: 24,
-    marginLeft: theme.spacing.unit
+    marginLeft: theme.spacing.unit * 2
   },
   errorIcon: {
     height: 48,
@@ -104,6 +104,11 @@ const styles = theme => ({
     left: '50%',
     marginTop: -24,
     marginLeft: -24
+  },
+  actionPadding: {
+    paddingBottom: theme.spacing.unit * 3,
+    paddingRight: theme.spacing.unit * 4,
+    margin: 0
   }
 });
 
@@ -170,7 +175,8 @@ class ParcelEdit extends Component {
       parcel: {
         ...this.state.parcel,
         [prop]: value
-      }
+      },
+      [prop + 'Error']: !value
     });
   }
 
@@ -179,7 +185,8 @@ class ParcelEdit extends Component {
       parcel: {
         ...this.state.parcel,
         [prop]: event.target.value
-      }
+      },
+      [prop + 'Error']: !event.target.value
     });
   };
   handleWeightChange = (event) => {
@@ -233,6 +240,12 @@ class ParcelEdit extends Component {
     if (!parcel.weight) {
       parcel.weight = 0;
     }
+    this.setState({
+      changesPending: false,
+      startLocationError: false,
+      endLocationError: false,
+      descriptionError: false
+    });
     if (!this.state.isRequestForm) {
       this.props.saveEdit(parcel);
     } else {
@@ -425,7 +438,7 @@ class ParcelEdit extends Component {
           </Grid>
         </DialogContent>
 
-        <DialogActions style={{position: 'relative'}}>
+        <DialogActions classes={{root: classes.actionPadding}}>
           {this.props.error &&
           <Tooltip title={"An error has occurred: " + this.props.error}>
             <Error
@@ -446,7 +459,6 @@ class ParcelEdit extends Component {
               variant="contained"
               color="primary"
               className={classes.roundedButton}
-              style={{marginRight: 24}}
               onClick={this.onSaveClick}
               disabled={this.props.isLoading || !!this.props.error}
             >
@@ -459,8 +471,8 @@ class ParcelEdit extends Component {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                marginTop: -12,
-                marginLeft: -12
+                marginTop: '-50%',
+                marginLeft: '-50%'
               }}
             />}
           </div>

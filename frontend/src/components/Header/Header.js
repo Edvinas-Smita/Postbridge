@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
 import { connect } from 'react-redux';
-=======
-import { Redirect } from 'react-router-dom';
->>>>>>> master
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import SearchIcon from '@material-ui/icons/Search'
@@ -102,7 +98,6 @@ class Header extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <React.Fragment>
             <AppBar className={classes.appbar} position="fixed" >
             <Toolbar>
               <Logo/>
@@ -143,8 +138,6 @@ class Header extends Component {
                 </div>
             </Toolbar>
           </AppBar>
-          </React.Fragment>
-          
         );
     }
 };

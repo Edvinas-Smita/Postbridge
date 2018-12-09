@@ -9,7 +9,7 @@ import { getParcelSuccess, getParcelError, getParcel as getParcelAction,
         getParcelStatusHistory as getParcelStatusHistoryAction,
         getParcelStatusHistoryError, getParcelStatusHistorySuccess } from '../actions/parcel';
 import { updateParcels as updateParcelsAction} from '../actions/parcels';
-import { getAuthHeader } from '../../helpers.js';
+import { getAuthHeader, status } from '../api/api.js';
 
 
 function* openParcelStatus(action){
@@ -31,8 +31,9 @@ function* getParcel(action) {
             headers: getAuthHeader(state)
         }
         yield fetch("http://localhost:8080/api/parcels/" + action.id, options)
-            .then(response => {
-                return response.json();})
+            .then(response => 
+                status(response)
+            )
             .then(data => {
                 parcel = data;
         });
@@ -58,10 +59,9 @@ function* updateParcel(action) {
                 {'Content-Type': 'application/json'}) 
         }
         yield fetch("http://localhost:8080/api/parcels/" + action.parcel.id, options)
-            .then(response => {
-                if(response.status >= 400 && response.status < 600)
-                    throw new Error("Bad response from server");
-        });
+            .then(response => 
+                status(response)
+            )
         
         yield put(updateParcelSuccess(action.parcel));
     } catch(e) {
@@ -79,9 +79,9 @@ function* getParcelStatusHistory(action) {
             headers: getAuthHeader(state)
         }
         yield fetch("http://localhost:8080/api/parcels/" + id + "/statusHistory", options)
-            .then(response => {     
-                return response.json();
-            })
+            .then(response => 
+                status(response)
+            )
             .then(data => {
                 parcelStatusHistory = Object.values(data);
             });

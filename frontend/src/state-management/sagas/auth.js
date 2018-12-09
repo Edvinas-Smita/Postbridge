@@ -4,7 +4,7 @@ import { auth as authAction, authSuccess, authError,
      getUserDetailsSuccess, getUserDetailsError, 
      logoutSuccess, logoutError, 
      getUserDetails as getUserDetailsAction } from '../actions/auth';
-import { getAuthHeader } from '../../helpers.js'
+import { getAuthHeader, status } from '../api/api.js';
 
 function* auth(action){
     let credentials = action.credentials;
@@ -27,14 +27,9 @@ function* auth(action){
         let accessToken;
 
         yield fetch("http://localhost:8080/oauth/token", options)
-            .then(response => {
-                if(response.status >= 400 && response.status < 600) {
-                    throw new Error("Bad response from server");
-                }
-                else {
-                    return response.json();
-                }
-            })
+            .then(response => 
+                status(response)
+            )
             .then(data => {
                 accessToken = data.access_token;
         });
@@ -61,8 +56,9 @@ function* getUserDetails() {
             headers: getAuthHeader(state)
         }
         yield fetch("http://localhost:8080/oauth/user-details", options)
-            .then(response => {
-                return response.json();})
+            .then(response => 
+                status(response)
+            )
             .then(data => {
                 user = data;
             });
@@ -76,11 +72,9 @@ function* getUserDetails() {
 function* logout(action) {
     try {
         yield fetch("http://localhost:8080/oauth/revoke-token")
-        .then(response => {
-            if(response.status >= 400 && response.status < 600) {
-                throw new Error("Bad response from server");
-            }
-        });
+            .then(response => 
+                status(response)
+            );
 
     yield put(logoutSuccess());
     }

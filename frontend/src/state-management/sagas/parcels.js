@@ -2,7 +2,8 @@ import { put, all, takeLatest, takeEvery, select } from 'redux-saga/effects';
 import { GET_PARCELS, DELETE_PARCEL } from '../constants/parcels';
 import { getParcelsSuccess, getParcelsError, 
         deleteParcelSuccess, deleteParcelError } from '../actions/parcels';
-import { getAuthHeader } from '../../helpers.js'
+import { logout as logoutAction } from '../actions/auth';
+import { getAuthHeader, status } from '../api/api.js';
 
 function* getParcels() {
     try {
@@ -13,15 +14,16 @@ function* getParcels() {
             headers: getAuthHeader(state)
         }
         yield fetch("http://localhost:8080/api/parcels", options)
-            .then(response => {
-                return response.json();})
+            .then(response => 
+                status(response)
+            )
             .then(data => {
                 parcels = Object.values(data);
-        });
-        
+            });
         yield put(getParcelsSuccess(parcels));
     } catch (e){
         yield put(getParcelsError(e));
+        yield put(logoutAction(e));
     }
 }
 
@@ -35,9 +37,9 @@ function* deleteParcel(action) {
         }
         yield fetch("http://localhost:8080/api/parcels/" + id, options,)
             .then(response => {
-                if(response.status >= 400 && response.status < 600)
-                    throw new Error("Bad response from server");
-        });
+                if (!response.ok || response.status >= 400)
+                    throw Error(response.error);
+                });
 
         yield put(deleteParcelSuccess(id));
     } catch(e) {

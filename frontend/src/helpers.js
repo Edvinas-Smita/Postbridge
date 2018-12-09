@@ -29,10 +29,3 @@ export function deepDiff(o1, o2) {
         }
     }, {});
 }
-
-export function getAuthHeader (state, headers) {
-    return ({
-        ...headers,
-        Authorization: `Bearer ${state.auth.accessToken}`,
-    })
-}

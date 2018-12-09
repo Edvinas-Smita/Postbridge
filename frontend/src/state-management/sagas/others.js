@@ -1,7 +1,7 @@
 import { put, all, takeLatest, select } from 'redux-saga/effects';
 import { GET_LOCATIONS } from '../constants/others';
 import { getLocationsError, getLocationsSuccess } from '../actions/others';
-import { getAuthHeader } from '../../helpers.js'
+import { getAuthHeader, status } from '../api/api.js';
 
 function* getLocations() {
     try {
@@ -12,8 +12,9 @@ function* getLocations() {
             headers: getAuthHeader(state)
         }
         yield fetch("http://localhost:8080/api/locations", options)
-            .then(response => {
-                return response.json();})
+            .then(response => 
+                status(response)
+            )
             .then(data => {
                 locations = Object.values(data);
             });

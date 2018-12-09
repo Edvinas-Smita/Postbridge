@@ -370,6 +370,7 @@ class ParcelTableHeader extends Component {
                               <UserAutoFill
                                 onChange={(selectedOptions) => this.setState({selectedRecipientOptions: selectedOptions})}
                                 options={recipientOptions}
+                                value={this.state.selectedRecipientOptions}
                                 label={"Select recipients to filter by:"}
                                 onFilter={() => {
                                   this.props.setParcelFilter('recipient', this.state.selectedRecipientOptions);
@@ -409,6 +410,7 @@ class ParcelTableHeader extends Component {
                               <UserAutoFill
                                 onChange={(selectedOptions) => this.setState({selectedCourierOptions: selectedOptions})}
                                 options={courierOptions}
+                                value={this.state.selectedCourierOptions}
                                 label={"Select couriers to filter by:"}
                                 onFilter={() => {
                                   this.props.setParcelFilter('courier', this.state.selectedCourierOptions);
@@ -437,16 +439,28 @@ class ParcelTableHeader extends Component {
                                     { this.props.recipient.length > 0 && this.props.recipient.map((userOption, index) =>
                                       <Chip
                                         key={"recipient" + index}
-                                        onDelete={() => this.props.setParcelFilter('recipient', this.props.recipient.filter(existingOption => existingOption.value !== userOption.value))}
+                                        onDelete={() => {
+                                          this.props.setParcelFilter('recipient', this.props.recipient.filter(existingOption => existingOption.value !== userOption.value));
+                                          this.setState({
+                                            ...this.state,
+                                            selectedRecipientOptions: this.state.selectedRecipientOptions.filter(existingOption => existingOption.value !== userOption.value)
+                                          })
+                                        }}
                                         label={"Recipient: " + userOption.label}
                                         className={classes.chip}
                                         color="secondary"
                                       />
                                     )}
-                                    { this.props.courier.length > 0 && this.props.courier.map((userOption, index) =>
+                                  {this.props.courier.length > 0 && this.props.courier.map((userOption, index) =>
                                       <Chip
                                         key={"courier" + index}
-                                        onDelete={() => this.props.setParcelFilter('courier', this.props.courier.filter(existingOption => existingOption.value !== userOption.value))}
+                                        onDelete={() => {
+                                          this.props.setParcelFilter('courier', this.props.courier.filter(existingOption => existingOption.value !== userOption.value));
+                                          this.setState({
+                                            ...this.state,
+                                            selectedCourierOptions: this.state.selectedCourierOptions.filter(existingOption => existingOption.value !== userOption.value)
+                                          })
+                                        }}
                                         label={"Courier: " + userOption.label}
                                         className={classes.chip}
                                         color="secondary"

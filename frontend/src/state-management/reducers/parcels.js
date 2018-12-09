@@ -17,8 +17,6 @@ const initialState = {
     sortBy: 'createdDate',
     sortOrder: 'desc',
     parcel: {},
-    filterBy: '',
-    filteredParcels: [],
     startLocation: '',
     endLocation: '',
     status: [ false, 
@@ -29,6 +27,7 @@ const initialState = {
     weightTo: '',
     createdFrom: '',
     createdTo: '',
+    recipient: '',
     courier: '',
     userId: 1,
     statusFilterCounter: 0

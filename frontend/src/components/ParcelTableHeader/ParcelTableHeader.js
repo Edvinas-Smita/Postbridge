@@ -34,6 +34,8 @@ const styles = theme => ({
     chip: {
         borderRadius: "5px",
         margin: theme.spacing.unit * 0.5,
+        color: theme.palette.common.white,
+        backgroundColor: theme.palette.secondary.light
       },
     planeIcon: {
         transform: 'rotate(90deg)',
@@ -66,7 +68,8 @@ const styles = theme => ({
 const MenuProps = {
     PaperProps: {
       style: {
-        maxHeight: 300,
+        maxHeight: 200,
+        width: 150,
       },
     },
   };
@@ -84,7 +87,8 @@ class ParcelTableHeader extends Component {
             weightToValue: '',
             createdFromValue: '',
             createdToValue: '',
-            courierValue: '',
+            recipientValue: '',
+            courierValue: ''
         };
         
         this.handleChange = this.handleChange.bind(this);
@@ -109,22 +113,24 @@ class ParcelTableHeader extends Component {
         this.props.setParcelFilter(filterBy2, value2);
     };
 
+
+
     render () {
         const { classes } = this.props;
 
         return (
             <TableHead >
                 <TableRow style={{marginBottom: '10px'}}>
-                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '0px'}}>
+                    <TableCell style={{width: '8%', fontWeight:'bold', padding: '0px'}}>
                         <Grid container alignItems="center">
                             DESTINATION 
-                            <PopupState variant="popover" state={{width: '200px'}}>
+                            <PopupState variant="popover">
                                 {popupState => (
                                     <React.Fragment>
                                     <IconButton className={classes.iconButton} {...bindTrigger(popupState)}>
                                         <ArrowIcon fontSize="small"/> 
                                     </IconButton>  
-                                    <Menu  
+                                    <Menu onEnter={this.state.startLocationValue !== this.props.startLocation && this.state.endLocationValue !== this.props.endLocation ? () => {this.handleMenuValues('startLocationValue', ''); this.handleMenuValues('endLocationValue', '');}   : null}
                                         {...bindMenu(popupState)} 
                                         anchorOrigin={{
                                             vertical: 'bottom',
@@ -162,8 +168,8 @@ class ParcelTableHeader extends Component {
                             </PopupState>
                         </Grid> 
                     </TableCell>
-                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}}></TableCell>
-                    <TableCell style={{width: '8%', fontWeight:'bold', padding: '12px'}} >
+                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '0px'}}></TableCell>
+                    <TableCell style={{width: '8%', fontWeight:'bold', padding: '5px'}} >
                         <Grid container alignItems="center" >
                             <TableSortLabel 
                                 active={this.props.sortBy === 'status'}
@@ -208,12 +214,12 @@ class ParcelTableHeader extends Component {
                             </PopupState>
                         </Grid>
                     </TableCell>
-                    <TableCell style={{width: '8%', fontWeight:'bold', padding: '12px'}}>
+                    <TableCell style={{width: '8%', fontWeight:'bold', padding: '5px'}}>
                         <Grid container alignItems="center">
                             DESCRIPTION
                         </Grid>
                     </TableCell>
-                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}} >
+                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '5px'}} >
                         <Grid container alignItems="center">
                             <TableSortLabel 
                                 active={this.props.sortBy === 'weight'}
@@ -226,7 +232,7 @@ class ParcelTableHeader extends Component {
                                 {popupState => (
                                     <React.Fragment>
                                     <IconButton className={classes.iconButton} {...bindTrigger(popupState)}> <ArrowIcon fontSize="small"/> </IconButton>  
-                                    <Menu {...bindMenu(popupState)} 
+                                    <Menu {...bindMenu(popupState)}  onEnter={this.state.weightFromValue !== this.props.weightFrom && this.state.weightToValue !== this.props.weightTo ? () => {this.handleMenuValues('weightFromValue', ''); this.handleMenuValues('weightToValue', '');}   : null}
                                     anchorOrigin={{
                                         vertical: 'bottom',
                                         horizontal: 'center',
@@ -278,7 +284,7 @@ class ParcelTableHeader extends Component {
                             
                         </Grid>
                     </TableCell>
-                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '12px'}} >
+                    <TableCell style={{width: '7%', fontWeight:'bold', padding: '5px'}} >
                         <Grid container alignItems="center">
                             <TableSortLabel 
                                 active={this.props.sortBy === 'createdDate'}
@@ -291,7 +297,7 @@ class ParcelTableHeader extends Component {
                                 {popupState => (
                                     <React.Fragment>
                                     <IconButton className={classes.iconButton} {...bindTrigger(popupState)}> <ArrowIcon fontSize="small"/> </IconButton>  
-                                    <Menu {...bindMenu(popupState)}                             
+                                    <Menu {...bindMenu(popupState)}  onEnter={this.state.createdFromValue !== this.props.createdFrom && this.state.createdToValue !== this.props.createdTo ? () => {this.handleMenuValues('createdFromValue', ''); this.handleMenuValues('createdToValue', '');}   : null}                  
                                         anchorOrigin={{
                                             vertical: 'bottom',
                                             horizontal: 'center',
@@ -335,7 +341,39 @@ class ParcelTableHeader extends Component {
                             </PopupState>
                         </Grid>  
                     </TableCell>
-                    <TableCell style={{width: '9%', fontWeight:'bold', padding: '12px'}}>
+                    <TableCell style={{width: '10%', fontWeight:'bold', padding: '5px'}}>
+                    <Grid container alignItems="center">
+                            RECIPIENT
+                            <PopupState variant="popover"  >
+                                {popupState => (
+                                    <React.Fragment>
+                                    <IconButton className={classes.iconButton} {...bindTrigger(popupState)}> <ArrowIcon fontSize="small"/> </IconButton>  
+                                   
+                                        <Menu {...bindMenu(popupState)} onEnter={this.state.recipientValue !== this.props.recipient ? ()=>this.handleMenuValues('recipientValue','') : null}
+                                                anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'center',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'center',
+                                                }}
+                                                getContentAnchorEl={null}
+                                                disableAutoFocusItem>
+                                        <Grid container direction="column" alignItems="flex-end"  className={classes.menuMargin}>
+                                            <TextField 
+                                            label="Recipient"
+                                            value={this.state.recipientValue} 
+                                            onChange={(e) => this.handleMenuValues('recipientValue',e.target.value)}/>    
+                                            <Button size="small"  variant="contained" color="primary" className={classes.button} onClick={() => {this.props.setParcelFilter('recipient',this.state.recipientValue); popupState.close();}}>Filter</Button>
+                                        </Grid>
+                                        </Menu>
+                                    </React.Fragment>
+                                )}
+                            </PopupState>
+                        </Grid>
+                    </TableCell>
+                    <TableCell style={{width: '10%', fontWeight:'bold', padding: '5px'}}>
                         <Grid container alignItems="center">
                             COURIER
                             <PopupState variant="popover"  >
@@ -343,7 +381,7 @@ class ParcelTableHeader extends Component {
                                     <React.Fragment>
                                     <IconButton className={classes.iconButton} {...bindTrigger(popupState)}> <ArrowIcon fontSize="small"/> </IconButton>  
                                    
-                                        <Menu {...bindMenu(popupState)} 
+                                        <Menu {...bindMenu(popupState)} onEnter={this.state.courierValue !== this.props.courier ? ()=>this.handleMenuValues('courierValue','') : null}
                                                 anchorOrigin={{
                                                 vertical: 'bottom',
                                                 horizontal: 'center',
@@ -362,9 +400,6 @@ class ParcelTableHeader extends Component {
                                             <Button size="small"  variant="contained" color="primary" className={classes.button} onClick={() => {this.props.setParcelFilter('courier',this.state.courierValue); popupState.close();}}>Filter</Button>
                                         </Grid>
                                         </Menu>
-
-                                    
-
                                     </React.Fragment>
                                 )}
                             </PopupState>
@@ -372,17 +407,18 @@ class ParcelTableHeader extends Component {
                     </TableCell>
                     <TableCell style={{width: '12%', fontWeight:'bold', padding: '12px'}}></TableCell>
                 </TableRow>
-                {(this.props.startLocation !== '' && this.props.endLocation !== '') || (this.props.weightFrom !== '' && this.props.weightTo !== '') ||(this.props.createdFrom !== '' && this.createdTo !== '') || this.props.courier !== '' || this.props.statusFilterCounter > 0
+                {(this.props.startLocation !== '' && this.props.endLocation !== '') || (this.props.weightFrom !== '' && this.props.weightTo !== '') ||(this.props.createdFrom !== '' && this.createdTo !== '') || this.props.recipient !== '' || this.props.courier !== '' || this.props.statusFilterCounter > 0
                     ?    <TableRow>
                             <TableCell colSpan={8}>  
                                 <Grid container alignItems="center">
                                     <div style={{marginRight: '20px'}}>Filtered by:</div>
-                                    { this.props.startLocation && this.props.endLocation ? <Chip key="destination" onDelete={() => this.handleFilterChange('startLocation', 'endLocation', '', '')} label={this.props.startLocation + '-'+ this.props.endLocation} className={classes.chip} color="secondary" /> : null}
+                                    { this.props.startLocation && this.props.endLocation ? <Chip key="destination" onDelete={() => this.handleFilterChange('startLocation', 'endLocation', '', '')} label={this.props.startLocation + ' - '+ this.props.endLocation} className={classes.chip} color="secondary" /> : null}
                                     { this.props.status.map((selected, index) => { 
                                         if(selected) return <Chip key={'status'+index+1} onDelete={() => this.props.setParcelFilter('status', index)} label={STATUS[index+1]} className={classes.chip} color="secondary" /> 
                                         else return null}) }
-                                    { this.props.weightFrom && this.props.weightTo ? <Chip key="weight" onDelete={() => this.handleFilterChange('weightFrom', 'weightTo', '', '')} label={this.props.weightFrom + ' kg -'+ this.props.weightTo + ' kg'} className={classes.chip}  color="secondary"/> : null}
-                                    { this.props.createdFrom && this.props.createdTo ? <Chip key="created" onDelete={() => this.handleFilterChange('createdFrom', 'createdTo', '', '')} label={this.props.createdFrom + '-'+ this.props.createdTo } className={classes.chip}  color="secondary"/> : null}
+                                    { this.props.weightFrom && this.props.weightTo ? <Chip key="weight" onDelete={() => this.handleFilterChange('weightFrom', 'weightTo', '', '')} label={this.props.weightFrom + ' kg - '+ this.props.weightTo + ' kg'} className={classes.chip}  color="secondary"/> : null}
+                                    { this.props.createdFrom && this.props.createdTo ? <Chip key="created" onDelete={() => this.handleFilterChange('createdFrom', 'createdTo', '', '')} label={this.props.createdFrom + ' - '+ this.props.createdTo } className={classes.chip}  color="secondary"/> : null}
+                                    { this.props.recipient  ? <Chip key="recipient" onDelete={() => this.props.setParcelFilter('recipient','')}label={this.props.recipient } className={classes.chip} color="secondary"/> : null}
                                     { this.props.courier  ? <Chip key="courier" onDelete={() => this.props.setParcelFilter('courier','')}label={this.props.courier } className={classes.chip} color="secondary"/> : null}
                                 </Grid>
                             </TableCell>
@@ -407,6 +443,7 @@ const mapStateToProps = state => ({
     weightTo: state.parcels.weightTo,
     createdFrom: state.parcels.createdFrom,
     createdTo: state.parcels.createdTo,
+    recipient: state.parcels.recipient,
     courier: state.parcels.courier,
     userId: state.parcels.userId,
     statusFilterCounter: state.parcels.statusFilterCounter,

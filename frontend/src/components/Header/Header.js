@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+<<<<<<< HEAD
 import { connect } from 'react-redux';
+=======
+import { Redirect } from 'react-router-dom';
+>>>>>>> master
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import SearchIcon from '@material-ui/icons/Search'
@@ -89,11 +93,9 @@ const styles = theme => ({
       },
   });
 
-  
-
 class Header extends Component {
 
-    handleLogout() {
+    handleClick = () => {
       this.props.logout();
     }
 
@@ -133,9 +135,9 @@ class Header extends Component {
                     </Typography>
                     </Grid>
                     <Grid item>
-                      <IconButton aria-label="ExitToApp" onClick={() => this.handleLogout()}>
-                        <ExitToApp/>
-                      </IconButton>
+                        <IconButton aria-label="ExitToApp" onClick={() => this.handleClick()}>
+                          <ExitToApp/>
+                        </IconButton>
                     </Grid>
                 </Grid>
                 </div>

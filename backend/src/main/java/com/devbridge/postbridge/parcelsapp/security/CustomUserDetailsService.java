@@ -2,14 +2,10 @@ package com.devbridge.postbridge.parcelsapp.security;
 
 import com.devbridge.postbridge.parcelsapp.mapper.UserMapper;
 import com.devbridge.postbridge.parcelsapp.model.User;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.List;
 
 import static java.util.Collections.emptyList;
 
@@ -31,10 +27,11 @@ public class CustomUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException(email);
     }
 
-    return new org.springframework.security.core.userdetails.User(
-            user.getEmail(),
-            user.getPassword(),
-            emptyList());
+    return new CustomUser(
+            user.getEmail(), user.getPassword(),
+            true, true, true, true,emptyList(),
+            user.getFirstName(), user.getLastName());
+
   }
 
 }

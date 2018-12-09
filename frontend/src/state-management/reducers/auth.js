@@ -1,20 +1,29 @@
 import {
     LOGIN,
-    LOGIN_SUCCESS,
-    LOGIN_ERROR, 
+    AUTH,
+    AUTH_SUCCESS,
+    AUTH_ERROR, 
     LOGOUT,
     LOGOUT_SUCCESS,
-    LOGOUT_ERROR
+    LOGOUT_ERROR,
+    GET_USER_DETAILS,
+    GET_USER_DETAILS_SUCCESS,
+    GET_USER_DETAILS_ERROR
 } from '../constants/auth';
 
 const initialState = {
     isFetching: false,
     isAuthenticated: false,
     accessToken: "",
-    badCredentials: false
+    badCredentials: false,
+    user: {
+        firstName: "",
+        lastName: ""
+    }
 };
 
 const AuthReducer = (state = initialState, action = {}) => {
+    console.log(action);
     switch (action.type) {
         case LOGIN: return {
             ...state,
@@ -22,20 +31,43 @@ const AuthReducer = (state = initialState, action = {}) => {
             isAuthenticated: false,
             badCredentials: false
         }
-        case LOGIN_SUCCESS: return {
+        case AUTH: return {
+            ...state,
+            isFetching: true,
+            isAuthenticated: false,
+            badCredentials: false
+        }
+        case AUTH_SUCCESS: return {
             ...state,
             accessToken: action.accessToken,
             isFetching: false,
             isAuthenticated: true,
             badCredentials: false
         }
-        case LOGIN_ERROR: return {
+        case AUTH_ERROR: return {
             ...state,
             error: action.error,
             isFetching: false,
             isAuthenticated: false,
             badCredentials: true,
             accessToken: ""
+        }
+        case GET_USER_DETAILS: return {
+            ...state,
+        }
+        case GET_USER_DETAILS_SUCCESS: return {
+            ...state,
+            user: {
+                firstName: action.user.firstName,
+                lastName: action.user.lastName
+            }
+        }
+        case GET_USER_DETAILS_ERROR: return {
+            ...state,
+            user: {
+                firstName: "",
+                lastName: ""
+            }
         }
         case LOGOUT: return {
             ...state,
@@ -46,6 +78,10 @@ const AuthReducer = (state = initialState, action = {}) => {
             isFetching: false,
             isAuthenticated: false,
             accessToken: "",
+            user: {
+                firstName: "",
+                lastName: ""
+            }
         }
         case LOGOUT_ERROR: return {
             ...state,
@@ -53,6 +89,10 @@ const AuthReducer = (state = initialState, action = {}) => {
             isFetching: false,
             isAuthenticated: false,
             accessToken: "",
+            user: {
+                firstName: "",
+                lastName: ""
+            }
         }
         default: return state;
     }

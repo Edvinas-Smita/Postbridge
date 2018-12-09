@@ -13,7 +13,7 @@ import {
     GET_PARCEL_STATUS_HISTORY_ERROR
 } from '../constants/parcel';
 
-export const getParcel = (id) => ({
+export const getParcel = id => ({
     type: GET_PARCEL,
     id
 });
@@ -48,12 +48,12 @@ export const updateParcelError = error => ({
     error,
 });
 
-export const openParcelStatus = (id) => ({
+export const openParcelStatus = id => ({
     type: OPEN_PARCEL_STATUS,
     id
 });
 
-export const closeParcelStatus = (parcel) => ({
+export const closeParcelStatus = parcel => ({
     type: CLOSE_PARCEL_STATUS,
     parcel
 });

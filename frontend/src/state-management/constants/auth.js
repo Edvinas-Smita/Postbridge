@@ -1,6 +1,10 @@
 export const LOGIN = 'auth/LOGIN';
-export const LOGIN_SUCCESS = 'auth/LOGIN_SUCCESS';
-export const LOGIN_ERROR = 'auth/LOGIN_ERROR';
+export const AUTH = 'auth/AUTH';
+export const AUTH_SUCCESS = 'auth/AUTH_SUCCESS';
+export const AUTH_ERROR = 'auth/AUTH_ERROR';
 export const LOGOUT = 'auth/LOGOUT';
 export const LOGOUT_SUCCESS = 'auth/LOGOUT_SUCCESS';
 export const LOGOUT_ERROR = 'auth/LOGOUT_ERROR';
+export const GET_USER_DETAILS = 'auth/USER_DETAILS';
+export const GET_USER_DETAILS_SUCCESS = 'auth/USER_DETAILS_SUCCESS';
+export const GET_USER_DETAILS_ERROR = 'auth/USER_DETAILS_ERROR';

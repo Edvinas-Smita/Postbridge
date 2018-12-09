@@ -1,8 +1,9 @@
 import {all, put, select, take, takeLatest} from 'redux-saga/effects';
 import {UPDATE_PARCEL_SUCCESS} from "../constants/parcel";
-import {updateParcel as PUTParcel} from "../actions/parcel";
+import {updateParcel as PUTParcel, updateParcelError} from "../actions/parcel";
 import {newParcel, updateParcels as refreshParcels} from '../actions/parcels';
 import {
+  EDIT_PARCEL_DISCARD,
   EDIT_PARCEL_SAVE_EDIT,
   EDIT_PARCEL_SAVE_REQUEST,
   EDIT_PARCEL_SAVE_REQUEST_SUCCESS
@@ -32,8 +33,7 @@ function* editParcelSaveRequest(action) {
 
   const parcel = {
     ...action.parcel,
-    recipient: loggedInUser,
-    courier: {}    //TODO: this needs to be defined due to a bug
+    recipient: loggedInUser
   };
 
   try {
@@ -59,22 +59,24 @@ function* editParcelSaveRequest(action) {
   } catch (e) {
     yield put(editParcelSaveError(e));
   }
-  console.log("PUTTEN");
 }
 
 function *editParcelFinalizeRequest() {
-  console.log("TAKEN");
   const createdParcel = yield select(state => state.parcelEdit.parcel);
-  console.log(createdParcel);
   yield put(newParcel(createdParcel));
   yield put(editParcelClose());
+}
+
+function *editParcelDiscard() {
+  yield put(updateParcelError(''));
 }
 
 function* parcelEditSaga() {
   yield all([
     takeLatest(EDIT_PARCEL_SAVE_EDIT, editParcelSaveEdit),
     takeLatest(EDIT_PARCEL_SAVE_REQUEST, editParcelSaveRequest),
-    takeLatest(EDIT_PARCEL_SAVE_REQUEST_SUCCESS, editParcelFinalizeRequest)
+    takeLatest(EDIT_PARCEL_SAVE_REQUEST_SUCCESS, editParcelFinalizeRequest),
+    takeLatest(EDIT_PARCEL_DISCARD, editParcelDiscard)
   ]);
 }
 

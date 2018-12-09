@@ -47,7 +47,8 @@ export default function parcelEditReducer(state = initialState, action = {}) {
         ...state,
         isLoading: false,
         isOpen: false,
-        parcel: null
+        parcel: null,
+        error: ''
       };
     case EDIT_PARCEL_SAVE_REQUEST_SUCCESS:
       return {
@@ -61,8 +62,6 @@ export default function parcelEditReducer(state = initialState, action = {}) {
       return {
         ...state,
         isLoading: false,
-        isOpen: false,
-        parcel: null,
         error: action.error
       };
     default:

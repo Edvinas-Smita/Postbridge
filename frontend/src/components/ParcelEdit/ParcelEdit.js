@@ -96,9 +96,7 @@ const styles = theme => ({
     width: 48,
     fill: "orangered",
     position: 'absolute',
-    top: '50%',
     left: '50%',
-    marginTop: -24,
     marginLeft: -24
   },
   actionPadding: {
@@ -152,7 +150,7 @@ class ParcelEdit extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.isOpen) {
+    if (nextProps.isOpen && !nextProps.isLoading && !nextProps.error) {
       if (nextProps.parcel !== null) {
         this.setState({
           isRequestForm: false,
@@ -455,7 +453,7 @@ class ParcelEdit extends Component {
             variant="contained"
             className={classes.roundedButton}
             onClick={this.onCancelClick}
-            disabled={this.props.isLoading}
+            disabled={this.props.isLoading && !this.props.error}
           >
             Cancel
           </Button>
@@ -476,8 +474,8 @@ class ParcelEdit extends Component {
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
-                marginTop: '-50%',
-                marginLeft: '-50%'
+                marginTop: '-12px',
+                marginLeft: '-4px'
               }}
             />}
           </div>
@@ -490,7 +488,7 @@ class ParcelEdit extends Component {
 
 const mapStateToProps = state => ({
   isLoading: state.parcelEdit.isLoading,
-  error: state.parcelEdit.error,
+  error: state.parcelEdit.error || state.parcel.error,
   isOpen: state.parcelEdit.isOpen,
   parcel: state.parcelEdit.parcel
 });

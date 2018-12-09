@@ -13,7 +13,6 @@ const createdFromSelector = state => state.parcels.createdFrom;
 const createdToSelector = state => state.parcels.createdTo;
 const recipientSelector = state => state.parcels.recipient;
 const courierSelector = state => state.parcels.courier;
-const userIdSelector = state => state.parcels.userId;
 
 const compareStrings = (a, b) => {
   if (a < b) return -1;
@@ -32,8 +31,7 @@ export const getFilteredParcels = createSelector(
   recipientSelector,
   courierSelector,
   parcelsSelector,
-  userIdSelector,
-  (startLocation, endLocation, status, weightFrom, weightTo, createdFrom, createdTo, recipient, courier, parcels, userId) => {
+  (startLocation, endLocation, status, weightFrom, weightTo, createdFrom, createdTo, recipient, courier, parcels) => {
     let filteredParcels = [...parcels];
     filteredParcels = startLocation !== '' && endLocation !== ''
       ? filteredParcels.filter(

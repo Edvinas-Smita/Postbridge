@@ -5,35 +5,34 @@ import {
   GET_PARCELS,
   GET_PARCELS_ERROR,
   GET_PARCELS_SUCCESS,
+  NEW_PARCEL,
   SET_PARCEL_FILTER,
   SORT_PARCELS,
-  UPDATE_PARCELS,
-  NEW_PARCEL
+  UPDATE_PARCELS
 } from '../constants/parcels';
 
 const initialState = {
-    isLoading: false,
-    error: '',
-    parcels: [],
-    sortBy: 'createdDate',
-    sortOrder: 'desc',
-    parcel: {},
-    startLocation: '',
-    endLocation: '',
-    status: [ false, 
-        false,
-        false,
-        false],
-    weightFrom: '',
-    weightTo: '',
-    createdFrom: '',
-    createdTo: '',
-    recipient: [],
-    courier: [],
+  isLoading: false,
+  error: '',
+  parcels: [],
+  sortBy: 'createdDate',
+  sortOrder: 'desc',
+  parcel: {},
+  startLocation: '',
+  endLocation: '',
+  status: [false,
+    false,
+    false,
+    false],
+  weightFrom: '',
+  weightTo: '',
+  createdFrom: '',
+  createdTo: '',
+  recipient: [],
+  courier: [],
   allParcelRecipients: [],
   allParcelCouriers: [],
-    userId: 1,
-    statusFilterCounter: 0
+  statusFilterCounter: 0
 };
 
 function findParcelIndex(parcels, id) {

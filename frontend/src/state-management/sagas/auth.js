@@ -53,7 +53,6 @@ function* login(action) {
 }
 
 function* getUserDetails() {
-    console.log("getUserDetails.start");
     try {
         const state = yield select();
         let user = {};
@@ -63,18 +62,10 @@ function* getUserDetails() {
         }
         yield fetch("http://localhost:8080/oauth/user-details", options)
             .then(response => {
-                console.log(response);
                 return response.json();})
             .then(data => {
-                
-                console.log(data);
                 user = data;
-                //user = Object.values(data);
             });
-
-            console.log("getUserDetails.res");
-
-            console.log(user);
         yield put(getUserDetailsSuccess(user));
     }
     catch(e) {

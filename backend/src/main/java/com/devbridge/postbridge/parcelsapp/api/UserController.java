@@ -44,15 +44,4 @@ public class UserController {
                ? new ResponseEntity<>(user, HttpStatus.OK)
                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    /*
-    @GetMapping(path = "/current")
-    public ResponseEntity<User> getCurrentUser(Model model, Authentication authentication) {
-        User user = ((UserPrincipal)authentication.getPrincipal()).getUser();
-        model.addAttribute("email", user.getEmail());
-
-        return user != null
-                ? new ResponseEntity<>(user, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-    */
 }

@@ -31,7 +31,11 @@ store.subscribe(thottle(() => {
     saveState({
         auth: {
             accessToken: store.getState().auth.accessToken,
-            isAuthenticated: store.getState().auth.isAuthenticated
+            isAuthenticated: store.getState().auth.isAuthenticated,
+            user: {
+                firstName: store.getState().auth.user.firstName,
+                lastName: store.getState().auth.user.lastName,
+            }
         }
     });
   }, 1000));

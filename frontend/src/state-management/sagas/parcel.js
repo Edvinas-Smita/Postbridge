@@ -1,23 +1,35 @@
-import { put, all, takeLatest, takeEvery, take } from 'redux-saga/effects';
-import { GET_PARCEL, GET_PARCEL_SUCCESS,
-        UPDATE_PARCEL, UPDATE_PARCEL_SUCCESS, UPDATE_PARCEL_STATUS, 
-        OPEN_PARCEL_STATUS, CLOSE_PARCEL_STATUS,
-        GET_PARCEL_STATUS_HISTORY } from '../constants/parcel';
-import { getParcelSuccess, getParcelError, getParcel as getParcelAction,
-        updateParcel as updateParcelAction,
-        updateParcelSuccess, updateParcelError, 
-        getParcelStatusHistory as getParcelStatusHistoryAction,
-        getParcelStatusHistoryError, getParcelStatusHistorySuccess } from '../actions/parcel';
-import { updateParcels as updateParcelsAction} from '../actions/parcels';
+import {all, put, take, takeEvery, takeLatest} from 'redux-saga/effects';
+import {
+    CLOSE_PARCEL_STATUS,
+    GET_PARCEL,
+    GET_PARCEL_STATUS_HISTORY,
+    GET_PARCEL_SUCCESS,
+    OPEN_PARCEL_STATUS,
+    UPDATE_PARCEL,
+    UPDATE_PARCEL_STATUS,
+    UPDATE_PARCEL_SUCCESS
+} from '../constants/parcel';
+import {
+    getParcel as getParcelAction,
+    getParcelError,
+    getParcelStatusHistory as getParcelStatusHistoryAction,
+    getParcelStatusHistoryError,
+    getParcelStatusHistorySuccess,
+    getParcelSuccess,
+    updateParcel as updateParcelAction,
+    updateParcelError,
+    updateParcelSuccess
+} from '../actions/parcel';
+import {updateParcels as updateParcelsAction} from '../actions/parcels';
 
 
-function* openParcelStatus(action){
+function* openParcelStatus(action) {
     yield put(getParcelAction(action.id));
     yield take(GET_PARCEL_SUCCESS);
     yield put(getParcelStatusHistoryAction(action.id));
 }
 
-function* closeParcelStatus(action){
+function* closeParcelStatus(action) {
     yield put(updateParcelsAction(action.parcel));
 }
 
@@ -26,20 +38,21 @@ function* getParcel(action) {
         let parcel = {};
         yield fetch("http://localhost:8080/api/parcels/" + action.id)
             .then(response => {
-                return response.json();})
+                return response.json();
+            })
             .then(data => {
                 parcel = data;
-        });
+            });
         yield put(getParcelSuccess(parcel));
-    } catch (e){
+    } catch (e) {
         yield put(getParcelError(e));
     }
 }
 
 function* updateParcelStatus(action) {
-   yield put(updateParcelAction(action.parcel));
-   yield take(UPDATE_PARCEL_SUCCESS);
-   yield put(getParcelStatusHistoryAction(action.parcel.id));
+    yield put(updateParcelAction(action.parcel));
+    yield take(UPDATE_PARCEL_SUCCESS);
+    yield put(getParcelStatusHistoryAction(action.parcel.id));
 }
 
 function* updateParcel(action) {
@@ -47,19 +60,19 @@ function* updateParcel(action) {
         const options = {
             method: 'PUT',
             body: JSON.stringify(action.parcel),
-            headers: new Headers ({
+            headers: new Headers({
                 'Content-Type': 'application/json'
             })
-        }
+        };
 
         yield fetch("http://localhost:8080/api/parcels/" + action.parcel.id, options)
             .then(response => {
-                if(response.status >= 400 && response.status < 600)
+                if (response.status >= 400 && response.status < 600)
                     throw new Error("Bad response from server");
-        });
-        
+            });
+
         yield put(updateParcelSuccess(action.parcel));
-    } catch(e) {
+    } catch (e) {
         yield put(updateParcelError(e));
     }
 }
@@ -67,15 +80,15 @@ function* updateParcel(action) {
 function* getParcelStatusHistory(action) {
     try {
 
-        const { id } = action;
+        const {id} = action;
         let parcelStatusHistory = [];
-        yield fetch("http://localhost:8080/api/parcels/" + id + "/statusHistory").then(response => {     
+        yield fetch("http://localhost:8080/api/parcels/" + id + "/statusHistory").then(response => {
             return response.json();
         }).then(data => {
             parcelStatusHistory = Object.values(data);
         });
         yield put(getParcelStatusHistorySuccess(parcelStatusHistory));
-    } catch (e){
+    } catch (e) {
         yield put(getParcelStatusHistoryError(e));
     }
 }

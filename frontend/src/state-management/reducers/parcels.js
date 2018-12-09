@@ -8,33 +8,32 @@ import {
   SET_PARCEL_FILTER,
   SORT_PARCELS,
   UPDATE_PARCELS,
+  NEW_PARCEL
 } from '../constants/parcels';
 
 const initialState = {
-  isLoading: false,
-  error: '',
-  parcels: [],
-  sortBy: 'createdDate',
-  sortOrder: 'desc',
-  parcel: {},
-  startLocation: '',
-  endLocation: '',
-  status: [
-    false,
-    false,
-    false,
-    false
-  ],
-  weightFrom: '',
-  weightTo: '',
-  createdFrom: '',
-  createdTo: '',
-  recipient: [],
-  courier: [],
+    isLoading: false,
+    error: '',
+    parcels: [],
+    sortBy: 'createdDate',
+    sortOrder: 'desc',
+    parcel: {},
+    startLocation: '',
+    endLocation: '',
+    status: [ false, 
+        false,
+        false,
+        false],
+    weightFrom: '',
+    weightTo: '',
+    createdFrom: '',
+    createdTo: '',
+    recipient: [],
+    courier: [],
   allParcelRecipients: [],
   allParcelCouriers: [],
-  userId: 1,
-  statusFilterCounter: 0
+    userId: 1,
+    statusFilterCounter: 0
 };
 
 function findParcelIndex(parcels, id) {
@@ -120,31 +119,37 @@ export default function parcelsReducer(state = initialState, action = {}) {
       if (action.sortBy === state.sortBy) newOrder = state.sortOrder === 'asc' ? 'desc' : 'asc';
       else if (action.sortBy === 'createdDate' || action.sortBy === 'delivered') newOrder = 'desc';
 
-      return {
-        ...state,
-        sortBy: action.sortBy,
-        sortOrder: newOrder,
-      };
-    case SET_PARCEL_FILTER:
+            return {
+                ...state,
+                sortBy: action.sortBy,
+                sortOrder: newOrder,
+            };
+        case SET_PARCEL_FILTER:
 
-      if (action.filterBy === 'status') {
-        let updatedStatus = [...state.status];
-        let updatedFilterCouter = state.statusFilterCounter;
-        updatedStatus[action.value] = !state.status[action.value];
-        updatedStatus[action.value] ? updatedFilterCouter += 1 : updatedFilterCouter -= 1
-        return {
-          ...state,
-          status: updatedStatus,
-          statusFilterCounter: updatedFilterCouter,
-        };
-      }
-      else {
-        return {
-          ...state,
-          [action.filterBy]: action.value,
-        };
-      }
-    default:
-      return state;
-  }
+            if (action.filterBy === 'status') {
+                let updatedStatus = [...state.status];
+                let updatedFilterCounter = state.statusFilterCounter;
+                updatedStatus[action.value] = !state.status[action.value];
+                updatedStatus[action.value] ? updatedFilterCounter +=1  : updatedFilterCounter -=1;
+                return {
+                    ...state,
+                    status: updatedStatus,
+                    statusFilterCounter: updatedFilterCounter
+                };
+            }
+            else {
+                return {
+                    ...state,
+                    [action.filterBy]: action.value,
+                };
+            }
+        case NEW_PARCEL:
+            return {
+                ...state,
+                parcels: [
+                    ...state.parcels,
+                    action.parcel
+                ]
+            };default: return state;
+    }
 }

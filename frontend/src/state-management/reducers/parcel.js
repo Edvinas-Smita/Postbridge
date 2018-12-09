@@ -10,7 +10,7 @@ import {
     CLOSE_PARCEL_STATUS,
     GET_PARCEL_STATUS_HISTORY,
     GET_PARCEL_STATUS_HISTORY_SUCCESS,
-    GET_PARCEL_STATUS_HISTORY_ERROR, 
+    GET_PARCEL_STATUS_HISTORY_ERROR
 } from '../constants/parcel';
 
 const initialState = {
@@ -62,13 +62,13 @@ export default function parcelReducer(state = initialState, action = {}){
             isStatusOpen: true,
             isLoading: true,
             parcelId: action.id
-        }
+        };
         case CLOSE_PARCEL_STATUS: return {
             ...state,
             isStatusOpen: false,
             parcelId: null,
             parcel: null
-        }
+        };
         case GET_PARCEL_STATUS_HISTORY: return {
             ...state,
             isLoading: true,

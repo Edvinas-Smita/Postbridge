@@ -23,13 +23,13 @@ import {
 import {updateParcels as updateParcelsAction} from '../actions/parcels';
 
 
-function* openParcelStatus(action){
+function* openParcelStatus(action) {
     yield put(getParcelAction(action.id));
     yield take(GET_PARCEL_SUCCESS);
     yield put(getParcelStatusHistoryAction(action.id));
 }
 
-function* closeParcelStatus(action){
+function* closeParcelStatus(action) {
     yield put(updateParcelsAction(action.parcel));
 }
 
@@ -38,20 +38,21 @@ function* getParcel(action) {
         let parcel = {};
         yield fetch("http://localhost:8080/api/parcels/" + action.id)
             .then(response => {
-                return response.json();})
+                return response.json();
+            })
             .then(data => {
                 parcel = data;
-        });
+            });
         yield put(getParcelSuccess(parcel));
-    } catch (e){
+    } catch (e) {
         yield put(getParcelError(e));
     }
 }
 
 function* updateParcelStatus(action) {
-   yield put(updateParcelAction(action.parcel));
-   yield take(UPDATE_PARCEL_SUCCESS);
-   yield put(getParcelStatusHistoryAction(action.parcel.id));
+    yield put(updateParcelAction(action.parcel));
+    yield take(UPDATE_PARCEL_SUCCESS);
+    yield put(getParcelStatusHistoryAction(action.parcel.id));
 }
 
 function* updateParcel(action) {
@@ -73,30 +74,30 @@ function* updateParcel(action) {
       })
     };
 
-    yield fetch("http://localhost:8080/api/parcels/" + newParcel.id, options)
-      .then(response => {
-        if (response.status >= 400 && response.status < 600)
-          throw new Error("Bad response from server");
-      });
+        yield fetch("http://localhost:8080/api/parcels/" + newParcel.id, options)
+            .then(response => {
+                if(response.status >= 400 && response.status < 600)
+                    throw new Error("Bad response from server");
+        });
 
-    yield put(updateParcelSuccess(newParcel));
-  } catch (e) {
-    yield put(updateParcelError(e));
-  }
+        yield put(updateParcelSuccess(newParcel));
+    } catch(e) {
+        yield put(updateParcelError(e));
+    }
 }
 
 function* getParcelStatusHistory(action) {
     try {
 
-        const { id } = action;
+        const {id} = action;
         let parcelStatusHistory = [];
-        yield fetch("http://localhost:8080/api/parcels/" + id + "/statusHistory").then(response => {     
+        yield fetch("http://localhost:8080/api/parcels/" + id + "/statusHistory").then(response => {
             return response.json();
         }).then(data => {
             parcelStatusHistory = Object.values(data);
         });
         yield put(getParcelStatusHistorySuccess(parcelStatusHistory));
-    } catch (e){
+    } catch (e) {
         yield put(getParcelStatusHistoryError(e));
     }
 }

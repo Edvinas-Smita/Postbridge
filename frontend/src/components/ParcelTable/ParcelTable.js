@@ -122,7 +122,7 @@ const parcelTable = (props) => {
         let statusColumn = [statusColor, classes.statusColumnBorder].join(' ');
         let pointIcon = [statusColor, classes.pointIcon].join(' ');
         let icon = <PlaneIcon className={[classes.planeIcon, classes.endLocationIcon].join(' ')}/>;
-        if (parcel.recipient.id === props.user.id) {
+        if (parcel.recipient.id !== props.user.id && STATUS[parcel.status] === 'Open') {
           buttonText = "I'll deliver";
           buttonVariant = "contained";
           buttonColor = "primary";
@@ -174,20 +174,27 @@ const parcelTable = (props) => {
                 : "---"}
             </TableCell>
             <TableCell className={classes.column}>
-              <Button variant={buttonVariant} color={buttonColor} size="small" className={classes.button}
-                      onClick={() => {
-                        props.openParcelStatus(parcel.id)
-                      }}>
-                {buttonText}
-              </Button>
-              {(parcel.courier && parcel.recipient.id === props.user.id)
-                ? <IconButton className={classes.iconButton} onClick={props.onEditParcel(parcel)}> <EditIcon
-                  fontSize="small"/> </IconButton>
-                : null}
-              {(STATUS[parcel.status] === 'Open')
-                ? <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}> <CloseIcon
-                  fontSize="small"/> </IconButton>
-                : null}
+              <div style={{display:'flex'}}>
+                <Button variant={buttonVariant} color={buttonColor} size="small" className={classes.button}
+                        onClick={() => {props.openParcelStatus(parcel.id)}}>
+                  {buttonText}
+                </Button>
+                {
+                  (
+                    !parcel.courier &&
+                    parcel.recipient.id === props.user.id &&
+                    STATUS[parcel.status] === 'Open'
+                  ) &&
+                  <div>
+                    <IconButton className={classes.iconButton} onClick={() => props.onEditParcel(parcel)}>
+                      <EditIcon fontSize="small"/>
+                    </IconButton>
+                    <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}>
+                      <CloseIcon fontSize="small"/>
+                    </IconButton>
+                  </div>
+                }
+              </div>
             </TableCell>
           </TableRow>
         );

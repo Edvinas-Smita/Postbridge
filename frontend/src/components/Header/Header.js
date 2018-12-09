@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import SearchIcon from '@material-ui/icons/Search'
@@ -86,11 +87,25 @@ const styles = theme => ({
       },
   });
 
+
   
 
 class Header extends Component {
+  state = {
+    logout: false,
+    redirectToLogin: false
+  }
+
+  handleClick = () => {
+    this.setState({redirectToLogin: true})
+  }
+
+
     render() {
         const { classes } = this.props;
+        if(this.state.redirectToLogin) {
+          return <Redirect to="/"/>
+        }
         return (
             <React.Fragment>
             <AppBar className={classes.appbar} position="fixed" >
@@ -125,9 +140,9 @@ class Header extends Component {
                     </Typography>
                     </Grid>
                     <Grid item>
-                      <IconButton aria-label="ExitToApp">
-                        <ExitToApp/>
-                      </IconButton>
+                        <IconButton aria-label="ExitToApp" onClick={() => this.handleClick()}>
+                          <ExitToApp/>
+                        </IconButton>
                     </Grid>
                 </Grid>
                 </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import './ParcelList.css';
 
@@ -29,7 +29,7 @@ import {getSortedParcels} from '../../state-management/selectors/parcelsSelector
 
 
 class ParcelList extends React.Component {
-    constructor(props) {
+    constructor(props){
         super(props);
         this.state = {
             sortOrder: 'asc',
@@ -48,7 +48,7 @@ class ParcelList extends React.Component {
         return () => this.props.deleteParcel(id);
     }
 
-    updateParcelStatusFactory(parcel) {
+    updateParcelStatusFactory(parcel){
         this.props.updateParcelStatus(parcel);
     }
 
@@ -76,7 +76,7 @@ class ParcelList extends React.Component {
                     justify="center"
                     className="ParcelTable"
                 >
-                    <Table style={{width: '85%', marginLeft: '4%', marginRight: '4%', tableLayout: 'fixed',}}>
+                    <Table style={{width: '90%', marginLeft: '4%', marginRight: '4%', tableLayout: 'fixed',}}>
                         <ParcelTableHeader
                             onRequestSort={this.handleRequestSort}
                             sortOrder={this.props.sortOrder}

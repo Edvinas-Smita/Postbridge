@@ -35,11 +35,7 @@ module.exports = function() {
               "firstName": "Saulius",
               "lastName": "Virnys"
             },
-            "courier": {
-              "id": 1,
-              "firstName": "Johna",
-              "lastName": "Bill"
-            }
+            "courier": null
           },
           {
             "id": 3,
@@ -55,11 +51,7 @@ module.exports = function() {
               "firstName": "Kol",
               "lastName": "Bum"
             },
-            "courier": {
-              "id": 1,
-              "firstName": "Johna",
-              "lastName": "Bill"
-            }
+            "courier": null
           },
           {
             "id": 4,

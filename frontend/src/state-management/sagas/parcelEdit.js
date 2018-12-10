@@ -23,13 +23,7 @@ function* editParcelSaveEdit(action) {
 }
 
 function* editParcelSaveRequest(action) {
-  const loggedInUser = yield select(state => {
-    return {  //TODO: get the full object from login
-      id: state.parcels.userId,
-      firstName: 'TODO',
-      lastName: 'TODO'
-    };
-  });
+  const loggedInUser = yield select(state => state.others.currentUser);
 
   const parcel = {
     ...action.parcel,

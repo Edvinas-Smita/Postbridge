@@ -58,9 +58,10 @@ function* updateParcel(action) {
                 {'Content-Type': 'application/json'}) 
         }
         yield fetch("http://localhost:8080/api/parcels/" + action.parcel.id, options)
-            .then(response => 
-                status(response)
-            )
+        .then(response => {
+            if (!response.ok || response.status >= 400)
+                throw Error(response.error);
+            });
         
         yield put(updateParcelSuccess(action.parcel));
     } catch (e) {

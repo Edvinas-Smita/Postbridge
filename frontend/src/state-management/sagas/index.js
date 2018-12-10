@@ -3,6 +3,7 @@ import parcelsSaga from './parcels';
 import parcelSaga from './parcel';
 import othersSaga from './others';
 import authSaga from './auth';
+import parcelEditSaga from './parcelEdit';
 
 export default function* rootSaga(){
     yield all([
@@ -10,5 +11,6 @@ export default function* rootSaga(){
         fork(parcelSaga),
         fork(othersSaga),
         fork(authSaga),
+        fork(parcelEditSaga)
     ]);
 }

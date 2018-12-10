@@ -10,6 +10,9 @@ export const STATUS = {
 };
 
 export function deepDiff(o1, o2) {
+    if (o2 == null) {
+        return o1;
+    }
     return Object.keys(o1).reduce((diff, key) => {
         if (o2[key] === o1[key]) {
             return diff;

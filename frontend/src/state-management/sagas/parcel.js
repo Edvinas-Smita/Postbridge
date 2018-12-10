@@ -11,14 +11,13 @@ import { getParcelSuccess, getParcelError, getParcel as getParcelAction,
 import { updateParcels as updateParcelsAction} from '../actions/parcels';
 import { getAuthHeader, status } from '../api/api.js';
 
-
-function* openParcelStatus(action){
+function* openParcelStatus(action) {
     yield put(getParcelAction(action.id));
     yield take(GET_PARCEL_SUCCESS);
     yield put(getParcelStatusHistoryAction(action.id));
 }
 
-function* closeParcelStatus(action){
+function* closeParcelStatus(action) {
     yield put(updateParcelsAction(action.parcel));
 }
 
@@ -36,17 +35,17 @@ function* getParcel(action) {
             )
             .then(data => {
                 parcel = data;
-        });
+            });
         yield put(getParcelSuccess(parcel));
-    } catch (e){
+    } catch (e) {
         yield put(getParcelError(e));
     }
 }
 
 function* updateParcelStatus(action) {
-   yield put(updateParcelAction(action.parcel));
-   yield take(UPDATE_PARCEL_SUCCESS);
-   yield put(getParcelStatusHistoryAction(action.parcel.id));
+    yield put(updateParcelAction(action.parcel));
+    yield take(UPDATE_PARCEL_SUCCESS);
+    yield put(getParcelStatusHistoryAction(action.parcel.id));
 }
 
 function* updateParcel(action) {
@@ -64,7 +63,7 @@ function* updateParcel(action) {
             )
         
         yield put(updateParcelSuccess(action.parcel));
-    } catch(e) {
+    } catch (e) {
         yield put(updateParcelError(e));
     }
 }
@@ -86,7 +85,7 @@ function* getParcelStatusHistory(action) {
                 parcelStatusHistory = Object.values(data);
             });
         yield put(getParcelStatusHistorySuccess(parcelStatusHistory));
-    } catch (e){
+    } catch (e) {
         yield put(getParcelStatusHistoryError(e));
     }
 }

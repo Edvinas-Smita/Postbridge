@@ -13,6 +13,8 @@ import { Typography } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
+import  AvatarImage from './simp1.jpg';
+
 const styles = theme => ({
     root: {
         width: '100%',
@@ -85,6 +87,13 @@ const styles = theme => ({
           width: 200,
         },
       },
+      gridParent: {
+        display: "table"
+      },
+      gridChild: {
+        display: "table-cell",
+        verticalAlign: "middle"
+      }
   });
 
 
@@ -112,38 +121,21 @@ class Header extends Component {
             <Toolbar>
               <Logo/>
               <div className={classes.grow} />
-              <div className={classes.search}>
-                <InputBase
-                  placeholder="Search…"
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                  }}
-                />
-                <div className={classes.searchIcon}>
-                  <IconButton aria-label="SearchIcon" className={classes.searchButton} disableRipple>
-                    <SearchIcon />
-                  </IconButton>
-                </div>
-              </div>
               <div className={classes.gridRigth}>
-                <Grid spacing={24} container>
-                  <Grid item>
-                    <Avatar>NS</Avatar>
+                <Grid spacing={24} container className={classes.gridParent}>
+                  <Grid item  className={classes.gridChild}>
+                    <Avatar className={classes.bigAvatar} src={AvatarImage}/>
                   </Grid>
-                  <Grid item >
+                  <Grid item className={classes.gridChild}>
                     <Typography variant="subtitle1" className={classes.userName}>
-                      Name Surname
-                    </Typography>
-                    <Typography>
-                      Product manager
+                      Homer Simpson
                     </Typography>
                     </Grid>
-                    <Grid item>
-                        <IconButton aria-label="ExitToApp" onClick={() => this.handleClick()}>
-                          <ExitToApp/>
-                        </IconButton>
-                    </Grid>
+                  <Grid item className={classes.gridChild}>
+                    <IconButton aria-label="ExitToApp" onClick={() => this.handleClick()}>
+                      <ExitToApp/>
+                    </IconButton>
+                  </Grid>
                 </Grid>
                 </div>
             </Toolbar>

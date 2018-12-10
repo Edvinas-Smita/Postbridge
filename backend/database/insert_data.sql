@@ -26,6 +26,9 @@ VALUES
 --  but the algorithm used only supports 72 so last 17 chars are ignored (starting at 'Number'), meaning the important part of the password is
 --  'A Very Big And Long Password With Spaces And A Max Signed Integer Value '
 
+update users set avatar =(select bytea_import('C:\Asmeninis\Projektai\postbridge-parcels\frontend\src\components\Header\1.jpg')) 
+where id = 1;
+
 insert into locations (name) values ('Vilnius');
 insert into locations (name) values ('Kaunas');
 insert into locations (name) values ('Toronto');

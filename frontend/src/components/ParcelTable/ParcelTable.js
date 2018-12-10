@@ -159,11 +159,11 @@ const parcelTable = (props) => {
                             : parcel.recipient.firstName + " " + parcel.recipient.lastName }
                         </TableCell>
                         <TableCell className={otherColumnStyle} >
-                        { (parcel.courier.id !== null) 
+                        { (parcel.courier)
                             ? (parcel.courier.id === props.userId)
                                 ? "Me"
-                                : parcel.courier.firstName + " " + parcel.courier.lastName 
-                            : ""}
+                                : parcel.courier.firstName + " " + parcel.courier.lastName
+                            : "---"}
                         </TableCell>
                         <TableCell className={classes.column} > 
                             <div style={{display:'flex'}}>
@@ -173,9 +173,9 @@ const parcelTable = (props) => {
                             </Button>
                             { (parcel.recipient.id === props.userId && STATUS[parcel.status] === 'Open')
                             ? <div>
-                                <IconButton className={classes.iconButton} onClick={props.onEditParcel(parcel)}> <EditIcon fontSize="small"/> </IconButton>
-                                <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}> <CloseIcon fontSize="small"/> </IconButton>  
-                            </div> 
+                                <IconButton className={classes.iconButton} onClick={() => props.onEditParcel(parcel)}> <EditIcon fontSize="small"/> </IconButton>
+                                <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}> <CloseIcon fontSize="small"/> </IconButton>
+                            </div>
                             : null }
                             </div>
                         </TableCell>

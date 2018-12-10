@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import SearchIcon from '@material-ui/icons/Search'
@@ -14,6 +14,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 
 import  AvatarImage from './simp1.jpg';
+import {logout} from '../../state-management/actions/auth';
 
 const styles = theme => ({
     root: {
@@ -96,27 +97,15 @@ const styles = theme => ({
       }
   });
 
-
-  
-
 class Header extends Component {
-  state = {
-    logout: false,
-    redirectToLogin: false
-  }
 
-  handleClick = () => {
-    this.setState({redirectToLogin: true})
-  }
-
+    handleClick = () => {
+      this.props.logout();
+    }
 
     render() {
         const { classes } = this.props;
-        if(this.state.redirectToLogin) {
-          return <Redirect to="/"/>
-        }
         return (
-            <React.Fragment>
             <AppBar className={classes.appbar} position="fixed" >
             <Toolbar>
               <Logo/>
@@ -140,10 +129,13 @@ class Header extends Component {
                 </div>
             </Toolbar>
           </AppBar>
-          </React.Fragment>
-          
         );
     }
 };
 
-export default withStyles(styles)(Header);
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout())
+});
+
+const HeaderStyled = withStyles(styles)(Header);
+export default connect(null, mapDispatchToProps)(HeaderStyled);

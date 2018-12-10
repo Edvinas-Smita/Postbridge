@@ -238,6 +238,11 @@ module.exports = function() {
         "id": 5,
         "name": "London"
       }
+    ],
+    "auth":[
+      {
+        "id": 1
+      }
     ]
   }
 }

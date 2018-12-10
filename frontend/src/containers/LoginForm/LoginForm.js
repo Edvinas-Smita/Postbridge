@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 import classNames from 'classnames';
 import Button from '@material-ui/core/Button/Button'
 import TextField from '@material-ui/core/TextField/TextField'
@@ -57,9 +57,8 @@ class LoginForm extends Component {
         super(props);
 
         this.state = {
-            email: "test",
-            password: "test",
-            redirectToReferrer: false,
+            email: "",
+            password: ""
         }
 
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -71,25 +70,15 @@ class LoginForm extends Component {
         });
       };
 
-    handleSubmit() {
-        this.props.authenticate(() => {
-            if (this.props.error === false){
-                this.setState(() => ({redirectToReferrer: true}))
-            }}, 
-            this.state.email, 
-            this.state.password
-        )
+    handleSubmit = (email, password) => {
+        this.props.authorize({
+            email: email, 
+            password: password
+        });
     }
     
     render() {
         const { classes } = this.props;
-        const { from } = this.props.location.state || { from: { pathname: '/parcels' } }
-        const { redirectToReferrer } = this.state
-
-        if (redirectToReferrer === true) {
-            return <Redirect to={from} />
-        }
-
         return (
             <Grid
                 container
@@ -150,7 +139,8 @@ class LoginForm extends Component {
                     variant = "contained" 
                     color="primary"
                     style={{textTransform: "none", width:"400px"}}
-                    onClick={this.handleSubmit}
+                    onClick={() => this.handleSubmit(this.state.email, this.state.password)}
+                    disabled={this.props.isFetching}
                 >
                     Sign In
                 </Button>
@@ -160,5 +150,12 @@ class LoginForm extends Component {
     }
 }
 
-export default withStyles(styles)(LoginForm)
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    isFetching: state.auth.isFetching,
+    error: state.auth.badCredentials,
+});
+
+const LoginFromStyled = withStyles(styles)(LoginForm);
+export default connect(mapStateToProps, null)(LoginFromStyled);
 

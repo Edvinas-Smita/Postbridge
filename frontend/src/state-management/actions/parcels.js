@@ -1,13 +1,13 @@
 import {
     GET_PARCELS,
     GET_PARCELS_SUCCESS,
-    GET_PARCELS_ERROR, 
+    GET_PARCELS_ERROR,
     UPDATE_PARCELS,
     DELETE_PARCEL,
     DELETE_PARCEL_SUCCESS,
-    DELETE_PARCEL_ERROR, 
+    DELETE_PARCEL_ERROR,
     SORT_PARCELS,
-    SET_PARCEL_FILTER,
+    SET_PARCEL_FILTER, NEW_PARCEL,
 } from '../constants/parcels';
 
 export const getParcels = () => ({
@@ -53,4 +53,9 @@ export const setParcelFilter = (filterBy, value) => ({
     type: SET_PARCEL_FILTER,
     filterBy,
     value
-})
+});
+
+export const newParcel = parcel => ({
+    type: NEW_PARCEL,
+    parcel
+});

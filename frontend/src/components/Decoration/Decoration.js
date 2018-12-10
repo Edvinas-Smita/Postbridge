@@ -50,7 +50,7 @@ const styles = theme => ({
 
 class parcelListDeco extends Component {
     render() {
-        const parcel = {
+        /*const parcel = {
             id: '',
             recipient: {
                 firstName: '',
@@ -61,7 +61,7 @@ class parcelListDeco extends Component {
             status: 1,
             description: '',
             weight: ''
-        }
+        }*/
         const { classes } = this.props;
         return (
             <div className={classes.main}>
@@ -70,7 +70,7 @@ class parcelListDeco extends Component {
                         Deliveries
                     </Typography>
                     <div className={[classes.tableCell,classes.tableCellRight].join(' ')}>
-                        <Button variant="contained" className={classes.button} onClick={this.props.onEditParcel(parcel)}>
+                        <Button variant="contained" className={classes.button} onClick={() => this.props.onEditParcel(null)}>
                             <AddCircle className={classes.addCircle}/>
                             Request new delivery
                         </Button>

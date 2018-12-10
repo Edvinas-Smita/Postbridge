@@ -1,64 +1,77 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import {Redirect, Route, Switch} from 'react-router-dom';
+import { withRouter } from "react-router";
 import './App.css';
 
 import LoginForm from '../../containers/LoginForm/LoginForm';
 import ParcelList from '../../containers/ParcelList/ParcelList';
 
-const PrivateRoute = ({ component: Component, authed, user, ...rest}) => (
-    <Route {...rest} render={(props) => (
-      authed === true
-        ? <Component  {...props} userId={user.id}/>
-        : <Redirect to={{
-          pathname: '/',
-          state: { from: props.location }
-        }} />
-    )}/>
-);
+import { login as loginAction } from '../../state-management/actions/auth';
+
+const  PrivateRoute = ({ component: Component, authed, ...rest}) => (
+  <Route {...rest} render={(props) => (
+    authed === true
+      ? <Component  {...props}/>
+      : <Redirect to={{
+        pathname: '/',
+        state: { from: props.location }
+      }} />
+  )}/>
+)
 
 class App extends Component {
 
   constructor(props){
     super(props);
-
     this.state = {
-      isAuthorised: false,
-      error: false,
-      user: {
-        id: "",
-        name: ""
-      } 
+      redirect: ""
     }
+    this.authorize = this.authorize.bind(this);
   }
 
-    authenticate(cb, email, password) {
-        let auth = (email === "test" && password === "test");
-        this.setState({
-                isAuthorised: auth,
-                error: !auth,
-                user: auth
-                    ? {id: 1, name: "Test User"}
-                    : {id: "", name: ""}
-            },
-            cb);
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isAuthenticated && nextProps.isAuthenticated) {
+      this.setState({redirect: "/parcels"});
     }
+    else if (this.props.isAuthenticated && !nextProps.isAuthenticated) {
+      this.setState({redirect: "/"});
+    }
+    else {
+      this.setState({redirect: ""})
+    }
+  }
+  authorize(email, password){
+    this.props.login(email, password);
+  }
 
   render() {
+    if (this.state.redirect !== ""){
+      return <Redirect to={this.state.redirect}/>
+    }
     return (
         <Switch>
           <Route 
             exact 
             path="/" 
-            render={(props) => <LoginForm {...props} error={this.state.error} authenticate={this.authenticate.bind(this)}/>}/>
-          <PrivateRoute 
-            exact 
+            render={(props) => <LoginForm {...props} authorize={this.authorize}/>}/>
+          <PrivateRoute  
             path="/parcels"
             component={ParcelList} 
-            authed={this.state.isAuthorised}
-            user={this.state.user}/>
+            authed={this.props.isAuthenticated}
+            />
+          <Redirect to="/" />
         </Switch>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+const mapDispatchToProps = dispatch => ({
+  login: (email, password) => dispatch(loginAction(email, password))
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

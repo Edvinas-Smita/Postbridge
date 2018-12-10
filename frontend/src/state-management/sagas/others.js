@@ -1,26 +1,33 @@
-import { put, all, takeLatest } from 'redux-saga/effects';
+import { put, all, takeLatest, select } from 'redux-saga/effects';
 import { GET_LOCATIONS } from '../constants/others';
 import { getLocationsError, getLocationsSuccess } from '../actions/others';
+import { getAuthHeader, status } from '../api/api.js';
 
 function* getLocations() {
     try {
+        const state = yield select();
         let locations = [];
-        yield fetch("http://localhost:8080/api/locations").then(response => {
-            return response.json();
-        }).then(data => {
-            locations = Object.values(data);
-        });
-
+        let options = {
+            method: 'GET',
+            headers: getAuthHeader(state)
+        }
+        yield fetch("http://localhost:8080/api/locations", options)
+            .then(response => 
+                status(response)
+            )
+            .then(data => {
+                locations = Object.values(data);
+            });
         yield put(getLocationsSuccess(locations));
-    } catch (e){
+    } catch (e) {
         yield put(getLocationsError(e));
     }
 }
 
-function* parcelsSaga() {
+function* othersSaga() {
     yield all([
         takeLatest(GET_LOCATIONS, getLocations)
     ]);
 }
 
-export default parcelsSaga;
+export default othersSaga;

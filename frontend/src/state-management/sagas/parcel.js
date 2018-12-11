@@ -49,22 +49,31 @@ function* updateParcelStatus(action) {
 }
 
 function* updateParcel(action) {
-    try {
-        const state = yield select();
-        const options = {
-            method: 'PUT',
-            body: JSON.stringify(action.parcel),
-            headers: getAuthHeader(state,
-                {'Content-Type': 'application/json'}) 
-        }
-        yield fetch("http://localhost:8080/api/parcels/" + action.parcel.id, options)
-        .then(response => {
-            if (!response.ok || response.status >= 400)
-                throw Error(response.error);
-            });
-        
-        yield put(updateParcelSuccess(action.parcel));
-    } catch (e) {
+  const newParcel = action.parcel;
+  if (newParcel.status === 1 && newParcel.courier) { //if it status is open then there shouldn't be a courier
+    newParcel.courier = null;
+  } else {
+    const oldParcel = yield select(state => state.parcels.parcels.find(parcel => parcel.id === newParcel.id));
+    if (oldParcel.status === 1) { //if the status changed from open then assign the current user to be the courier
+      newParcel.courier = yield select(state => state.others.currentUser);
+    }
+  }
+  try {
+    const state = yield select();
+    const options = {
+      method: 'PUT',
+      body: JSON.stringify(newParcel),
+      headers: getAuthHeader(state, {'Content-Type': 'application/json'})
+    };
+
+        yield fetch("http://localhost:8080/api/parcels/" + newParcel.id, options)
+            .then(response => {
+                if(response.status >= 400 && response.status < 600)
+                    throw new Error("Bad response from server");
+        });
+
+        yield put(updateParcelSuccess(newParcel));
+    } catch(e) {
         yield put(updateParcelError(e));
     }
 }

@@ -2,18 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import SearchIcon from '@material-ui/icons/Search'
-import InputBase from '@material-ui/core/InputBase'
-import { withStyles } from '@material-ui/core/styles'
-import Logo from '../Logo/Logo'
+import {withStyles} from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import { Typography } from '@material-ui/core';
+import {Typography} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import { fade } from '@material-ui/core/styles/colorManipulator';
+import Logo from '../Logo/Logo'
 
-import  AvatarImage from './simp1.jpg';
 import {logout} from '../../state-management/actions/auth';
 
 const styles = theme => ({
@@ -113,7 +110,7 @@ class Header extends Component {
               <div className={classes.gridRigth}>
                 <Grid spacing={24} container className={classes.gridParent}>
                   <Grid item  className={classes.gridChild}>
-                    <Avatar className={classes.bigAvatar} src={AvatarImage}/>
+                    <Avatar>HS</Avatar>
                   </Grid>
                   <Grid item className={classes.gridChild}>
                     <Typography variant="subtitle1" className={classes.userName}>

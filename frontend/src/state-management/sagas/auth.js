@@ -7,6 +7,7 @@ import { auth as authAction, authSuccess, authError,
 import { getAuthHeader, status } from '../api/api.js';
 
 function* auth(action){
+    console.log("auth");
     let credentials = action.credentials;
     try {
         const body = 
@@ -42,6 +43,7 @@ function* auth(action){
 }
 
 function* login(action) {
+    console.log("login");
     yield put(authAction(action.credentials));
     yield take(AUTH_SUCCESS);
     yield put(getUserDetailsAction());

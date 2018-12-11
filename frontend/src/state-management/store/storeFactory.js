@@ -27,17 +27,19 @@ store.close = () => store.dispatch(END);
 
 sagaMiddleware.run(rootSaga);
 
+console.log(store);
+
 store.subscribe(thottle(() => {
-    saveState({
+    saveState(
+        {
         auth: {
             accessToken: store.getState().auth.accessToken,
             isAuthenticated: store.getState().auth.isAuthenticated,
-            user: {
-                firstName: store.getState().auth.user.firstName,
-                lastName: store.getState().auth.user.lastName,
-            }
+            user: store.getState().auth.user,
         }
-    });
+    }
+    
+    );
   }, 1000));
 
 export default store;

@@ -41,8 +41,9 @@ class App extends Component {
       this.setState({redirect: ""})
     }
   }
-  authorize(email, password){
-    this.props.login(email, password);
+  authorize(credentials){
+    console.log(credentials);
+    this.props.login(credentials);
   }
 
   render() {

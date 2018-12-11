@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     return new CustomUser(
             user.getEmail(), user.getPassword(),
             true, true, true, true,emptyList(),
-            user.getFirstName(), user.getLastName());
+            user.getFirstName(), user.getLastName(), user.getAvatar());
 
   }
 

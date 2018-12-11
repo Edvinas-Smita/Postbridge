@@ -70,8 +70,8 @@ export default function parcelsReducer(state = initialState, action = {}) {
                 ...state,
                 isLoading: false,
                 parcels: [
-                    ...state.parcels.slice(0, index),
-                    ...state.parcels.slice(index + 1),
+                    ...this.state.parcels.slice(0, index),
+                    ...this.state.parcels.slice(index + 1),
                 ],
             };
         case DELETE_PARCEL_ERROR:

@@ -37,7 +37,8 @@ public class OAuthController {
   @Controller
   public class SecurityController {
 
-    @RequestMapping(value = "/oauth/user-details", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "/oauth/user-details", method = RequestMethod.GET,
+            produces = "application/json")
     @ResponseBody
     public HashMap<String, Object> currentUserDetails(Authentication authentication) {
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -46,6 +47,8 @@ public class OAuthController {
 
       response.put("firstName", currentUser.getFirstName());
       response.put("lastName", currentUser.getLastName());
+      //response.put("avatar", "");
+      response.put("avatar", currentUser.getAvatar());
 
       return response;
     }

@@ -1,5 +1,5 @@
 import {
-  DELETE_PARCEL,
+  DELETE_PARCEL, DELETE_PARCEL_CANCEL, DELETE_PARCEL_CONFIRM,
   DELETE_PARCEL_ERROR,
   DELETE_PARCEL_SUCCESS,
   GET_PARCELS,
@@ -32,7 +32,8 @@ const initialState = {
   courier: [],
   allParcelRecipients: [],
   allParcelCouriers: [],
-  statusFilterCounter: 0
+  statusFilterCounter: 0,
+  parcelToDeleteID: null
 };
 
 function findParcelIndex(parcels, id) {
@@ -85,10 +86,22 @@ export default function parcelsReducer(state = initialState, action = {}) {
     case DELETE_PARCEL:
       return {
         ...state,
-        isLoading: true,
+        parcelToDeleteID: action.id
+      };
+    case DELETE_PARCEL_CONFIRM:
+      return {
+        ...state,
+        isLoading: true
+      };
+    case DELETE_PARCEL_CANCEL:
+      return {
+        ...state,
+        isLoading: false,
+        parcelToDeleteID: null,
+        error: ''
       };
     case DELETE_PARCEL_SUCCESS:
-      index = findParcelIndex(state.parcels, action.id);
+      index = findParcelIndex(state.parcels, state.parcelToDeleteID);
       return populateWithAllReferencedUsers({
         ...state,
         isLoading: false,
@@ -96,6 +109,7 @@ export default function parcelsReducer(state = initialState, action = {}) {
           ...state.parcels.slice(0, index),
           ...state.parcels.slice(index + 1),
         ],
+        parcelToDeleteID: null
       });
     case DELETE_PARCEL_ERROR:
       return {

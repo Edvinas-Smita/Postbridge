@@ -1,5 +1,5 @@
-import { put, all, takeLatest, takeEvery } from 'redux-saga/effects';
-import { GET_PARCELS, DELETE_PARCEL } from '../constants/parcels';
+import { put, all, takeLatest, takeEvery, select } from 'redux-saga/effects';
+import {GET_PARCELS, DELETE_PARCEL_CONFIRM} from '../constants/parcels';
 import { getParcelsSuccess, getParcelsError, 
         deleteParcelSuccess, deleteParcelError } from '../actions/parcels';
 
@@ -18,9 +18,9 @@ function* getParcels() {
     }
 }
 
-function* deleteParcel(action) {
+function* deleteParcel() {
+    const id = yield select(state => state.parcels.parcelToDeleteID);
     try {
-        const { id } = action;
         const options = {
             method: 'DELETE'
         }
@@ -30,7 +30,7 @@ function* deleteParcel(action) {
                     throw new Error("Bad response from server");
         });
 
-        yield put(deleteParcelSuccess(id));
+        yield put(deleteParcelSuccess());
     } catch(e) {
         yield put(deleteParcelError(e));
     }
@@ -39,7 +39,7 @@ function* deleteParcel(action) {
 function* parcelsSaga() {
     yield all([
         takeLatest(GET_PARCELS, getParcels),
-        takeEvery(DELETE_PARCEL, deleteParcel),
+        takeEvery(DELETE_PARCEL_CONFIRM, deleteParcel),
     ]);
 }
 

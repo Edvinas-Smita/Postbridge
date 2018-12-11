@@ -16,6 +16,7 @@ const initialState = {
     isAuthenticated: false,
     accessToken: "",
     badCredentials: false,
+    error: "",
     user: {
         id: "",
         firstName: "",

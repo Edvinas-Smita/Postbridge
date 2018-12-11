@@ -42,7 +42,6 @@ class App extends Component {
     }
   }
   authorize(credentials){
-    console.log(credentials);
     this.props.login(credentials);
   }
 

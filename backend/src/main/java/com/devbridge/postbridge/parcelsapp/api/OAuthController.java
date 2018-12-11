@@ -45,10 +45,9 @@ public class OAuthController {
       CustomUser currentUser = (CustomUser)auth.getPrincipal();
       HashMap<String, Object> response = new LinkedHashMap<String, Object>();
 
+      response.put("id", currentUser.getId());
       response.put("firstName", currentUser.getFirstName());
       response.put("lastName", currentUser.getLastName());
-      //response.put("avatar", "");
-      response.put("avatar", currentUser.getAvatar());
 
       return response;
     }

@@ -13,8 +13,7 @@ create table users (
   email character varying(256) not null,
   salt character varying(64) not null,
   hash character varying(128) not null,
-  primary key (id),
-  avatar bytea);
+  primary key (id));
 
 create table locations (
   id bigserial not null,

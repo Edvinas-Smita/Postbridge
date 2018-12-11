@@ -27,8 +27,6 @@ store.close = () => store.dispatch(END);
 
 sagaMiddleware.run(rootSaga);
 
-console.log(store);
-
 store.subscribe(thottle(() => {
     saveState(
         {

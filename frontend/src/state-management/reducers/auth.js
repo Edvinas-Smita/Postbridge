@@ -17,6 +17,7 @@ const initialState = {
     accessToken: "",
     badCredentials: false,
     user: {
+        id: "",
         firstName: "",
         lastName: ""
     }
@@ -57,6 +58,7 @@ const AuthReducer = (state = initialState, action = {}) => {
         case GET_USER_DETAILS_SUCCESS: return {
             ...state,
             user: {
+                id: action.user.id,
                 firstName: action.user.firstName,
                 lastName: action.user.lastName
             }

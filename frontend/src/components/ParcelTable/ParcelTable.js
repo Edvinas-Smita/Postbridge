@@ -185,14 +185,18 @@ const parcelTable = (props) => {
                     parcel.recipient.id === props.user.id &&
                     STATUS[parcel.status] === 'Open'
                   ) &&
-                  <div>
-                    <IconButton className={classes.iconButton} onClick={() => props.onEditParcel(parcel)}>
-                      <EditIcon fontSize="small"/>
-                    </IconButton>
-                    <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}>
-                      <CloseIcon fontSize="small"/>
-                    </IconButton>
-                  </div>
+                  <IconButton className={classes.iconButton} onClick={() => props.onEditParcel(parcel)}>
+                    <EditIcon fontSize="small"/>
+                  </IconButton>
+                }
+                {
+                  (
+                    parcel.recipient.id === props.user.id &&
+                    (STATUS[parcel.status] === 'Open' || STATUS[parcel.status] === 'Delivered')
+                  ) &&
+                  <IconButton className={classes.iconButton} onClick={props.deleteParcelFactory(parcel.id)}>
+                    <CloseIcon fontSize="small"/>
+                  </IconButton>
                 }
               </div>
             </TableCell>

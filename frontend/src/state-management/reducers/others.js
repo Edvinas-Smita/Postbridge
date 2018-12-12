@@ -2,8 +2,7 @@ import {GET_LOCATIONS, GET_LOCATIONS_ERROR, GET_LOCATIONS_SUCCESS} from '../cons
 
 const initialState = {
   locations: [],
-  isLoading: false,
-  currentUser: {id: 1, firstName: "TODO", lastName: "TODO"}   //TODO
+  isLoading: false
 };
 
 export default function othersReducer(state = initialState, action = {}) {

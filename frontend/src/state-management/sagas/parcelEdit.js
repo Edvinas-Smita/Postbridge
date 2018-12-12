@@ -24,13 +24,7 @@ function* editParcelSaveEdit(action) {
 }
 
 function* editParcelSaveRequest(action) {
-  const loggedInUser = yield select(state => {
-    return {  
-      id: state.parcels.userId,//TODO: put userId to redux
-      firstName: state.auth.user.firstName,
-      lastName: state.auth.user.lastName
-    };
-  });
+  const loggedInUser = yield select(state => state.auth.user);
 
   const parcel = {
     ...action.parcel,

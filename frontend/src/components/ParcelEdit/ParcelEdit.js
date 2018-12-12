@@ -147,6 +147,14 @@ class ParcelEdit extends Component {
     endLocation: '',
     status: 1,
     createdDate: new Date().toLocaleString("lt")
+    /*createdDate: Intl.DateTimeFormat("lt", {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric'
+    }).format(new Date())*/ //edge for some reason adds a bunch of symbols around every number in the date - this should have been a fix but it didnt help - DONT CREATE PARCEL ON EDGE
   };
 
   componentWillReceiveProps(nextProps) {

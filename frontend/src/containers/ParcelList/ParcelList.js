@@ -100,6 +100,7 @@ class ParcelList extends React.Component {
   }
 
   render() {
+    const {classes} = this.props;
     return (
       <div className="ParcelListPage">
         <Header/>
@@ -127,8 +128,7 @@ class ParcelList extends React.Component {
         </Grid>
         <ParcelEdit/>
         <ParcelStatus
-          updateParcelStatusFactory={this.updateParcelStatusFactory}/>
-
+          updateParcelStatusFactory={this.updateParcelStatusFactory}
         />
         <Dialog
           open={this.props.deleteDialogOpen}

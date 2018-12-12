@@ -50,18 +50,6 @@ const styles = theme => ({
 
 class parcelListDeco extends Component {
     render() {
-        /*const parcel = {
-            id: '',
-            recipient: {
-                firstName: '',
-                lastName: ''
-            },
-            startLocation: '',
-            endLocation: '',
-            status: 1,
-            description: '',
-            weight: ''
-        }*/
         const { classes } = this.props;
         return (
             <div className={classes.main}>

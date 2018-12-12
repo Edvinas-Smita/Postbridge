@@ -41,65 +41,65 @@ import {getSortedParcels} from '../../state-management/selectors/parcelsSelector
 const styles = theme => ({
   roundedButton: {
     borderRadius: 24,
-      marginLeft: theme.spacing.unit * 2
+    marginLeft: theme.spacing.unit * 2
   },
   errorIcon: {
     height: 48,
-      width: 48,
-      fill: "orangered",
-      position: 'absolute',
-      left: '50%',
-      marginLeft: -24
+    width: 48,
+    fill: "orangered",
+    position: 'absolute',
+    left: '50%',
+    marginLeft: -24
   },
   actionPadding: {
     paddingBottom: theme.spacing.unit * 3,
-      paddingRight: theme.spacing.unit * 3,
-      margin: 0
+    paddingRight: theme.spacing.unit * 3,
+    margin: 0
   },
 });
 
 class ParcelList extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            sortOrder: 'asc',
-            sortBy: 'createdDate'
-        };
-        this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
-        this.deleteParcelConfirm = this.props.confirmDelete.bind(this);
-        this.deleteParcelCancel = this.props.cancelDelete.bind(this);
-        this.updateParcelStatusFactory = this.updateParcelStatusFactory.bind(this);
-    }
-
-    componentWillMount() {
-        this.props.getParcels();
-        this.props.getLocations();
-    }
-
-    componentWillReceiveProps(nextProps, nextContext) {}
-
-    deleteParcelFactory(id) {
-        return () => this.props.deleteParcel(id);
-    }
-
-    updateParcelStatusFactory(parcel){
-        this.props.updateParcelStatus(parcel);
-    }
-
-    handleRequestSort = (event, property) => {
-        this.props.sortParcels(property);
+  constructor(props) {
+    super(props);
+    this.state = {
+      sortOrder: 'asc',
+      sortBy: 'createdDate'
     };
+    this.deleteParcelFactory = this.deleteParcelFactory.bind(this);
+    this.deleteParcelConfirm = this.props.confirmDelete.bind(this);
+    this.deleteParcelCancel = this.props.cancelDelete.bind(this);
+    this.updateParcelStatusFactory = this.updateParcelStatusFactory.bind(this);
+  }
 
-    openEditParcel(parcel) {
-        this.props.editParcelOpen(parcel);
-    }
+  componentWillMount() {
+    this.props.getParcels();
+    this.props.getLocations();
+  }
 
-    openParcelStatus(id) {
-        this.props.openParcelStatus(id);
-    }
+  componentWillReceiveProps(nextProps, nextContext) {
+  }
+
+  deleteParcelFactory(id) {
+    return () => this.props.deleteParcel(id);
+  }
+
+  updateParcelStatusFactory(parcel) {
+    this.props.updateParcelStatus(parcel);
+  }
+
+  handleRequestSort = (event, property) => {
+    this.props.sortParcels(property);
+  };
+
+  openEditParcel(parcel) {
+    this.props.editParcelOpen(parcel);
+  }
+
+  openParcelStatus(id) {
+    this.props.openParcelStatus(id);
+  }
 
   render() {
-    const {classes} = this.props;
     return (
       <div className="ParcelListPage">
         <Header/>
@@ -127,7 +127,8 @@ class ParcelList extends React.Component {
         </Grid>
         <ParcelEdit/>
         <ParcelStatus
-          updateParcelStatusFactory={this.updateParcelStatusFactory}
+          updateParcelStatusFactory={this.updateParcelStatusFactory}/>
+
         />
         <Dialog
           open={this.props.deleteDialogOpen}
@@ -185,25 +186,25 @@ class ParcelList extends React.Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    getParcels: () => dispatch(getParcelsAction()),
-    updateParcelStatus: (parcel) => dispatch(updateParcelStatusAction(parcel)),
-    getLocations: () => dispatch(getLocationsAction()),
-    deleteParcel: (id) => dispatch(deleteParcelAction(id)),
-    confirmDelete: () => dispatch(deleteParcelConfirm()),
-    cancelDelete: () => dispatch(deleteParcelCancel()),
-    sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
-    openParcelStatus: (id) => dispatch(openParcelStatusAction(id)),
-    editParcelOpen: (parcel) => dispatch(editParcelOpenAction(parcel))
+  getParcels: () => dispatch(getParcelsAction()),
+  updateParcelStatus: (parcel) => dispatch(updateParcelStatusAction(parcel)),
+  getLocations: () => dispatch(getLocationsAction()),
+  deleteParcel: (id) => dispatch(deleteParcelAction(id)),
+  confirmDelete: () => dispatch(deleteParcelConfirm()),
+  cancelDelete: () => dispatch(deleteParcelCancel()),
+  sortParcels: (sortBy) => dispatch(sortParcels(sortBy)),
+  openParcelStatus: (id) => dispatch(openParcelStatusAction(id)),
+  editParcelOpen: (parcel) => dispatch(editParcelOpenAction(parcel))
 });
 
 const mapStateToProps = state => ({
-    isLoading: state.parcels.isLoading,
-    sortBy: state.parcels.sortBy,
-    sortOrder: state.parcels.sortOrder,
-    parcels: getSortedParcels(state),
-    user: state.others.currentUser,
-    deleteDialogOpen: !!state.parcels.parcelToDeleteID,
-    error: state.parcels.error
+  isLoading: state.parcels.isLoading || state.others.isLoading || state.auth.isFetching,
+  sortBy: state.parcels.sortBy,
+  sortOrder: state.parcels.sortOrder,
+  parcels: getSortedParcels(state),
+  user: state.auth.user,
+  deleteDialogOpen: !!state.parcels.parcelToDeleteID,
+  error: state.parcels.error
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ParcelList));

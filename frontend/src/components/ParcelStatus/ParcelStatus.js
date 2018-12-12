@@ -1,8 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 
-import { Dialog, DialogTitle } from '@material-ui/core';
-import { withStyles } from "@material-ui/core/styles";
+import {Dialog, DialogTitle} from '@material-ui/core';
+import {withStyles} from "@material-ui/core/styles";
 
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button/Button';
 import ArrowLeft from '@material-ui/icons/ArrowLeftSharp';
 import ArrowRight from '@material-ui/icons/ArrowRightSharp';
 
-import { STATUS } from '../../helpers';
+import {STATUS} from '../../helpers';
 import ParcelStatusHistory from '../../containers/ParcelStatusHistory/ParcelStatusHistory';
 
 import {closeParcelStatus} from '../../state-management/actions/parcel';
@@ -153,6 +153,11 @@ class ParcelStatus extends  React.Component {
                         }
                     </Stepper>
                 </div>
+                {
+                  (
+                    (!this.props.parcel.courier || this.props.parcel.courier.id === this.props.user.id) &&
+                    (this.props.parcel.recipient && this.props.parcel.recipient.id !== this.props.user.id)
+                  ) &&
                 <div className={classes.buttonsArea}>
                     {activeStep > 1 &&
                         <Button
@@ -178,7 +183,7 @@ class ParcelStatus extends  React.Component {
                         </Button>
                     }
                 </div>
-                
+                }
                 <div className={classes.historyArea}>
                     <ParcelStatusHistory 
                         parcelStatusHistory={this.props.parcelStatusHistory}/>
@@ -191,6 +196,7 @@ class ParcelStatus extends  React.Component {
 const mapStateToProps = state => ({
     open: state.parcel.isStatusOpen,
     parcel: state.parcel.parcel,
+    user: state.auth.user,
     isLoading: state.parcel.isLoading,
     parcelStatusHistory: state.parcel.statusHistory
 })

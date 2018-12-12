@@ -1,5 +1,5 @@
 import { put, all, takeLatest, takeEvery, select } from 'redux-saga/effects';
-import { GET_PARCELS, DELETE_PARCEL } from '../constants/parcels';
+import {GET_PARCELS, DELETE_PARCEL_CONFIRM} from '../constants/parcels';
 import { getParcelsSuccess, getParcelsError, 
         deleteParcelSuccess, deleteParcelError } from '../actions/parcels';
 import { logout as logoutAction } from '../actions/auth';
@@ -14,7 +14,7 @@ function* getParcels() {
             headers: getAuthHeader(state)
         }
         yield fetch("http://localhost:8080/api/parcels", options)
-            .then(response => 
+            .then(response =>
                 status(response)
             )
             .then(data => {
@@ -27,10 +27,10 @@ function* getParcels() {
     }
 }
 
-function* deleteParcel(action) {
+function* deleteParcel() {
+    const id = yield select(state => state.parcels.parcelToDeleteID);
     try {
         const state = yield select();
-        const { id } = action;
         const options = {
             method: 'DELETE',
             headers: getAuthHeader(state)
@@ -41,7 +41,7 @@ function* deleteParcel(action) {
                     throw Error(response.error);
                 });
 
-        yield put(deleteParcelSuccess(id));
+        yield put(deleteParcelSuccess());
     } catch(e) {
         yield put(deleteParcelError(e));
     }
@@ -50,7 +50,7 @@ function* deleteParcel(action) {
 function* parcelsSaga() {
     yield all([
         takeLatest(GET_PARCELS, getParcels),
-        takeEvery(DELETE_PARCEL, deleteParcel),
+        takeEvery(DELETE_PARCEL_CONFIRM, deleteParcel),
     ]);
 }
 

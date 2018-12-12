@@ -1,27 +1,15 @@
-import {all, put, take, select, takeEvery, takeLatest} from 'redux-saga/effects';
-import {
-  CLOSE_PARCEL_STATUS,
-  GET_PARCEL,
-  GET_PARCEL_STATUS_HISTORY,
-  GET_PARCEL_SUCCESS,
-  OPEN_PARCEL_STATUS,
-  UPDATE_PARCEL,
-  UPDATE_PARCEL_STATUS,
-  UPDATE_PARCEL_SUCCESS
-} from '../constants/parcel';
-import {
-  getParcel as getParcelAction,
-  getParcelError,
-  getParcelStatusHistory as getParcelStatusHistoryAction,
-  getParcelStatusHistoryError,
-  getParcelStatusHistorySuccess,
-  getParcelSuccess,
-  updateParcel as updateParcelAction,
-  updateParcelError,
-  updateParcelSuccess
-} from '../actions/parcel';
-import {updateParcels as updateParcelsAction} from '../actions/parcels';
-
+import { put, all, takeLatest, takeEvery, take, select } from 'redux-saga/effects';
+import { GET_PARCEL, GET_PARCEL_SUCCESS,
+        UPDATE_PARCEL, UPDATE_PARCEL_SUCCESS, UPDATE_PARCEL_STATUS, 
+        OPEN_PARCEL_STATUS, CLOSE_PARCEL_STATUS,
+        GET_PARCEL_STATUS_HISTORY } from '../constants/parcel';
+import { getParcelSuccess, getParcelError, getParcel as getParcelAction,
+        updateParcel as updateParcelAction,
+        updateParcelSuccess, updateParcelError, 
+        getParcelStatusHistory as getParcelStatusHistoryAction,
+        getParcelStatusHistoryError, getParcelStatusHistorySuccess } from '../actions/parcel';
+import { updateParcels as updateParcelsAction} from '../actions/parcels';
+import { getAuthHeader, status } from '../api/api.js';
 
 function* openParcelStatus(action) {
     yield put(getParcelAction(action.id));
@@ -35,11 +23,16 @@ function* closeParcelStatus(action) {
 
 function* getParcel(action) {
     try {
+        const state = yield select();
         let parcel = {};
-        yield fetch("http://localhost:8080/api/parcels/" + action.id)
-            .then(response => {
-                return response.json();
-            })
+        let options = {
+            method: 'GET',
+            headers: getAuthHeader(state)
+        }
+        yield fetch("http://localhost:8080/api/parcels/" + action.id, options)
+            .then(response => 
+                status(response)
+            )
             .then(data => {
                 parcel = data;
             });
@@ -66,12 +59,11 @@ function* updateParcel(action) {
     }
   }
   try {
+    const state = yield select();
     const options = {
       method: 'PUT',
       body: JSON.stringify(newParcel),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+      headers: getAuthHeader(state, {'Content-Type': 'application/json'})
     };
 
         yield fetch("http://localhost:8080/api/parcels/" + newParcel.id, options)
@@ -88,14 +80,20 @@ function* updateParcel(action) {
 
 function* getParcelStatusHistory(action) {
     try {
-
-        const {id} = action;
+        const state = yield select();
+        const { id } = action;
         let parcelStatusHistory = [];
-        yield fetch("http://localhost:8080/api/parcels/" + id + "/statusHistory").then(response => {
-            return response.json();
-        }).then(data => {
-            parcelStatusHistory = Object.values(data);
-        });
+        let options = {
+            method: 'GET',
+            headers: getAuthHeader(state)
+        }
+        yield fetch("http://localhost:8080/api/parcels/" + id + "/statusHistory", options)
+            .then(response => 
+                status(response)
+            )
+            .then(data => {
+                parcelStatusHistory = Object.values(data);
+            });
         yield put(getParcelStatusHistorySuccess(parcelStatusHistory));
     } catch (e) {
         yield put(getParcelStatusHistoryError(e));

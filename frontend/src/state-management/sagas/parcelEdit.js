@@ -13,6 +13,7 @@ import {
   editParcelSaveError,
   editParcelSaveSuccess
 } from "../actions/parcelEdit";
+import { getAuthHeader, status } from '../api/api.js';
 
 function* editParcelSaveEdit(action) {
   yield put(PUTParcel(action.parcel));
@@ -23,7 +24,13 @@ function* editParcelSaveEdit(action) {
 }
 
 function* editParcelSaveRequest(action) {
-  const loggedInUser = yield select(state => state.others.currentUser);
+  const loggedInUser = yield select(state => {
+    return {  
+      id: state.parcels.userId,//TODO: put userId to redux
+      firstName: state.auth.user.firstName,
+      lastName: state.auth.user.lastName
+    };
+  });
 
   const parcel = {
     ...action.parcel,
@@ -31,22 +38,17 @@ function* editParcelSaveRequest(action) {
   };
 
   try {
+    const state = yield select();
     const options = {
       method: 'POST',
       body: JSON.stringify(parcel),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+      headers: getAuthHeader(state,
+        {'Content-Type': 'application/json'})
     };
 
     let actualParcel = {};
     yield fetch("http://localhost:8080/api/parcels", options)
-      .then(response => {
-        if (response.status >= 400 && response.status < 600) {
-          throw new Error("Bad response from server");
-        }
-        return response.json();
-      })
+      .then(response => status(response))
       .then(data => (actualParcel = data));
 
     yield put(editParcelSaveSuccess(actualParcel));

@@ -3,27 +3,41 @@ import { routerMiddleware } from 'react-router-redux';
 import createBrowserHistory from 'history/createBrowserHistory';
 import rootSaga from '../sagas';
 import createSagaMiddleware, { END } from 'redux-saga';
-
+import {loadState, saveState } from './localStorage';
 import reducers from '../reducers';
+import thottle from 'lodash.throttle';
 
-function storeFactory() {
-    const sagaMiddleware = createSagaMiddleware();
+const sagaMiddleware = createSagaMiddleware();
 
-    const middleware = applyMiddleware(
-        routerMiddleware(createBrowserHistory()),
-        sagaMiddleware,
+const middleware = applyMiddleware(
+    routerMiddleware(createBrowserHistory()),
+    sagaMiddleware,
+);
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const persistedState = loadState();
+const store = createStore(
+    reducers, 
+    persistedState,
+    composeEnhancers(middleware));
+
+store.runSaga = sagaMiddleware.run;
+store.close = () => store.dispatch(END);
+
+sagaMiddleware.run(rootSaga);
+
+store.subscribe(thottle(() => {
+    saveState(
+        {
+        auth: {
+            accessToken: store.getState().auth.accessToken,
+            isAuthenticated: store.getState().auth.isAuthenticated,
+            user: store.getState().auth.user,
+        }
+    }
+    
     );
+  }, 1000));
 
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-    const store = createStore(reducers, composeEnhancers(middleware));
-
-    store.runSaga = sagaMiddleware.run;
-    store.close = () => store.dispatch(END);
-
-    sagaMiddleware.run(rootSaga);
-
-    return store;
-}
-
-export default storeFactory();
+export default store;

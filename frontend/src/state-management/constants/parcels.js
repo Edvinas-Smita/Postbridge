@@ -1,6 +1,6 @@
 export const GET_PARCELS = 'parcels/GET_PARCELS';
 export const GET_PARCELS_SUCCESS = 'parcels/GET_PARCELS_SUCCESS';
-export const GET_PARCELS_ERROR = 'parcels/GET_PARCELS_SUCCESS';
+export const GET_PARCELS_ERROR = 'parcels/GET_PARCELS_ERROR';
 export const DELETE_PARCEL = 'parcels/DELETE_PARCEL';
 export const DELETE_PARCEL_CONFIRM = 'parcels/DELETE_PARCEL_CONFIRM';
 export const DELETE_PARCEL_CANCEL = 'parcels/DELETE_PARCEL_CANCEL';

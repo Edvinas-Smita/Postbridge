@@ -1,7 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
-
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import {withStyles} from '@material-ui/core/styles'
@@ -10,82 +8,131 @@ import IconButton from '@material-ui/core/IconButton';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import {Typography} from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
-
+import { fade } from '@material-ui/core/styles/colorManipulator';
 import Logo from '../Logo/Logo'
 
+import {logout} from '../../state-management/actions/auth';
+
 const styles = theme => ({
-  appbar: {
-    backgroundColor: theme.palette.common.white
-  },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    paddingRight: '0px'
-  },
-  grid: {
-    margin: 0
-  },
-  gridRight: {
-    borderLeft: "1px solid",
-    borderLeftColor: theme.palette.grey[200],
-    padding: "16px"
-  },
-  userName: {
-    fontWeight: "bold"
-  }
-});
+    root: {
+        width: '100%',
+      },
+    appbar: {
+        backgroundColor: theme.palette.common.white
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    grid: {
+        margin: 0
+    },
+    gridRigth: {
+        borderLeft: "1px solid",
+        borderLeftColor: theme.palette.grey[200],
+        padding: "16px"
+    },
+    userName: {
+        fontWeight: "bold"
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: theme.palette.grey[200],
+        '&:hover': {
+          backgroundColor: fade(theme.palette.grey[200], 0.25),
+        },
+        marginRight: theme.spacing.unit * 2,
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+          marginLeft: theme.spacing.unit * 3,
+          width: 'auto',
+        },
+        color: theme.palette.grey[600],
+      },
+    searchIcon: {
+        width: theme.spacing.unit * 5,
+        height: '100%',
+        position: 'absolute',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme.palette.primary.main,
+        borderTopRightRadius: theme.shape.borderRadius,
+        borderBottomRightRadius: theme.shape.borderRadius,
+        right: "0"
+      },
+      searchButton: {
+          color: theme.palette.common.white,
+          cursor: "pointer",
+          '&:hover': {
+            backgroundColor: "transparent",
+          },
+      },
+      inputRoot: {
+        color: 'inherit',
+        width: '100%',
+        float: "left",
+      },
+      inputInput: {
+        paddingTop: theme.spacing.unit,
+        paddingRight: theme.spacing.unit,
+        paddingBottom: theme.spacing.unit,
+        paddingLeft: theme.spacing.unit,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+          width: 200,
+        },
+      },
+      gridParent: {
+        display: "table"
+      },
+      gridChild: {
+        display: "table-cell",
+        verticalAlign: "middle"
+      }
+  });
 
 class Header extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      logout: false,
-      redirectToLogin: false
-    };
-  }
-
-  handleClick = () => {
-    this.setState({redirectToLogin: true})
-  };
-
-  render() {
-    const {classes} = this.props;
-    if (this.state.redirectToLogin) {
-      return <Redirect to="/"/>
+    handleClick = () => {
+      this.props.logout();
     }
-    return (
-      <React.Fragment>
-        <AppBar className={classes.appbar} position="fixed">
-          <Toolbar className={classes.toolbar}>
-            <Logo/>
-            <div className={classes.gridRight}>
-              <Grid spacing={24} container justify='center' alignItems='center'>
-                <Grid item>
-                  <Avatar>{this.props.user.firstName.slice(0, 1) + this.props.user.lastName.slice(0, 1)}</Avatar>
-                </Grid>
-                <Grid item>
-                  <Typography variant="subtitle1" className={classes.userName}>
-                    {this.props.user.firstName + " " + this.props.user.lastName}
-                  </Typography>
-                </Grid>
 
-                <Grid item>
-                  <IconButton aria-label="ExitToApp" onClick={() => this.handleClick()}>
-                    <ExitToApp/>
-                  </IconButton>
+    render() {
+        const { classes } = this.props;
+        return (
+            <AppBar className={classes.appbar} position="fixed" >
+            <Toolbar>
+              <Logo/>
+              <div className={classes.grow} />
+              <div className={classes.gridRigth}>
+                <Grid spacing={24} container className={classes.gridParent}>
+                  <Grid item  className={classes.gridChild}>
+                    <Avatar>HS</Avatar>
+                  </Grid>
+                  <Grid item className={classes.gridChild}>
+                    <Typography variant="subtitle1" className={classes.userName}>
+                      Homer Simpson
+                    </Typography>
+                    </Grid>
+                  <Grid item className={classes.gridChild}>
+                    <IconButton aria-label="ExitToApp" onClick={() => this.handleClick()}>
+                      <ExitToApp/>
+                    </IconButton>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </div>
-          </Toolbar>
-        </AppBar>
-      </React.Fragment>
-    );
-  }
-}
+                </div>
+            </Toolbar>
+          </AppBar>
+        );
+    }
+};
 
-const mapStateToProps = state => ({
-  user: state.others.currentUser
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(logout())
 });
 
-export default connect(mapStateToProps, null)(withStyles(styles)(Header));
+const HeaderStyled = withStyles(styles)(Header);
+export default connect(null, mapDispatchToProps)(HeaderStyled);

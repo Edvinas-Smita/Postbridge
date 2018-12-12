@@ -33,6 +33,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
+    //TODO: it seems like not needed, on auth not used
     @GetMapping
     public ResponseEntity<User> getUserFromLogin(@RequestBody @Valid LoginData login) {
         logger.debug("Trying to get an user with specified login data ({})", login);

@@ -54,8 +54,8 @@ function* updateParcel(action) {
     newParcel.courier = null;
   } else {
     const oldParcel = yield select(state => state.parcels.parcels.find(parcel => parcel.id === newParcel.id));
-    if (oldParcel.status === 1) { //if the status changed from open then assign the current user to be the courier
-      newParcel.courier = yield select(state => state.others.currentUser);
+    if (oldParcel.status === 1 && oldParcel.status !== newParcel.status) { //if the status changed from open then assign the current user to be the courier
+      newParcel.courier = yield select(state => state.auth.user);
     }
   }
   try {

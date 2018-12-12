@@ -491,7 +491,7 @@ const mapStateToProps = state => ({
     createdTo: state.parcels.createdTo,
     recipient: state.parcels.recipient,
     courier: state.parcels.courier,
-    currentUser: state.others.currentUser,
+    currentUser: state.auth.user,
     allCouriers: state.parcels.allParcelCouriers,
     allRecipients: state.parcels.allParcelRecipients,
     statusFilterCounter: state.parcels.statusFilterCounter,

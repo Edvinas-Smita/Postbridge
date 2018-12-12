@@ -44,6 +44,8 @@ class ParcelList extends React.Component {
         this.props.getLocations();
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {}
+
     deleteParcelFactory(id) {
         return () => this.props.deleteParcel(id);
     }
@@ -65,6 +67,10 @@ class ParcelList extends React.Component {
     }
 
     render() {
+        if (this.props.isLoading) {
+            return <h1>LOADING...</h1>;    //Add big spinner - one is ready in this class in an open pull request
+        }
+
         return (
             <div className="ParcelListPage">
                 <Header/>
@@ -109,11 +115,11 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-    isLoading: state.parcels.isLoading,
+    isLoading: state.parcels.isLoading || state.others.isLoading || state.auth.isFetching,
     sortBy: state.parcels.sortBy,
     sortOrder: state.parcels.sortOrder,
     parcels: getSortedParcels(state),
-    user: state.others.currentUser
+    user: state.auth.user
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ParcelList);

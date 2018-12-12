@@ -41,7 +41,6 @@ const AuthReducer = (state = initialState, action = {}) => {
         case AUTH_SUCCESS: return {
             ...state,
             accessToken: action.accessToken,
-            isFetching: false,
             isAuthenticated: true,
             badCredentials: false
         }
@@ -58,6 +57,7 @@ const AuthReducer = (state = initialState, action = {}) => {
         }
         case GET_USER_DETAILS_SUCCESS: return {
             ...state,
+            isFetching: false,
             user: {
                 id: action.user.id,
                 firstName: action.user.firstName,
@@ -66,7 +66,9 @@ const AuthReducer = (state = initialState, action = {}) => {
         }
         case GET_USER_DETAILS_ERROR: return {
             ...state,
+            isFetching: false,
             user: {
+                id: "",
                 firstName: "",
                 lastName: ""
             }
@@ -81,6 +83,7 @@ const AuthReducer = (state = initialState, action = {}) => {
             isAuthenticated: false,
             accessToken: "",
             user: {
+                id: "",
                 firstName: "",
                 lastName: ""
             }
@@ -92,6 +95,7 @@ const AuthReducer = (state = initialState, action = {}) => {
             isAuthenticated: false,
             accessToken: "",
             user: {
+                id: "",
                 firstName: "",
                 lastName: ""
             }

@@ -157,12 +157,13 @@ export default function parcelsReducer(state = initialState, action = {}) {
                 };
             }
         case NEW_PARCEL:
-            return {
+            return populateWithAllReferencedUsers({
                 ...state,
                 parcels: [
                     ...state.parcels,
                     action.parcel
                 ]
-            };default: return state;
+            });
+        default: return state;
     }
 }

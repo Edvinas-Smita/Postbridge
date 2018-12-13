@@ -20,7 +20,8 @@ const initialState = {
     user: {
         id: "",
         firstName: "",
-        lastName: ""
+        lastName: "",
+        imageLink: null
     }
 };
 
@@ -61,7 +62,8 @@ const AuthReducer = (state = initialState, action = {}) => {
             user: {
                 id: action.user.id,
                 firstName: action.user.firstName,
-                lastName: action.user.lastName
+                lastName: action.user.lastName,
+                imageLink: action.user.image
             }
         }
         case GET_USER_DETAILS_ERROR: return {
@@ -70,7 +72,8 @@ const AuthReducer = (state = initialState, action = {}) => {
             user: {
                 id: "",
                 firstName: "",
-                lastName: ""
+                lastName: "",
+                imageLink: null
             }
         }
         case LOGOUT: return {
@@ -85,7 +88,8 @@ const AuthReducer = (state = initialState, action = {}) => {
             user: {
                 id: "",
                 firstName: "",
-                lastName: ""
+                lastName: "",
+                imageLink: null
             }
         }
         case LOGOUT_ERROR: return {
@@ -97,7 +101,8 @@ const AuthReducer = (state = initialState, action = {}) => {
             user: {
                 id: "",
                 firstName: "",
-                lastName: ""
+                lastName: "",
+                imageLink: null
             }
         }
         default: return state;

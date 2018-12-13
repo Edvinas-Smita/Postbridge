@@ -49,7 +49,7 @@ class Header extends Component {
           <div className={classes.gridRight}>
             <Grid spacing={24} container justify='center' alignItems='center'>
               <Grid item>
-                <Avatar>{this.props.user.firstName.slice(0, 1) + this.props.user.lastName.slice(0, 1)}</Avatar>
+                <Avatar src={this.props.user.imageLink} alt={this.props.user.firstName.slice(0, 1) + this.props.user.lastName.slice(0, 1)}/>
               </Grid>
               <Grid item>
                 <Typography variant="subtitle1" className={classes.userName}>

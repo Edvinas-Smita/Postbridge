@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -105,9 +105,22 @@ const parcelTable = (props) => {
   return (
     <TableBody>
       {props.parcels.map((parcel, index) => {
-        let buttonText = "View details";
-        let buttonVariant = "outlined";
-        let buttonColor = "default";
+        let statusButtonText =
+          parcel.courier
+            ? parcel.courier.id === props.user.id
+              ? "Change status"
+              : "View status"
+            : parcel.recipient.id === props.user.id
+              ? "View status"
+              : "I'll deliver";
+        let buttonVariant =
+          statusButtonText === "View status"
+            ? "outlined"
+            : "contained";
+        let buttonColor =
+          statusButtonText === "View status"
+            ? "default"
+            : "primary";
         let statusColor;
         switch (parcel.status) {
           case 1:
@@ -122,11 +135,6 @@ const parcelTable = (props) => {
         let statusColumn = [statusColor, classes.statusColumnBorder].join(' ');
         let pointIcon = [statusColor, classes.pointIcon].join(' ');
         let icon = <PlaneIcon className={[classes.planeIcon, classes.endLocationIcon].join(' ')}/>;
-        if (parcel.recipient.id !== props.user.id && STATUS[parcel.status] === 'Open') {
-          buttonText = "I'll deliver";
-          buttonVariant = "contained";
-          buttonColor = "primary";
-        }
 
         if ((parcel.startLocation === 'Vilnius' && parcel.endLocation === 'Kaunas') ||
           (parcel.startLocation === 'Kaunas' && parcel.endLocation === 'Vilnius')) {
@@ -177,7 +185,7 @@ const parcelTable = (props) => {
               <div style={{display:'flex'}}>
                 <Button variant={buttonVariant} color={buttonColor} size="small" className={classes.button}
                         onClick={() => {props.openParcelStatus(parcel.id)}}>
-                  {buttonText}
+                  {statusButtonText}
                 </Button>
                 {
                   (

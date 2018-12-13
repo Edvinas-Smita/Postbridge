@@ -13,6 +13,7 @@ create table users (
   email character varying(256) not null,
   salt character varying(64) not null,
   hash character varying(128) not null,
+  image character varying(128),
   primary key (id));
 
 create table locations (

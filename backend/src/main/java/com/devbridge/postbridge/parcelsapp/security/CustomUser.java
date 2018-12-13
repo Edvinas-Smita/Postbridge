@@ -9,12 +9,13 @@ public class CustomUser extends User {
   private final Long id;
   private final String firstName;
   private final String lastName;
+  private final String imageLink;
 
   public CustomUser(String username, String password, boolean enabled,
                   boolean accountNonExpired, boolean credentialsNonExpired,
                   boolean accountNonLocked,
                   Collection authorities,
-                  Long id, String firstName, String lastName) {
+                  Long id, String firstName, String lastName, String imageLink) {
 
     super(username, password, enabled, accountNonExpired,
             credentialsNonExpired, accountNonLocked, authorities);
@@ -22,6 +23,7 @@ public class CustomUser extends User {
     this.firstName = firstName;
     this.lastName = lastName;
     this.id = id;
+    this.imageLink = imageLink;
   }
 
   public Long getId() {
@@ -34,5 +36,9 @@ public class CustomUser extends User {
 
   public String getLastName() {
     return lastName;
+  }
+
+  public String getImageLink() {
+    return imageLink;
   }
 }

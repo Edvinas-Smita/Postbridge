@@ -48,6 +48,7 @@ public class OAuthController {
       response.put("id", currentUser.getId());
       response.put("firstName", currentUser.getFirstName());
       response.put("lastName", currentUser.getLastName());
+      response.put("image", currentUser.getImageLink());
 
       return response;
     }

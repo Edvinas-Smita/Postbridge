@@ -40,7 +40,7 @@ public interface UserMapper {
     })
     User getUser(LoginData login);
 
-    @Select("SELECT id, email, hash, first_name, last_name " +
+    @Select("SELECT id, email, hash, first_name, last_name, image " +
             "FROM users " +
             "WHERE email = #{email} ")
     @Results({
@@ -49,6 +49,7 @@ public interface UserMapper {
             @Result(property = "password", column = "HASH"),
             @Result(property = "firstName", column = "FIRST_NAME"),
             @Result(property = "lastName", column = "LAST_NAME"),
+            @Result(property = "imageLink", column = "image")
     })
     User findUserByEmail(String email);
 }
